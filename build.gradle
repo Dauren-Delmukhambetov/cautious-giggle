@@ -2,10 +2,11 @@ plugins {
 	id 'org.springframework.boot' version '2.4.4'
 	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
 	id 'java'
+	id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'kz.toko'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.1'
 sourceCompatibility = '11'
 
 configurations {
@@ -16,6 +17,7 @@ configurations {
 
 repositories {
 	mavenCentral()
+	jcenter()
 }
 
 dependencies {
@@ -25,6 +27,19 @@ dependencies {
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+	swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.5'  // or Swagger Codegen V3
+	swaggerUI 'org.webjars:swagger-ui:3.10.0'
+}
+
+swaggerSources {
+	tokoRestApi {
+		inputFile = file('api/toko-rest-api.yaml')
+		code {
+			language = 'spring'
+			configFile = file('api/config.json')
+			components = ['models', 'apis']
+		}
+	}
 }
 
 test {
