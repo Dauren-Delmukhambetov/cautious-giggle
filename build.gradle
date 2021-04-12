@@ -23,11 +23,13 @@ repositories {
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
+	implementation 'io.swagger:swagger-annotations:1.6.2'
+	implementation 'javax.validation:validation-api:2.0.1.Final'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
 	annotationProcessor 'org.projectlombok:lombok'
 	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.5'  // or Swagger Codegen V3
+	swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.5'
 	swaggerUI 'org.webjars:swagger-ui:3.10.0'
 }
 
@@ -36,11 +38,16 @@ swaggerSources {
 		inputFile = file('api/toko-rest-api.yaml')
 		code {
 			language = 'spring'
+			outputDir = file('build/generated')
 			configFile = file('api/config.json')
 			components = ['models', 'apis']
 		}
 	}
 }
+
+compileJava.dependsOn swaggerSources.tokoRestApi.code
+sourceSets.main.java.srcDir "${swaggerSources.tokoRestApi.code.outputDir}/src/main/java"
+sourceSets.main.resources.srcDir "${swaggerSources.tokoRestApi.code.outputDir}/src/main/resources"
 
 test {
 	useJUnitPlatform()
