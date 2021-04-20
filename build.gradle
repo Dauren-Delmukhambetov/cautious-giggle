@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'kz.toko'
-version = '0.0.1'
+version = '0.1.0'
 sourceCompatibility = '11'
 
 configurations {
