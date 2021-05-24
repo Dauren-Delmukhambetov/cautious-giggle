@@ -34,6 +34,25 @@ paths:
             type: array
             items:
               $ref: '#/definitions/Product'
+  /user:
+    post:
+      tags:
+        - "Users"
+      summary: "Create user"
+      description: "This method creates a new user."
+      operationId: "createUser"
+      produces:
+        - "application/json"
+      parameters:
+        - in: "body"
+          name: "body"
+          description: "Create user request"
+          required: true
+          schema:
+            $ref: "#/definitions/CreateUserRequest"
+      responses:
+        default:
+          description: "successful operation"
 
 definitions:
   Product:
@@ -50,3 +69,20 @@ definitions:
        price:
          type: number
          format: double
+  CreateUserRequest:
+    type: object
+    properties:
+      username:
+        type: string
+      firstName:
+        type: string
+      lastName:
+        type: string
+      email:
+        type: string
+        format: email
+      password:
+        type: string
+        format: password
+      phone:
+        type: string
