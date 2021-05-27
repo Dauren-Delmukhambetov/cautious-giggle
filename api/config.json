@@ -1,5 +1,5 @@
 {
-  "library": "spring-mvc",
+  "library": "spring-boot",
   "modelPackage": "kz.toko.api.model",
   "apiPackage": "kz.toko.api"
 }
