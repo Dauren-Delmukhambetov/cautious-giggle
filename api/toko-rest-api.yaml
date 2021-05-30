@@ -31,7 +31,7 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
-  /user:
+  /users:
     post:
       tags:
         - Users
@@ -41,15 +41,14 @@ paths:
       requestBody:
         description: Create user request
         content:
-          '*/*':
+          application/json:
             schema:
               $ref: '#/components/schemas/CreateUserRequest'
         required: true
       responses:
-        default:
-          description: successful operation
+        200:
+          description: OK
           content: {}
-      x-codegen-request-body-name: body
 components:
   schemas:
     Product:
@@ -71,6 +70,7 @@ components:
       properties:
         username:
           type: string
+          pattern: '^[A-Za-z\-_]$'
         firstName:
           type: string
         lastName:
