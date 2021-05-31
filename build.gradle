@@ -1,8 +1,8 @@
 plugins {
-	id 'org.springframework.boot' version '2.4.4'
-	id 'io.spring.dependency-management' version '1.0.11.RELEASE'
-	id 'java'
-	id 'org.hidetake.swagger.generator' version '2.18.2'
+    id 'org.springframework.boot' version '2.4.4'
+    id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id 'java'
+    id 'org.hidetake.swagger.generator' version '2.18.2'
 }
 
 group = 'kz.toko'
@@ -10,45 +10,58 @@ version = '0.1.0'
 sourceCompatibility = '11'
 
 configurations {
-	compileOnly {
-		extendsFrom annotationProcessor
-	}
+    compileOnly {
+        extendsFrom annotationProcessor
+    }
 }
 
 repositories {
-	mavenCentral()
-	jcenter()
+    mavenCentral()
+    jcenter()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	implementation 'io.swagger:swagger-annotations:1.6.2'
-	implementation 'javax.validation:validation-api:2.0.1.Final'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-	swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.5'
-	swaggerUI 'org.webjars:swagger-ui:3.10.0'
+    implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+    implementation "io.springfox:springfox-boot-starter:3.0.0"
+    implementation 'org.flywaydb:flyway-core'
+    implementation 'io.swagger:swagger-annotations:1.6.2'
+    implementation 'javax.validation:validation-api:2.0.1.Final'
+
+    compileOnly 'org.projectlombok:lombok'
+
+    runtimeOnly 'org.postgresql:postgresql'
+
+    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+
+    annotationProcessor 'org.projectlombok:lombok'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.5'
+    swaggerUI 'org.webjars:swagger-ui:3.10.0'
 }
 
 swaggerSources {
-	tokoRestApi {
-		inputFile = file('api/toko-rest-api.yaml')
-		code {
-			language = 'spring'
-			outputDir = file('build/generated')
-			configFile = file('api/config.json')
-			components = ['models', 'apis']
-		}
-	}
+    tokoRestApi {
+        inputFile = file('api/toko-rest-api.yaml')
+        code {
+            language = 'spring'
+            outputDir = file('build/generated')
+            configFile = file('api/config.json')
+            components = ['models', 'apis']
+        }
+    }
 }
 
 compileJava.dependsOn swaggerSources.tokoRestApi.code
+compileJava.dependsOn swaggerSources.tokoRestApi.ui
 sourceSets.main.java.srcDir "${swaggerSources.tokoRestApi.code.outputDir}/src/main/java"
 sourceSets.main.resources.srcDir "${swaggerSources.tokoRestApi.code.outputDir}/src/main/resources"
+sourceSets.main.resources.srcDir "${swaggerSources.tokoRestApi.ui.outputDir}"
+
 
 test {
-	useJUnitPlatform()
+    useJUnitPlatform()
 }

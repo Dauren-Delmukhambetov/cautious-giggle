@@ -1,0 +1,11 @@
+version: "3.7"
+services:
+  db:
+    image: postgres
+    container_name: toko_db
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_DB: toko_db
+      POSTGRES_USER: toko_app_user
+      POSTGRES_PASSWORD: passw0rd

@@ -9,9 +9,9 @@ info:
     url: http://www.apache.org/licenses/LICENSE-2.0.html
   version: 0.0.1
 servers:
-  - url: //api.toko.kz/v1
+  - url: https://api.toko.kz/v1
 tags:
-  - name: products
+  - name: Products
     description: Product API to manage user's product catalog
   - name: Users
     description: Operations about user
@@ -19,7 +19,7 @@ paths:
   /products:
     get:
       tags:
-        - products
+        - Products
       summary: Retrieve all products
       operationId: getProducts
       responses:
