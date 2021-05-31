@@ -31,6 +31,24 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
+  /users:
+    post:
+      tags:
+        - Users
+      summary: Create user
+      description: This method creates a new user.
+      operationId: createUser
+      requestBody:
+        description: Create user request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateUserRequest'
+        required: true
+      responses:
+        200:
+          description: OK
+          content: {}
 components:
   schemas:
     Product:
@@ -47,3 +65,21 @@ components:
         price:
           type: number
           format: double
+    CreateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          pattern: '^[A-Za-z\-_]$'
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        password:
+          type: string
+          format: password
+        phone:
+          type: string
