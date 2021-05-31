@@ -102,7 +102,7 @@ components:
         - name
         - price
       example:
-        name: A’SU Газированная РЕТ 1л
+        name: ASU Газированная РЕТ 1л
         price: 200
         imageLink: https://api.rgbrands.com/uploads/0/2369-2268_a_su_gaz_1.png
 
