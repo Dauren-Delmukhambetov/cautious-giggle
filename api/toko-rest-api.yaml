@@ -16,6 +16,7 @@ tags:
   - name: Users
     description: Operations about user
 paths:
+  ## Products API
   /products:
     get:
       tags:
@@ -31,6 +32,26 @@ paths:
                 type: array
                 items:
                   $ref: '#/components/schemas/Product'
+    post:
+      tags:
+        - Products
+      summary: Create a new product
+      operationId: createProduct
+      requestBody:
+        description: New product creation request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateProductRequest'
+        required: true
+      responses:
+        201:
+          description: New product has been successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+  ## Users API
   /users:
     post:
       tags:
@@ -51,6 +72,7 @@ paths:
           content: {}
 components:
   schemas:
+    ## Products model
     Product:
       type: object
       properties:
@@ -65,6 +87,26 @@ components:
         price:
           type: number
           format: double
+    CreateProductRequest:
+      type: object
+      properties:
+        name:
+            type: string
+        price:
+            type: number
+            format: double
+        imageLink:
+          type: string
+          format: uri
+      required:
+        - name
+        - price
+      example:
+        name: A’SU Газированная РЕТ 1л
+        price: 200
+        imageLink: https://api.rgbrands.com/uploads/0/2369-2268_a_su_gaz_1.png
+
+    ## Users model
     CreateUserRequest:
       type: object
       properties:
