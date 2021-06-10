@@ -11,6 +11,7 @@ on:
 
 jobs:
   build:
+    name: Build with Gradle
 
     runs-on: ubuntu-latest
 
@@ -43,30 +44,33 @@ jobs:
           path: ~/.sonar/cache
           key: ${{ runner.os }}-sonar
           restore-keys: ${{ runner.os }}-sonar
+
       - name: Cache Gradle packages
         uses: actions/cache@v1
         with:
           path: ~/.gradle/caches
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
+
       - name: Build and analyze
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonarqube --info
+
       - name: Build image
         id: build-image
         run: ./gradlew bootBuildImage
 
       - name: Push to Github Packages
-          id: push-to-registry
-          uses: redhat-actions/push-to-registry@v2
-          with:
-            image: ${{ steps.build-image.outputs.image }}
-            tags: ${{ steps.build-image.outputs.tags }}
-            registry: docker.pkg.github.com
-            username: ${{ github.actor }}
-            password: ${{ secrets.GITHUB_TOKEN }}
+        id: push-to-registry
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          registry: docker.pkg.github.com
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Print image url
         run: echo "Image pushed to ${{ steps.push-to-registry.outputs.registry-paths }}"
