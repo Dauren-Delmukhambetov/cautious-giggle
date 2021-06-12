@@ -68,7 +68,7 @@ jobs:
         with:
           image: toko
           tags: 0.1.0
-          registry: docker.pkg.github.com
+          registry: docker.pkg.github.com/dauren-delmukhambetov/cautious-giggle
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
