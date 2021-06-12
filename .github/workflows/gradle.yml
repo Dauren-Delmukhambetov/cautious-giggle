@@ -66,8 +66,8 @@ jobs:
         id: push-to-registry
         uses: redhat-actions/push-to-registry@v2
         with:
-          image: docker.io/library/toko:0.1.0
-          tags: v0.1.0
+          image: docker.io/library/toko
+          tags: 0.1.0
           registry: docker.pkg.github.com
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
