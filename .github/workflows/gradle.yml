@@ -56,21 +56,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD:  ${{ secrets.DOCKER_PASSWORD }}
         run: ./gradlew build sonarqube --info
 
-      - name: Build image
+      - name: Build and push image
         id: build-image
         run: ./gradlew bootBuildImage
-
-      - name: Push to Github Packages
-        id: push-to-registry
-        uses: redhat-actions/push-to-registry@v2
-        with:
-          image: toko
-          tags: 0.1.0
-          registry: docker.pkg.github.com/dauren-delmukhambetov/cautious-giggle
-          username: ${{ github.actor }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Print image url
-        run: echo "Image pushed to ${{ steps.push-to-registry.outputs.registry-paths }}"
