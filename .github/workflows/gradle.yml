@@ -53,13 +53,15 @@ jobs:
           restore-keys: ${{ runner.os }}-gradle
 
       - name: Build and analyze
+        id: build-and-analyse
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}  # Needed to get PR information, if any
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD:  ${{ secrets.DOCKER_PASSWORD }}
         run: ./gradlew build sonarqube --info
 
       - name: Build and push image
-        id: build-image
+        id: build-and-push-image
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD:  ${{ secrets.DOCKER_PASSWORD }}
         run: ./gradlew bootBuildImage
