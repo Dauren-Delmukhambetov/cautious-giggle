@@ -7,7 +7,7 @@ plugins {
 }
 
 group = 'kz.toko'
-version = '0.1.0'
+version = '0.1.2'
 sourceCompatibility = '11'
 
 configurations {
@@ -71,6 +71,19 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
+
+bootBuildImage {
+    imageName = "daurendelmukhambetov/${project.name}:${project.version}"
+    publish = true
+    docker {
+        publishRegistry {
+            username = System.getenv("DOCKER_USERNAME")
+            password = System.getenv("DOCKER_PASSWORD")
+            url = "https://hub.docker.com/repository/docker/daurendelmukhambetov/"
+        }
+    }
+}
+
 
 test {
     useJUnitPlatform()
