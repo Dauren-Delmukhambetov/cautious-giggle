@@ -1,8 +1,8 @@
 package kz.toko.app.controller;
 
-import io.swagger.v3.oas.annotations.tags.Tag;
 import kz.toko.api.ProductsApi;
 import kz.toko.api.model.CreateProductRequest;
+import kz.toko.api.model.Link;
 import kz.toko.api.model.Product;
 import kz.toko.app.service.ProductService;
 import lombok.RequiredArgsConstructor;
@@ -22,14 +22,17 @@ public class ProductController implements ProductsApi {
     private final ProductService productService;
 
     @Override
-    @Tag(name = "Products")
     public ResponseEntity<Product> createProduct(@Valid CreateProductRequest body) {
         return new ResponseEntity<>(productService.createNewProduct(body), CREATED);
     }
 
     @Override
-    @Tag(name = "Products")
     public ResponseEntity<List<Product>> getProducts() {
         return ok(productService.findAll());
+    }
+
+    @Override
+    public ResponseEntity<Link> uploadImage(Long id, Object body) {
+        return null;
     }
 }
