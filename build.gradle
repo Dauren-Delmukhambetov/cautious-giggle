@@ -42,7 +42,7 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
     swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.26'
-    swaggerUI 'org.webjars:swagger-ui:3.10.0'
+    swaggerUI 'org.webjars:swagger-ui:3.50.0'
 }
 
 swaggerSources {
