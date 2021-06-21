@@ -1,35 +1,35 @@
 package kz.toko.app.service.impl;
 
 import kz.toko.api.model.CreateUserRequest;
+import kz.toko.api.model.User;
 import kz.toko.app.entity.UserEntity;
-import kz.toko.app.enumeration.UserStatus;
+import kz.toko.app.mapper.UserMapper;
 import kz.toko.app.repository.UserRepository;
 import kz.toko.app.service.UserService;
-import kz.toko.app.utils.SecurityUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.LinkedList;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
 
-    private final UserRepository userRepository;
+    private final UserRepository repository;
+    private final UserMapper mapper;
 
     @Override
-    public void createUser(CreateUserRequest body) {
-        try {
-            UserEntity user = new UserEntity();
-            user.setUsername(body.getUsername());
-            user.setFirstName(body.getFirstName());
-            user.setLastName(body.getLastName());
-            user.setEmail(body.getEmail());
-            user.setPhone(body.getPhone());
-            user.setPassword(SecurityUtils.getMD5(body.getPassword()));
-            user.setStatus(UserStatus.ACTIVATED);
+    public User save(CreateUserRequest body) {
+        UserEntity user = mapper.toEntity(body);
+        repository.save(user);
+        return mapper.toDto(user);
+    }
 
-            userRepository.save(user);
-        } catch (Exception e) {
-            //todo log
-        }
+    @Override
+    public List<User> findAll() {
+        var entities = new LinkedList<UserEntity>();
+        repository.findAll().forEach(entities::add);
+        return mapper.toDto(entities);
     }
 }
