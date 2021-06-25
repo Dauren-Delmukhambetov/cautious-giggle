@@ -4,3 +4,11 @@ spring:
     username: toko_app_user
     password: passw0rd
     driver-class-name: org.postgresql.Driver
+  servlet:
+    multipart:
+      max-file-size: 10MB
+storage:
+  endpoint: http://localhost:9000
+  access-key: minioAccessKey
+  secret-key: minioSecretKey
+  bucket-name: images

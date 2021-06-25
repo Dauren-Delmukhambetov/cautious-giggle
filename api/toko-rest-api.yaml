@@ -71,14 +71,9 @@ paths:
       requestBody:
         description: Product's image file
         content:
-          image/png:
+          multipart/form-data:
             schema:
-              type: string
-              format: binary
-          image/jpeg:
-            schema:
-              type: string
-              format: binary
+              $ref: '#/components/schemas/File'
       responses:
         201:
           description: Image has been successfully uploaded and bound to the product
@@ -168,3 +163,9 @@ components:
         link:
           type: string
           format: uri
+    File:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary
