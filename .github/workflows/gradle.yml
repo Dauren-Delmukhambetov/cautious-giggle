@@ -29,6 +29,13 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
+      minio:
+        image: minio/minio
+        env:
+          MINIO_ROOT_USER: minioAccessKey
+          MINIO_ROOT_PASSWORD: minioSecretKey
+        ports:
+          - 9000:9000
 
     steps:
       - uses: actions/checkout@v2
