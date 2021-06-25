@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5432/toko_db
+    url: jdbc:postgresql://${DB_URL:localhost}:5432/toko_db
     username: toko_app_user
     password: passw0rd
     driver-class-name: org.postgresql.Driver

@@ -1,5 +1,6 @@
 package kz.toko.app.mapper;
 
+import kz.toko.api.model.CreateProductRequest;
 import kz.toko.api.model.Product;
 import kz.toko.app.entity.ProductEntity;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +21,9 @@ public class ProductMapper implements EntityDtoMapper<ProductEntity, Product> {
     @Override
     public ProductEntity toEntity(Product dto) {
         return modelMapper.map(dto, ProductEntity.class);
+    }
+
+    public ProductEntity toEntity(CreateProductRequest request) {
+        return modelMapper.map(request, ProductEntity.class);
     }
 }

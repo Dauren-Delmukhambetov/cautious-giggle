@@ -1,11 +1,14 @@
 package kz.toko.app.entity;
 
-import lombok.Setter;
+
+import lombok.Data;
 
 import javax.persistence.Column;
+import javax.persistence.MappedSuperclass;
 import java.time.LocalDateTime;
 
-@Setter
+@Data
+@MappedSuperclass
 public abstract class AuditableEntity {
 
     @Column(name = "created_at", updatable = false, nullable = false)

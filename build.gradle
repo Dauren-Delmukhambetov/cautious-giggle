@@ -1,13 +1,13 @@
 plugins {
-    id 'org.springframework.boot' version '2.4.4'
+    id 'org.springframework.boot' version '2.5.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.hidetake.swagger.generator' version '2.18.2'
-    id "org.sonarqube" version "3.2.0"
+    id "org.sonarqube" version "3.3"
 }
 
 group = 'kz.toko'
-version = '0.1.0'
+version = '0.1.2'
 sourceCompatibility = '11'
 
 configurations {
@@ -31,7 +31,7 @@ dependencies {
     implementation 'javax.validation:validation-api:2.0.1.Final'
 
     compileOnly 'org.projectlombok:lombok'
-    compile 'org.modelmapper:modelmapper:2.4.2'
+    compile 'org.modelmapper:modelmapper:2.4.4'
 
     runtimeOnly 'org.postgresql:postgresql'
 
@@ -41,8 +41,8 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 
-    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.5'
-    swaggerUI 'org.webjars:swagger-ui:3.10.0'
+    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.26'
+    swaggerUI 'org.webjars:swagger-ui:3.50.0'
 }
 
 swaggerSources {
@@ -71,6 +71,19 @@ sonarqube {
         property "sonar.host.url", "https://sonarcloud.io"
     }
 }
+
+bootBuildImage {
+    imageName = "daurendelmukhambetov/${project.name}:${project.version}"
+    publish = true
+    docker {
+        publishRegistry {
+            username = System.getenv("DOCKER_USERNAME")
+            password = System.getenv("DOCKER_PASSWORD")
+            url = "https://hub.docker.com/repository/docker/daurendelmukhambetov/"
+        }
+    }
+}
+
 
 test {
     useJUnitPlatform()
