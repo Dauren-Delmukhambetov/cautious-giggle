@@ -36,12 +36,12 @@ jobs:
           MINIO_ROOT_PASSWORD: minioSecretKey
         options: >-
           --health-cmd "curl http://localhost:9000/minio/health/live"
-          --health-start-period	30s
+          --health-start-period	120s
           --health-interval	15s
           --health-timeout 10s
           --health-retries 3
         ports:
-            - 9000:9000
+          - 9000:9000
 
     steps:
       - uses: actions/checkout@v2
