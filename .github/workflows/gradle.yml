@@ -29,19 +29,6 @@ jobs:
           --health-retries 5
         ports:
           - 5432:5432
-      minio:
-        image: minio/minio
-        env:
-          MINIO_ROOT_USER: minioAccessKey
-          MINIO_ROOT_PASSWORD: minioSecretKey
-        options: >-
-          --health-cmd "curl -sS http://localhost:9000/minio/health/live || exit 1"
-          --health-start-period	120s
-          --health-interval	15s
-          --health-timeout 10s
-          --health-retries 3
-        ports:
-          - 9000:9000
 
     steps:
       - uses: actions/checkout@v2
