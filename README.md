@@ -25,5 +25,6 @@ docker run \
       --name toko_app \
       --net=host \
       --detach \
+      --rm \
       daurendelmukhambetov/toko:0.1.2
 ```
