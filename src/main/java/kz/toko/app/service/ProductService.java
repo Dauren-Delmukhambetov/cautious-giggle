@@ -10,6 +10,8 @@ public interface ProductService {
 
     List<Product> findAll();
 
+    Product findById(Long id);
+
     Product createNewProduct(CreateProductRequest request);
 
     void setProductImage(Long productId, MultipartFile image);

@@ -34,6 +34,13 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
+    public Product findById(Long id) {
+        final var entity = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Product", id));
+        return mapper.toDto(entity);
+    }
+
+    @Override
     public Product createNewProduct(CreateProductRequest request) {
         final var product = mapper.toEntity(request);
         product.setCreatedAt(LocalDateTime.now());
@@ -47,7 +54,7 @@ public class ProductServiceImpl implements ProductService {
                 .orElseThrow(() -> new EntityNotFoundException("Product", productId));
 
         final var imagePath = fileStorageService.write(image);
-        product.setImageLink(imagePath);
+        product.setImagePath(imagePath);
         repository.save(product);
     }
 }

@@ -35,6 +35,7 @@ public class ProductController implements ProductsApi {
     @Override
     public ResponseEntity<Link> uploadImage(final Long id, final MultipartFile file) {
         productService.setProductImage(id, file);
-        return new ResponseEntity<>(new Link().link("some/path"), CREATED);
+        final var product = productService.findById(id);
+        return new ResponseEntity<>(new Link().link(product.getImageLink()), CREATED);
     }
 }

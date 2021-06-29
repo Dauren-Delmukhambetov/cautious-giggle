@@ -12,6 +12,9 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.IOException;
 
+import static java.util.UUID.randomUUID;
+import static org.apache.commons.io.FilenameUtils.getExtension;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -37,10 +40,11 @@ public class MinioFileStorageService implements FileStorageService {
     @SneakyThrows
     @Override
     public String write(final MultipartFile fileToSave) throws IOException {
+        final var filename = String.format("%s.%s", randomUUID(), getExtension(fileToSave.getOriginalFilename()));
         try (final var fileStream = fileToSave.getInputStream()) {
             final var putObjectArgs = PutObjectArgs.builder()
                     .bucket(this.bucketName)
-                    .object(fileToSave.getOriginalFilename())
+                    .object(filename)
                     .stream(fileStream, fileToSave.getSize(), -1)
                     .contentType(fileToSave.getContentType())
                     .build();
@@ -49,8 +53,7 @@ public class MinioFileStorageService implements FileStorageService {
             log.debug("File {} has been uploaded to the bucket {} with version {}",
                     response.object(), response.bucket(), response.versionId());
         }
-
-        return String.format("%s/%s", this.bucketName, fileToSave.getOriginalFilename());
+        return String.format("%s/%s", this.bucketName, filename);
     }
 
     @SneakyThrows
