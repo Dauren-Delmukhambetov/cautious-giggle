@@ -1,5 +1,6 @@
 package kz.toko.app.entity;
 
+
 import lombok.Data;
 
 import javax.persistence.Column;
