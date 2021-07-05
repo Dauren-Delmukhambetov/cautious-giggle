@@ -29,7 +29,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @AutoConfigureMockMvc
 @SqlGroup({
-        @Sql(value = "classpath:/db.scripts/add_one_product.sql", executionPhase = BEFORE_TEST_METHOD),
         @Sql(value = "classpath:/db.scripts/delete_all_products.sql", executionPhase = AFTER_TEST_METHOD)
 })
 class ProductsIT extends IntegrationTest {
@@ -61,6 +60,7 @@ class ProductsIT extends IntegrationTest {
 
     @Test
     @DisplayName("Should upload image for a product")
+    @Sql(value = "classpath:/db.scripts/add_one_product.sql")
     void uploadProductImage() throws Exception {
         final var file = ResourceUtils.getFile("classpath:images/asu_lemon.png");
 
