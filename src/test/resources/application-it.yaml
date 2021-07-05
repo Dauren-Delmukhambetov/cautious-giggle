@@ -1,3 +1,9 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5433/test
+    username: test
+    password: test
+    driver-class-name: org.postgresql.Driver
 storage:
   endpoint: https://play.min.io
   access-key: Q3AM3UQ867SPQQA43P2F

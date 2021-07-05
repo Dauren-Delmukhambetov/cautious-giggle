@@ -10,9 +10,11 @@ import kz.toko.app.service.FileStorageService;
 import kz.toko.app.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
@@ -25,6 +27,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper mapper;
 
     private final FileStorageService fileStorageService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public List<Product> findAll() {
@@ -47,8 +50,9 @@ public class ProductServiceImpl implements ProductService {
         return mapper.toDto(repository.save(product));
     }
 
-    @SneakyThrows
     @Override
+    @SneakyThrows
+    @Transactional
     public void setProductImage(Long productId, MultipartFile image) {
         final var product = repository.findById(productId)
                 .orElseThrow(() -> new EntityNotFoundException("Product", productId));

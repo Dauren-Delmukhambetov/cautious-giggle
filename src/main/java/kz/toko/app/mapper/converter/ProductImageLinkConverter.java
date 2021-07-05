@@ -10,14 +10,14 @@ public class ProductImageLinkConverter implements Converter<String, String> {
 
     private final String endpoint;
 
-    private String resolveLink(final String imagePath) {
-        return String.format("%s/%s", this.endpoint, imagePath);
-    }
-
     @Override
     public String convert(MappingContext<String, String> context) {
         if (ObjectUtils.isEmpty(context.getSource())) return null;
 
         return resolveLink(context.getSource());
+    }
+
+    private String resolveLink(final String imagePath) {
+        return String.format("%s/%s", this.endpoint, imagePath);
     }
 }
