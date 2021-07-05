@@ -9,6 +9,8 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.mock.web.MockMultipartFile;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.util.ResourceUtils;
 
@@ -17,6 +19,8 @@ import java.io.FileInputStream;
 import static org.hamcrest.Matchers.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
+import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -24,6 +28,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
+@SqlGroup({
+        @Sql(value = "classpath:/db.scripts/add_one_product.sql", executionPhase = BEFORE_TEST_METHOD),
+        @Sql(value = "classpath:/db.scripts/delete_all_products.sql", executionPhase = AFTER_TEST_METHOD)
+})
 class ProductsIT extends IntegrationTest {
 
     @Autowired
@@ -33,7 +41,6 @@ class ProductsIT extends IntegrationTest {
     private ObjectMapper mapper;
 
     @Test
-    @Order(1)
     @DisplayName("Should create a new product")
     void createNewProduct() throws Exception {
         final var createProductRequest = new CreateProductRequest()
@@ -46,13 +53,13 @@ class ProductsIT extends IntegrationTest {
                         .content(mapper.writeValueAsString(createProductRequest)))
                 .andDo(print())
                 .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", notNullValue()))
                 .andExpect(jsonPath("$.name", is("Brand new product")))
                 .andExpect(jsonPath("$.price", is(123.456)))
                 .andExpect(jsonPath("$.imageLink", nullValue()));
     }
 
     @Test
-    @Order(2)
     @DisplayName("Should upload image for a product")
     void uploadProductImage() throws Exception {
         final var file = ResourceUtils.getFile("classpath:images/asu_lemon.png");
