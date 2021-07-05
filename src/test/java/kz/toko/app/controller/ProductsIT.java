@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import kz.toko.api.model.CreateProductRequest;
 import kz.toko.app.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -32,6 +33,7 @@ class ProductsIT extends IntegrationTest {
     private ObjectMapper mapper;
 
     @Test
+    @Order(1)
     @DisplayName("Should create a new product")
     void createNewProduct() throws Exception {
         final var createProductRequest = new CreateProductRequest()
@@ -50,6 +52,7 @@ class ProductsIT extends IntegrationTest {
     }
 
     @Test
+    @Order(2)
     @DisplayName("Should upload image for a product")
     void uploadProductImage() throws Exception {
         final var file = ResourceUtils.getFile("classpath:images/asu_lemon.png");
