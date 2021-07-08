@@ -35,7 +35,7 @@ paths:
     post:
       tags:
         - Products
-      summary: Create a new product
+      summary: Creates a new product
       operationId: createProduct
       requestBody:
         description: New product creation request
@@ -51,6 +51,36 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+  /products/{id}/image:
+    post:
+      tags:
+        - Products
+      summary: Uploads the product image
+      description: >
+        This method allows you to upload an image and set it as a cover image for the product with a given `id`.
+        In case there is already an image for the product it will be replaced by the new one
+      operationId: uploadImage
+      parameters:
+        - name: id
+          in: path
+          description: Product ID
+          required: true
+          schema:
+            type: integer
+            format: int64
+      requestBody:
+        description: Product's image file
+        content:
+          multipart/form-data:
+            schema:
+              $ref: '#/components/schemas/File'
+      responses:
+        201:
+          description: Image has been successfully uploaded and bound to the product
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Link'
   ## Users API
   /users:
     get:
@@ -160,3 +190,17 @@ components:
           format: password
         phone:
           type: string
+
+    ## Common model
+    Link:
+      type: object
+      properties:
+        link:
+          type: string
+          format: uri
+    File:
+      type: object
+      properties:
+        file:
+          type: string
+          format: binary

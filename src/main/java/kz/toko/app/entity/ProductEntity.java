@@ -21,7 +21,8 @@ public class ProductEntity extends AuditableEntity {
     @GeneratedValue(strategy= GenerationType.IDENTITY)
     private Long id;
 
-    private String imageLink;
+    @Column(name = "image_path")
+    private String imagePath;
 
     @NotEmpty
     @Column(nullable = false)
