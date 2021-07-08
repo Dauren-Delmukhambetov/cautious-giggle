@@ -1,7 +1,7 @@
 version: "3.7"
 services:
 
-  db:
+  test_db:
     image: postgres
     container_name: toko_test_db
     ports:
