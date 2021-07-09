@@ -25,7 +25,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation "io.springfox:springfox-boot-starter:3.0.0"
+    implementation 'io.swagger.core.v3:swagger-annotations:2.1.10'
     implementation 'org.flywaydb:flyway-core'
     implementation 'io.swagger:swagger-annotations:1.6.2'
     implementation 'javax.validation:validation-api:2.0.1.Final'
@@ -57,14 +57,17 @@ swaggerSources {
             components = ['models', 'apis']
             additionalProperties = ['useTags': 'true']
         }
+        ui {
+            outputDir = file("${buildDir}/generated/src/main/resources/static")
+            wipeOutputDir = true
+        }
     }
 }
 
 compileJava.dependsOn swaggerSources.tokoRestApi.code
 compileJava.dependsOn swaggerSources.tokoRestApi.ui
 sourceSets.main.java.srcDir "${swaggerSources.tokoRestApi.code.outputDir}/src/main/java"
-sourceSets.main.resources.srcDir "${swaggerSources.tokoRestApi.code.outputDir}/src/main/resources"
-sourceSets.main.resources.srcDir "${swaggerSources.tokoRestApi.ui.outputDir}"
+sourceSets.main.resources.srcDirs += "${buildDir}/generated/src/main/resources"
 
 sonarqube {
     properties {
