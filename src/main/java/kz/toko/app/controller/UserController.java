@@ -28,4 +28,10 @@ public class UserController implements UsersApi {
     public ResponseEntity<List<User>> getUsers() {
         return ok(userService.findAll());
     }
+
+    @Override
+    public ResponseEntity<Void> deleteUser(Long userId) {
+        userService.delete(userId);
+        return ok().build();
+    }
 }

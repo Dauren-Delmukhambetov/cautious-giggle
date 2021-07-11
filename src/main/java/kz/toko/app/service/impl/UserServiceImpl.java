@@ -34,4 +34,11 @@ public class UserServiceImpl implements UserService {
         repository.findAll().forEach(entities::add);
         return mapper.toDto(entities);
     }
+
+    @Override
+    public void delete(Long userId) {
+        UserEntity user = repository.findById(userId).orElseThrow(() -> new RuntimeException("error.user-not-found"));
+        user.setDeletedAt(LocalDateTime.now());
+        repository.save(user);
+    }
 }
