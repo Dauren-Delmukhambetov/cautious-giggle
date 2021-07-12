@@ -117,6 +117,26 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+    patch:
+      tags:
+        - Users
+      summary: Updated user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      requestBody:
+        description: Updated user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/User'
+        required: true
+      responses:
+        200:
+          description: User has been successfully updated
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
 components:
   schemas:
     ## Products model

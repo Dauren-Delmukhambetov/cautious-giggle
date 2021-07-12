@@ -34,4 +34,15 @@ public class UserServiceImpl implements UserService {
         repository.findAll().forEach(entities::add);
         return mapper.toDto(entities);
     }
+
+    @Override
+    public User update(User body) {
+        if (body == null || body.getId() == null) {
+            throw new RuntimeException("error.not-found");
+        }
+        UserEntity user = mapper.toEntity(body);
+        user.setUpdatedAt(LocalDateTime.now());
+        repository.save(user);
+        return mapper.toDto(user);
+    }
 }
