@@ -3,6 +3,7 @@ package kz.toko.app.service.impl;
 import kz.toko.api.model.CreateUserRequest;
 import kz.toko.api.model.User;
 import kz.toko.app.entity.UserEntity;
+import kz.toko.app.exception.EntityNotFoundException;
 import kz.toko.app.mapper.UserMapper;
 import kz.toko.app.repository.UserRepository;
 import kz.toko.app.service.UserService;
@@ -37,7 +38,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void delete(Long userId) {
-        UserEntity user = repository.findById(userId).orElseThrow(() -> new RuntimeException("error.user-not-found"));
+        UserEntity user = repository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User", userId));
         user.setDeletedAt(LocalDateTime.now());
         repository.save(user);
     }
