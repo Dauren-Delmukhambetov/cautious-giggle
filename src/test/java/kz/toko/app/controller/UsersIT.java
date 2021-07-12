@@ -29,7 +29,7 @@ public class UsersIT extends IntegrationTest {
     @DisplayName("Should delete manually inserted user")
     void deleteUser() throws Exception {
         this.mockMvc.perform(
-                delete("/users/{id}", "1")
+                delete("/users/1")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
                 .andExpect(status().isOk());
