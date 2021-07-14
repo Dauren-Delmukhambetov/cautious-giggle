@@ -8,4 +8,8 @@ public class EntityNotFoundException extends RuntimeException{
         super(format("%s with ID %d is not found", entity, id));
     }
 
+    public EntityNotFoundException(Class entityClass, Long id) {
+        this(entityClass.getSimpleName(), id);
+    }
+
 }
