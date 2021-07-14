@@ -75,12 +75,11 @@ class ProductsIT extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("Should partially update product")
+    @DisplayName("Should update only product name")
     @Sql(value = "classpath:/db.scripts/add_one_product.sql")
     void updateProduct() throws Exception {
         final var updateProductRequest = new UpdateProductRequest()
-                .name("Updated product name")
-                .price(999.999);
+                .name("Updated product name");
 
         this.mockMvc.perform(
                 patch("/products/{id}", 1)
@@ -96,7 +95,7 @@ class ProductsIT extends IntegrationTest {
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
                 .andExpect(jsonPath("$.name", is("Updated product name")))
-                .andExpect(jsonPath("$.price", is(999.999)));
+                .andExpect(jsonPath("$.price", is(123.45)));
     }
 
 }
