@@ -1,13 +1,14 @@
 package kz.toko.app.entity;
 
 
-import lombok.Data;
-
+import lombok.Getter;
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
-@Data
+@Getter
 @MappedSuperclass
 public abstract class AuditableEntity {
 
@@ -19,5 +20,15 @@ public abstract class AuditableEntity {
 
     @Column(name = "deleted_at")
     protected LocalDateTime deletedAt;
+
+    @PrePersist
+    protected void prePersist() {
+        this.createdAt = LocalDateTime.now();
+    }
+
+    @PreUpdate
+    protected void preUpdate() {
+        this.updatedAt = LocalDateTime.now();
+    }
 
 }

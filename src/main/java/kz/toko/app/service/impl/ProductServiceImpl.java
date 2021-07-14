@@ -2,6 +2,7 @@ package kz.toko.app.service.impl;
 
 import kz.toko.api.model.CreateProductRequest;
 import kz.toko.api.model.Product;
+import kz.toko.api.model.UpdateProductRequest;
 import kz.toko.app.entity.ProductEntity;
 import kz.toko.app.exception.EntityNotFoundException;
 import kz.toko.app.mapper.ProductMapper;
@@ -46,8 +47,14 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public Product createNewProduct(CreateProductRequest request) {
         final var product = mapper.toEntity(request);
-        product.setCreatedAt(LocalDateTime.now());
         return mapper.toDto(repository.save(product));
+    }
+
+    @Override
+    public void updateProduct(Long productId, UpdateProductRequest request) {
+        final var product = repository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException("Product", productId));
+        repository.save(mapper.toEntity(request, product));
     }
 
     @Override
