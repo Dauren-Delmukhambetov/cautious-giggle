@@ -4,6 +4,7 @@ import kz.toko.api.ProductsApi;
 import kz.toko.api.model.CreateProductRequest;
 import kz.toko.api.model.Link;
 import kz.toko.api.model.Product;
+import kz.toko.api.model.UpdateProductRequest;
 import kz.toko.app.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +29,19 @@ public class ProductController implements ProductsApi {
     }
 
     @Override
+    public ResponseEntity<Product> getProduct(Long id) {
+        return ResponseEntity.ok(productService.findById(id));
+    }
+
+    @Override
     public ResponseEntity<List<Product>> getProducts() {
         return ok(productService.findAll());
+    }
+
+    @Override
+    public ResponseEntity<Void> updateProduct(Long id, UpdateProductRequest body) {
+        productService.updateProduct(id, body);
+        return ResponseEntity.noContent().build();
     }
 
     @Override
