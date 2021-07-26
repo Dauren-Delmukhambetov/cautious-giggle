@@ -123,8 +123,7 @@ paths:
       tags:
         - Users
       summary: Delete user by ID
-      description: For valid response try integer IDs with positive integer value.         Negative
-        or non-integer values will generate API errors
+      description: For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
       operationId: deleteUser
       parameters:
         - name: userId
@@ -132,16 +131,11 @@ paths:
           description: ID of the user that needs to be deleted
           required: true
           schema:
-            minimum: 1.0
             type: integer
             format: int64
       responses:
-        400:
-          description: Invalid ID supplied
-          content: { }
-        404:
+        204:
           description: User not found
-          content: { }
 components:
   schemas:
     ## Products model
