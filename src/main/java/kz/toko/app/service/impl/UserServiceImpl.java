@@ -10,7 +10,6 @@ import kz.toko.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +23,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(CreateUserRequest body) {
         UserEntity user = mapper.toEntity(body);
-        user.setCreatedAt(LocalDateTime.now());
         repository.save(user);
         return mapper.toDto(user);
     }
