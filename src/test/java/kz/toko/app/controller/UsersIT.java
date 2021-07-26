@@ -32,6 +32,6 @@ public class UsersIT extends IntegrationTest {
                 delete("/users/{userId}", "1")
                         .contentType(APPLICATION_JSON)
                         .accept(APPLICATION_JSON))
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 }
