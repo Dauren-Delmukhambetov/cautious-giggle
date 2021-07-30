@@ -29,6 +29,12 @@ public class ProductController implements ProductsApi {
     }
 
     @Override
+    public ResponseEntity<Void> deleteProduct(Long id) {
+        productService.delete(id);
+        return ResponseEntity.noContent().build();
+    }
+
+    @Override
     public ResponseEntity<Product> getProduct(Long id) {
         return ResponseEntity.ok(productService.findById(id));
     }

@@ -4,6 +4,7 @@ import kz.toko.api.model.CreateProductRequest;
 import kz.toko.api.model.Product;
 import kz.toko.api.model.UpdateProductRequest;
 import kz.toko.app.entity.ProductEntity;
+import kz.toko.app.exception.EntityDeletedException;
 import kz.toko.app.exception.EntityNotFoundException;
 import kz.toko.app.mapper.ProductMapper;
 import kz.toko.app.repository.ProductRepository;
@@ -15,8 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.transaction.Transactional;
-import java.util.LinkedList;
+import java.time.LocalDateTime;
 import java.util.List;
+
+import static java.util.stream.Collectors.toList;
 
 @Service
 @RequiredArgsConstructor
@@ -29,15 +32,15 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        final var entities = new LinkedList<ProductEntity>();
-        repository.findAll().forEach(entities::add);
-        return mapper.toDto(entities);
+        return repository.findByDeletedAtIsNull()
+                .stream()
+                .map(mapper::toDto)
+                .collect(toList());
     }
 
     @Override
     public Product findById(Long id) {
-        final var entity = repository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException(Product.class, id));
+        final var entity = getAccessibleProduct(id);
         return mapper.toDto(entity);
     }
 
@@ -49,8 +52,7 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void updateProduct(Long productId, UpdateProductRequest request) {
-        final var product = repository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException(Product.class, productId));
+        final var product = getAccessibleProduct(productId);
         repository.save(mapper.toEntity(request, product));
     }
 
@@ -58,11 +60,27 @@ public class ProductServiceImpl implements ProductService {
     @SneakyThrows
     @Transactional
     public void setProductImage(Long productId, MultipartFile image) {
-        final var product = repository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException(Product.class, productId));
-
+        final var product = getAccessibleProduct(productId);
         final var imagePath = fileStorageService.write(image);
         product.setImagePath(imagePath);
         repository.save(product);
+    }
+
+    @Override
+    public void delete(Long productId) {
+        final var product = getAccessibleProduct(productId);
+        product.setDeletedAt(LocalDateTime.now());
+        repository.save(product);
+    }
+
+    private ProductEntity getAccessibleProduct(Long productId) {
+        final var product = repository.findById(productId)
+                .orElseThrow(() -> new EntityNotFoundException(Product.class, productId));
+
+        if (product.getDeletedAt() != null) {
+            throw new EntityDeletedException(Product.class, productId, product.getDeletedAt());
+        }
+
+        return product;
     }
 }

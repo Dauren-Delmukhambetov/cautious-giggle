@@ -5,7 +5,7 @@ services:
     image: postgres
     container_name: toko_db
     ports:
-      - 5432:5432
+      - "5432:5432"
     environment:
       POSTGRES_DB: toko_db
       POSTGRES_USER: toko_app_user
@@ -17,7 +17,7 @@ services:
     volumes:
       - toko-image-data-1:/image-data
     ports:
-      - 9000:9000
+      - "9000:9000"
     environment:
       MINIO_ROOT_USER: minioAccessKey
       MINIO_ROOT_PASSWORD: minioSecretKey

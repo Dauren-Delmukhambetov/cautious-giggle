@@ -91,6 +91,21 @@ paths:
       responses:
         204:
           description: Product has been successfully updated
+    delete:
+      tags:
+        - Products
+      summary: Softly deletes a given product
+      description: >
+        This method allows you to mark a product with a given `id` as deleted and stores the date of deletion.
+        Deleted products won't be available for users anymore.
+      operationId: deleteProduct
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        204:
+          description: Product has been successfully deleted
+        404:
+          description: Product with a given ID has not beed found
 
   /products/{id}/image:
     post:
