@@ -20,7 +20,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
         @Sql(value = "classpath:/db.scripts/add_one_user.sql", executionPhase = BEFORE_TEST_METHOD),
         @Sql(value = "classpath:/db.scripts/delete_all_users.sql", executionPhase = AFTER_TEST_METHOD)
 })
-public class UsersIT extends IntegrationTest {
+class UsersIT extends IntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
