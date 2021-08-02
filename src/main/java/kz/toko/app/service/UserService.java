@@ -10,4 +10,6 @@ public interface UserService {
     User save(CreateUserRequest body);
 
     List<User> findAll();
+
+    User update(User body);
 }

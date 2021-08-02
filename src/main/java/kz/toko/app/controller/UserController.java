@@ -28,4 +28,9 @@ public class UserController implements UsersApi {
     public ResponseEntity<List<User>> getUsers() {
         return ok(userService.findAll());
     }
+
+    @Override
+    public ResponseEntity<User> updateUser(User body) {
+        return ok(userService.update(body));
+    }
 }
