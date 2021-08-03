@@ -2,6 +2,8 @@ package kz.toko.app.entity;
 
 
 import lombok.Getter;
+import lombok.Setter;
+
 import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PrePersist;
@@ -18,6 +20,7 @@ public abstract class AuditableEntity {
     @Column(name = "updated_at")
     protected LocalDateTime updatedAt;
 
+    @Setter
     @Column(name = "deleted_at")
     protected LocalDateTime deletedAt;
 

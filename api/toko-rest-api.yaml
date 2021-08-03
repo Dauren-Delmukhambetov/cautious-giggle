@@ -152,6 +152,27 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+
+  /users/{userId}:
+    delete:
+      tags:
+        - Users
+      summary: Delete user by ID
+      description: For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user that needs to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        204:
+          description: User has been successfully deleted
+        404:
+          description: User not found
 components:
 
   parameters:
