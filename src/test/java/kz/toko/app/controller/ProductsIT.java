@@ -98,4 +98,14 @@ class ProductsIT extends IntegrationTest {
                 .andExpect(jsonPath("$.price", is(123.45)));
     }
 
+    @Test
+    @DisplayName("Should delete product")
+    @Sql(value = "classpath:/db.scripts/add_product_to_delete.sql")
+    void deleteProduct() throws Exception {
+        this.mockMvc.perform(
+                        delete("/products/{id}", 2))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+    }
+
 }

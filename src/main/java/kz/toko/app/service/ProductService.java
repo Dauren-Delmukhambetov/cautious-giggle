@@ -19,4 +19,6 @@ public interface ProductService {
 
     void setProductImage(Long productId, MultipartFile image);
 
+    void delete(Long productId);
+
 }
