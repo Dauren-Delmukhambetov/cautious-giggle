@@ -1,0 +1,5 @@
+storage:
+  endpoint: https://toko-images-dev.s3.amazonaws.com
+  access-key: ${AWS_ACCESS_KEY}
+  secret-key: ${AWS_SECRET_KEY}
+  bucket-name: toko-images-dev
