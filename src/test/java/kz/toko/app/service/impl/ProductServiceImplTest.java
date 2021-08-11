@@ -57,7 +57,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void shouldThrowException_WhenUserIsDeleted() {
+    void shouldThrowException_WhenProductIsDeleted() {
         final var entity = new ProductEntity();
         entity.setDeletedAt(LocalDateTime.now());
         when(repository.findById(99L))
