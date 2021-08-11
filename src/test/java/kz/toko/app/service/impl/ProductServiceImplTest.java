@@ -52,7 +52,7 @@ class ProductServiceImplTest {
     }
 
     @Test
-    void shouldThrowException_WhenUserNotFound() {
+    void shouldThrowException_WhenProductNotFound() {
         assertThrows(EntityNotFoundException.class, () -> productService.findById(99L));
     }
 
