@@ -16,19 +16,16 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      postgres:
-        image: postgres
+
+      mysql:
+        image: mysql
         env:
-          POSTGRES_DB: test
-          POSTGRES_USER: test
-          POSTGRES_PASSWORD: test
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
+          MYSQL_ROOT_PASSWORD: test
+          MYSQL_DATABASE: test
+          MYSQL_USER: test
+          MYSQL_PASSWORD: test
         ports:
-          - 5433:5432
+          - 3307:3306
 
     steps:
       - uses: actions/checkout@v2

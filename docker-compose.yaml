@@ -2,14 +2,15 @@ version: "3.7"
 services:
 
   db:
-    image: postgres
+    image: mysql
     container_name: toko_db
     ports:
-      - "5432:5432"
+      - "3306:3306"
     environment:
-      POSTGRES_DB: toko_db
-      POSTGRES_USER: toko_app_user
-      POSTGRES_PASSWORD: passw0rd
+      MYSQL_ROOT_PASSWORD: superUseR_passw0rd
+      MYSQL_DATABASE: toko_db
+      MYSQL_USER: toko_app_user
+      MYSQL_PASSWORD: passw0rd
 
   storage:
     image: minio/minio

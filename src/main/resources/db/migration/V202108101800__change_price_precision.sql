@@ -1,0 +1,2 @@
+ALTER TABLE products
+MODIFY price NUMERIC(9, 2) NOT NULL;
