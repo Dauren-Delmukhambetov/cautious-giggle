@@ -1,9 +1,9 @@
 spring:
   datasource:
-    url: jdbc:postgresql://localhost:5433/test
+    url: jdbc:mysql://localhost:3307/test
     username: test
     password: test
-    driver-class-name: org.postgresql.Driver
+    driver-class-name: com.mysql.jdbc.Driver
 storage:
   endpoint: https://play.min.io
   access-key: Q3AM3UQ867SPQQA43P2F
