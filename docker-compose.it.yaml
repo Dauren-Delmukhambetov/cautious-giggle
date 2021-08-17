@@ -2,11 +2,12 @@ version: "3.7"
 services:
 
   test_db:
-    image: postgres
+    image: mysql
     container_name: toko_test_db
     ports:
-      - "5433:5432"
+      - "3307:3306"
     environment:
-      POSTGRES_DB: test
-      POSTGRES_USER: test
-      POSTGRES_PASSWORD: test
+      MYSQL_ROOT_PASSWORD: test
+      MYSQL_DATABASE: test
+      MYSQL_USER: test
+      MYSQL_PASSWORD: test

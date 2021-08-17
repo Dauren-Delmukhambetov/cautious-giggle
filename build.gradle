@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation platform('software.amazon.awssdk:bom:2.17.15')
+    implementation platform('software.amazon.awssdk:bom:2.17.19')
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -38,7 +38,7 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok'
 
-    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'mysql:mysql-connector-java'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
