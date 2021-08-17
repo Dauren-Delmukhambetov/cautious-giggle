@@ -17,7 +17,7 @@ import static java.util.Collections.emptyList;
 import static org.mockito.Mockito.*;
 
 @SpringBootTest(classes = ProductEventListener.class)
-public class ProductEventListenerIT {
+class ProductEventListenerIT {
 
     @Autowired
     private ApplicationEventPublisher applicationEventPublisher;
