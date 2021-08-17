@@ -61,11 +61,12 @@ public class MinioFileStorageService implements FileStorageService {
     @SneakyThrows
     @Override
     public void delete(final String filePath) {
+        final var filePathToDelete = filePath.replaceFirst(this.bucketName + "/", "");
         final var removeObjectArgs = RemoveObjectArgs.builder().bucket(this.bucketName)
-                .object(filePath)
+                .object(filePathToDelete)
                 .build();
 
         minioClient.removeObject(removeObjectArgs);
-        log.info("File {} has been deleted from the bucket {}", filePath, this.bucketName);
+        log.info("File {} has been deleted from the bucket {}", filePathToDelete, this.bucketName);
     }
 }
