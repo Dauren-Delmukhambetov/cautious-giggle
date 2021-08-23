@@ -11,6 +11,8 @@ public interface ProductService {
 
     List<Product> findAll();
 
+    List<Product> findByImagePath(String imagePath);
+
     Product findById(Long id);
 
     Product createNewProduct(CreateProductRequest request);

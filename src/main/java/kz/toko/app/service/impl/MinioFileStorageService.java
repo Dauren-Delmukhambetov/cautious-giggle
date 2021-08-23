@@ -12,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.annotation.PostConstruct;
 import java.io.IOException;
+import java.nio.file.Paths;
 
 import static java.util.UUID.randomUUID;
 import static org.apache.commons.io.FilenameUtils.getExtension;
@@ -61,11 +62,12 @@ public class MinioFileStorageService implements FileStorageService {
     @SneakyThrows
     @Override
     public void delete(final String filePath) {
+        final var filePathToDelete = Paths.get(filePath).getFileName().toString();
         final var removeObjectArgs = RemoveObjectArgs.builder().bucket(this.bucketName)
-                .object(filePath)
+                .object(filePathToDelete)
                 .build();
 
         minioClient.removeObject(removeObjectArgs);
-        log.info("File {} has been deleted from the bucket {}", filePath, this.bucketName);
+        log.info("File {} has been deleted from the bucket {}", filePathToDelete, this.bucketName);
     }
 }
