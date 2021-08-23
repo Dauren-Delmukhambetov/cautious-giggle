@@ -4,6 +4,7 @@ import kz.toko.api.model.CreateProductRequest;
 import kz.toko.api.model.Product;
 import kz.toko.api.model.UpdateProductRequest;
 import kz.toko.app.entity.ProductEntity;
+import kz.toko.app.event.ProductImageChangeEvent;
 import kz.toko.app.exception.EntityDeletedException;
 import kz.toko.app.exception.EntityNotFoundException;
 import kz.toko.app.mapper.ProductMapper;
@@ -12,6 +13,7 @@ import kz.toko.app.service.FileStorageService;
 import kz.toko.app.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -29,6 +31,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductMapper mapper;
 
     private final FileStorageService fileStorageService;
+    private final ApplicationEventPublisher applicationEventPublisher;
 
     @Override
     public List<Product> findAll() {
@@ -39,7 +42,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findById(Long id) {
+    public List<Product> findByImagePath(final String imagePath) {
+        return repository.findByImagePath(imagePath)
+                .stream()
+                .map(mapper::toDto)
+                .collect(toList());
+    }
+
+    @Override
+    public Product findById(final Long id) {
         final var entity = getAccessibleProduct(id);
         return mapper.toDto(entity);
     }
@@ -62,8 +73,11 @@ public class ProductServiceImpl implements ProductService {
     public void setProductImage(Long productId, MultipartFile image) {
         final var product = getAccessibleProduct(productId);
         final var imagePath = fileStorageService.write(image);
+        final var event = new ProductImageChangeEvent(this, productId, product.getImagePath(), imagePath);
         product.setImagePath(imagePath);
         repository.save(product);
+
+        applicationEventPublisher.publishEvent(event);
     }
 
     @Override

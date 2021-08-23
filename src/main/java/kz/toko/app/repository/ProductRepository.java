@@ -11,4 +11,6 @@ public interface ProductRepository extends CrudRepository<ProductEntity, Long> {
 
     List<ProductEntity> findByDeletedAtIsNull();
 
+    List<ProductEntity> findByImagePath(final String imagePath);
+
 }
