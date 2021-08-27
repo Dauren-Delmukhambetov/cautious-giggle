@@ -24,6 +24,7 @@ jobs:
         run: |
           cd ~
           mkdir .aws
+          cd .aws
           echo "[default]" >> config
           echo "region=us-east-1" >> config
       - name: Add credentials file
@@ -33,6 +34,7 @@ jobs:
         run: |
           cd ~
           mkdir -p .aws
+          cd .aws
           echo "[default]" >> credentials
           echo "aws_access_key_id=$AWS_ACCESS_KEY" >> credentials
           echo "aws_secret_access_key=$AWS_SECRET_KEY" >> credentials
