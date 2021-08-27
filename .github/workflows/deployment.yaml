@@ -19,7 +19,7 @@ jobs:
     steps:
       - name: Display AWS CLI version
         run: |
-          aws version
+          aws --version
       - name: Add config file
         run: |
           cd ~
