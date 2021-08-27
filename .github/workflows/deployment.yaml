@@ -26,7 +26,7 @@ jobs:
           mkdir .aws
           echo "[default]" >> config
           echo "region=us-east-1" >> config
-          cat ~/.aws/config
+          ll
       - name: Add credentials file
         env:
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
