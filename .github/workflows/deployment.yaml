@@ -32,7 +32,7 @@ jobs:
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
         run: |
           cd ~
-          mkdir .aws
+          mkdir -p .aws
           echo "[default]" >> credentials
           echo "aws_access_key_id=${AWS_ACCESS_KEY}" >> credentials
           echo "aws_secret_access_key=${AWS_SECRET_KEY}" >> credentials
