@@ -110,5 +110,7 @@ jobs:
           name: app-jar-file
 
       - name: Upload app artifact to S3 bucket
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
         run: |
           aws s3 cp toko-*.jar s3://$AWS_S3_BUCKET
