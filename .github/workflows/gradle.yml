@@ -57,6 +57,12 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonarqube --info
 
+      - name: Store app artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-jar-file
+          path: build/libs/toko-*.jar
+
       - name: Build and push image
         id: build-and-push-image
         if: ${{ github.ref == 'refs/heads/master' }}
@@ -64,3 +70,43 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD:  ${{ secrets.DOCKER_PASSWORD }}
         run: ./gradlew bootBuildImage --info
+
+  deploy:
+    name: Deploy to AWS Elastic Beanstalk
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Display AWS CLI version
+        run: |
+          aws --version
+      - name: Add config file
+        run: |
+          cd ~
+          mkdir .aws
+          cd .aws
+          echo "[default]" >> config
+          echo "region=us-east-1" >> config
+      - name: Add credentials file
+        env:
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        run: |
+          cd ~
+          mkdir -p .aws
+          cd .aws
+          echo "[default]" >> credentials
+          echo "aws_access_key_id=$AWS_ACCESS_KEY" >> credentials
+          echo "aws_secret_access_key=$AWS_SECRET_KEY" >> credentials
+      - name: Display AWS CLI confgiuration
+        run: |
+          aws configure list
+
+      - name: Download app artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: app-jar-file
+
+      - name: Upload app artifact to S3 bucket
+        run: |
+          aws s3 cp toko-*.jar s3://$AWS_S3_BUCKET
