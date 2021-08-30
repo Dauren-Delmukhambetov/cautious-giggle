@@ -15,6 +15,9 @@ jobs:
 
     runs-on: ubuntu-latest
 
+    outputs:
+      app-version: ${{ steps.get-app-version.outputs.app-version }}
+
     services:
 
       mysql:
@@ -62,6 +65,13 @@ jobs:
         with:
           name: app-jar-file
           path: build/libs/toko-*.jar
+
+      - name: Get app version
+        id: get-app-version
+        run: |
+          cd build/libs
+          version="$(ls | awk -F".jar" '{print $1}' | awk -F"-" '{print $NF}')"
+          echo "::set-output name=app-version::version"
 
       - name: Build and push image
         id: build-and-push-image
@@ -114,3 +124,13 @@ jobs:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
         run: |
           aws s3 cp toko-*.jar s3://$AWS_S3_BUCKET
+
+      - name: Create a new app version
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          APP_VERSION: ${{ needs.build.outputs.app-version }}
+        run: |
+          aws elasticbeanstalk create-application-version
+              --application-name toko-app
+              --version v$APP_VERSION
+              --source-bundle S3Bucket="$AWS_S3_BUCKET",S3Key="toko-$APP_VERSION.jar"
