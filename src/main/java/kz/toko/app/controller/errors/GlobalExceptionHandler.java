@@ -38,7 +38,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     private ResponseEntity<ErrorResponse> buildErrorResponse(Exception exception, HttpStatus httpStatus) {
         ErrorResponse response = new ErrorResponse();
         response.setMessage(exception.getMessage());
-        response.setMessage(exception.getClass().getName());
+        response.setExceptionClass(exception.getClass().getName());
         return ResponseEntity
                 .status(httpStatus)
                 .contentType(APPLICATION_PROBLEM_JSON)
