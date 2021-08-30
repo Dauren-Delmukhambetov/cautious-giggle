@@ -34,8 +34,7 @@ class UsersIT extends IntegrationTest {
     void deleteUser() throws Exception {
         this.mockMvc.perform(
                 delete("/users/{userId}", "1")
-                        .contentType(APPLICATION_JSON)
-                        .accept(APPLICATION_JSON))
+                        .contentType(APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
 
@@ -45,8 +44,7 @@ class UsersIT extends IntegrationTest {
     void deleteAbsentUser() throws Exception {
         this.mockMvc.perform(
                         delete("/users/{userId}", "2")
-                                .contentType(APPLICATION_JSON)
-                                .accept(APPLICATION_JSON))
+                                .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_PROBLEM_JSON));
