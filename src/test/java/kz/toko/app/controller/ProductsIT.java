@@ -16,11 +16,17 @@ import org.springframework.util.ResourceUtils;
 
 import java.io.FileInputStream;
 
-import static org.hamcrest.Matchers.*;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
+import static org.hamcrest.Matchers.nullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.IMAGE_PNG_VALUE;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.multipart;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -106,6 +112,21 @@ class ProductsIT extends IntegrationTest {
                         delete("/products/{id}", 2))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+    }
+
+    @Test
+    @DisplayName("Should return gone response code when passing deleted product ID")
+    @Sql(value = "classpath:/db.scripts/add_product_to_delete.sql")
+    void getDeletedProduct() throws Exception {
+        this.mockMvc.perform(
+                        delete("/products/{id}", 2))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        this.mockMvc.perform(
+                        get("/products/{id}", 2))
+                .andDo(print())
+                .andExpect(status().isGone());
     }
 
 }

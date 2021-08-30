@@ -1,5 +1,6 @@
 package kz.toko.app.controller.errors;
 
+import kz.toko.api.model.ErrorResponse;
 import kz.toko.app.exception.EntityDeletedException;
 import kz.toko.app.exception.EntityNotFoundException;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,8 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+
+import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 
 @Slf4j
 @ControllerAdvice
@@ -21,9 +24,9 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     @ExceptionHandler(EntityDeletedException.class)
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    @ResponseStatus(HttpStatus.GONE)
     public ResponseEntity<ErrorResponse> handleEntityDeletedException(EntityDeletedException entityDeletedException) {
-        return buildErrorResponse(entityDeletedException, HttpStatus.BAD_REQUEST);
+        return buildErrorResponse(entityDeletedException, HttpStatus.GONE);
     }
 
     @ExceptionHandler(RuntimeException.class)
@@ -33,11 +36,12 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
     }
 
     private ResponseEntity<ErrorResponse> buildErrorResponse(Exception exception, HttpStatus httpStatus) {
-        ErrorResponse response = new ErrorResponse(
-                httpStatus.value(),
-                exception.getMessage(),
-                exception.getClass().getName(),
-                null);
-        return ResponseEntity.status(httpStatus).body(response);
+        ErrorResponse response = new ErrorResponse();
+        response.setMessage(exception.getMessage());
+        response.setMessage(exception.getClass().getName());
+        return ResponseEntity
+                .status(httpStatus)
+                .contentType(APPLICATION_PROBLEM_JSON)
+                .body(response);
     }
 }
