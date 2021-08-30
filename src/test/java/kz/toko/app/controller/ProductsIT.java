@@ -116,15 +116,15 @@ class ProductsIT extends IntegrationTest {
 
     @Test
     @DisplayName("Should return gone response code when passing deleted product ID")
-    @Sql(value = "classpath:/db.scripts/add_product_to_delete.sql")
+    @Sql(value = "classpath:/db.scripts/add_another_product_to_delete.sql")
     void getDeletedProduct() throws Exception {
         this.mockMvc.perform(
-                        delete("/products/{id}", 2))
+                        delete("/products/{id}", 3))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
         this.mockMvc.perform(
-                        get("/products/{id}", 2))
+                        get("/products/{id}", 3))
                 .andDo(print())
                 .andExpect(status().isGone());
     }
