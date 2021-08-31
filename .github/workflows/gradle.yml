@@ -132,5 +132,5 @@ jobs:
         run: |
           aws elasticbeanstalk create-application-version \
               --application-name toko-app \
-              --version v$APP_VERSION \
+              --version-label v$APP_VERSION \
               --source-bundle S3Bucket="$AWS_S3_BUCKET",S3Key="toko-$APP_VERSION.jar"
