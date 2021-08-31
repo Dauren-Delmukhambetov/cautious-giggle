@@ -124,3 +124,13 @@ jobs:
               --application-name toko-app \
               --version-label v$APP_VERSION.$COMMIT_HASH \
               --source-bundle S3Bucket="$AWS_S3_BUCKET",S3Key="toko-$APP_VERSION.$COMMIT_HASH.jar"
+
+      - name: Update environment with the new app version
+        env:
+          APP_VERSION: ${{ needs.build.outputs.app-version }}
+          COMMIT_HASH: ${{ needs.build.outputs.commit-short-sha }}
+        run: |
+          aws elasticbeanstalk update-environment \
+             --application-name toko-app \
+             --environment-name toko-app-dev-env \
+             --version-label v$APP_VERSION.$COMMIT_HASH
