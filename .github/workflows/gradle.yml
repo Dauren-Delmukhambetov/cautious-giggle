@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: Java CI/CD
 
 on:
   push:
@@ -113,7 +113,7 @@ jobs:
           APP_VERSION: ${{ needs.build.outputs.app-version }}
           COMMIT_HASH: ${{ needs.build.outputs.commit-short-sha }}
         run: |
-          aws s3 cp toko-*.jar s3://$AWS_S3_BUCKET/toko-$APP_VERSION.$COMMIT_HASH.jar
+          aws s3 cp toko-*.jar s3://$AWS_S3_BUCKET/toko-$APP_VERSION-$COMMIT_HASH.jar
 
       - name: Create a new app version
         env:
@@ -123,8 +123,8 @@ jobs:
         run: |
           aws elasticbeanstalk create-application-version \
               --application-name toko-app \
-              --version-label v$APP_VERSION.$COMMIT_HASH \
-              --source-bundle S3Bucket="$AWS_S3_BUCKET",S3Key="toko-$APP_VERSION.$COMMIT_HASH.jar"
+              --version-label v$APP_VERSION-$COMMIT_HASH \
+              --source-bundle S3Bucket="$AWS_S3_BUCKET",S3Key="toko-$APP_VERSION-$COMMIT_HASH.jar"
 
       - name: Update environment with the new app version
         env:
@@ -134,7 +134,7 @@ jobs:
           aws elasticbeanstalk update-environment \
              --application-name toko-app \
              --environment-name toko-app-dev-env \
-             --version-label v$APP_VERSION.$COMMIT_HASH
+             --version-label v$APP_VERSION-$COMMIT_HASH
 
       - name: Wait until environment updated
         run: |
