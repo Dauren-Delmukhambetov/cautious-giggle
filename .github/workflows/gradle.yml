@@ -73,30 +73,18 @@ jobs:
           version="$(ls | awk -F".jar" '{print $1}' | awk -F"-" '{print $NF}')"
           echo "::set-output name=app-version::$version"
 
-      - name: Build and push image
-        id: build-and-push-image
-        if: ${{ github.ref == 'refs/heads/master' }}
-        env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD:  ${{ secrets.DOCKER_PASSWORD }}
-        run: ./gradlew bootBuildImage --info
-
   deploy:
     name: Deploy to AWS Elastic Beanstalk
-
     runs-on: ubuntu-latest
-
+    # if: ${{ github.ref == 'refs/heads/master' }}
     needs: build
 
     steps:
       - name: Display AWS CLI version
-        run: |
-          aws --version
+        run: aws --version
       - name: Add config file
         run: |
-          cd ~
-          mkdir .aws
-          cd .aws
+          cd ~ && mkdir .aws && cd .aws
           echo "[default]" >> config
           echo "region=us-east-1" >> config
       - name: Add credentials file
@@ -104,15 +92,12 @@ jobs:
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
         run: |
-          cd ~
-          mkdir -p .aws
-          cd .aws
+          cd ~ && mkdir -p .aws && cd .aws
           echo "[default]" >> credentials
           echo "aws_access_key_id=$AWS_ACCESS_KEY" >> credentials
           echo "aws_secret_access_key=$AWS_SECRET_KEY" >> credentials
       - name: Display AWS CLI confgiuration
-        run: |
-          aws configure list
+        run: aws configure list
 
       - name: Download app artifact
         uses: actions/download-artifact@v2
@@ -122,15 +107,18 @@ jobs:
       - name: Upload app artifact to S3 bucket
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          APP_VERSION: ${{ needs.build.outputs.app-version }}
+          COMMIT_HASH: ${{ github.sha }}
         run: |
-          aws s3 cp toko-*.jar s3://$AWS_S3_BUCKET
+          aws s3 cp toko-*.jar s3://$AWS_S3_BUCKET/toko-$APP_VERSION.$COMMIT_HASH.jar
 
       - name: Create a new app version
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           APP_VERSION: ${{ needs.build.outputs.app-version }}
+          COMMIT_HASH: ${{ github.sha }}
         run: |
           aws elasticbeanstalk create-application-version \
               --application-name toko-app \
-              --version-label v$APP_VERSION \
-              --source-bundle S3Bucket="$AWS_S3_BUCKET",S3Key="toko-$APP_VERSION.jar"
+              --version-label v$APP_VERSION.$COMMIT_HASH \
+              --source-bundle S3Bucket="$AWS_S3_BUCKET",S3Key="toko-$APP_VERSION.$COMMIT_HASH.jar"
