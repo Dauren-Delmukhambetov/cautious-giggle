@@ -134,3 +134,15 @@ jobs:
              --application-name toko-app \
              --environment-name toko-app-dev-env \
              --version-label v$APP_VERSION.$COMMIT_HASH
+
+      - name: Wait until environment updated
+        run: |
+          aws elasticbeanstalk wair environment-upated \
+            --application-name toko-app \
+            --environment-names toko-app-dev-env
+
+      - name: Check environment health
+        run: |
+          aws elasticbeanstalk describe-environment-health \
+            --environment-name toko-app-dev-env \
+            --attribute-names Status HealthStatus RefreshedAt
