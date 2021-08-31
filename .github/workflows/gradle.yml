@@ -78,7 +78,7 @@ jobs:
   deploy:
     name: Deploy to AWS Elastic Beanstalk
     runs-on: ubuntu-latest
-    # if: ${{ github.ref == 'refs/heads/master' }}
+    if: ${{ github.ref == 'refs/heads/master' }}
     needs: build
 
     steps:
