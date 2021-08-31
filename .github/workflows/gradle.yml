@@ -137,7 +137,7 @@ jobs:
 
       - name: Wait until environment updated
         run: |
-          aws elasticbeanstalk wait environment-upated \
+          aws elasticbeanstalk wait environment-updated \
             --application-name toko-app \
             --environment-names toko-app-dev-env
 
