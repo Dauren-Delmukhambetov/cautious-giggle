@@ -17,6 +17,7 @@ jobs:
 
     outputs:
       app-version: ${{ steps.get-app-version.outputs.app-version }}
+      commit-short-sha: ${{ steps.get-app-version.outputs.commit-short-sha }}
 
     services:
 
@@ -72,6 +73,7 @@ jobs:
           cd build/libs
           version="$(ls | awk -F".jar" '{print $1}' | awk -F"-" '{print $NF}')"
           echo "::set-output name=app-version::$version"
+          echo "::set-output name=commit-short-sha::$(git rev-parse --short HEAD)"
 
   deploy:
     name: Deploy to AWS Elastic Beanstalk
@@ -108,7 +110,7 @@ jobs:
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           APP_VERSION: ${{ needs.build.outputs.app-version }}
-          COMMIT_HASH: ${{ github.sha }}
+          COMMIT_HASH: ${{ needs.build.outputs.commit-short-sha }}
         run: |
           aws s3 cp toko-*.jar s3://$AWS_S3_BUCKET/toko-$APP_VERSION.$COMMIT_HASH.jar
 
@@ -116,7 +118,7 @@ jobs:
         env:
           AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           APP_VERSION: ${{ needs.build.outputs.app-version }}
-          COMMIT_HASH: ${{ github.sha }}
+          COMMIT_HASH: ${{ needs.build.outputs.commit-short-sha }}
         run: |
           aws elasticbeanstalk create-application-version \
               --application-name toko-app \
