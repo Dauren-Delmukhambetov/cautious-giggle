@@ -71,6 +71,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+        404:
+          description: Product with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The product has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     patch:
       tags:
         - Products
@@ -90,7 +102,19 @@ paths:
         required: true
       responses:
         204:
-          description: Product has been successfully updated
+          description: The product has been successfully updated
+        404:
+          description: Product with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The product has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     delete:
       tags:
         - Products
@@ -106,6 +130,16 @@ paths:
           description: Product has been successfully deleted
         404:
           description: Product with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The product has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /products/{id}/image:
     post:
@@ -131,6 +165,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Link'
+        404:
+          description: Product with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The product has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   ## Users API
   /users:
     get:
@@ -188,6 +234,16 @@ paths:
           description: User has been successfully deleted
         404:
           description: User not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: User has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
 
   parameters:
@@ -302,3 +358,12 @@ components:
         file:
           type: string
           format: binary
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        exceptionClass:
+          type: string
+        params:
+          type: object
