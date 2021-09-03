@@ -1,7 +1,7 @@
 # This workflow will build a Java project with Gradle
 # For more information see: https://help.github.com/actions/language-and-framework-guides/building-and-testing-java-with-gradle
 
-name: Java CI with Gradle
+name: Java CI/CD
 
 on:
   push:
@@ -14,6 +14,10 @@ jobs:
     name: Build with Gradle
 
     runs-on: ubuntu-latest
+
+    outputs:
+      app-version: ${{ steps.get-app-version.outputs.app-version }}
+      commit-short-sha: ${{ steps.get-app-version.outputs.commit-short-sha }}
 
     services:
 
@@ -57,10 +61,89 @@ jobs:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonarqube --info
 
-      - name: Build and push image
-        id: build-and-push-image
+      - name: Store app artifact
         if: ${{ github.ref == 'refs/heads/master' }}
+        uses: actions/upload-artifact@v2
+        with:
+          name: app-jar-file
+          path: build/libs/toko-*.jar
+
+      - name: Get app version
+        id: get-app-version
+        run: |
+          cd build/libs
+          version="$(ls | awk -F".jar" '{print $1}' | awk -F"-" '{print $NF}')"
+          echo "::set-output name=app-version::$version"
+          echo "::set-output name=commit-short-sha::$(git rev-parse --short HEAD)"
+
+  deploy:
+    name: Deploy to AWS Elastic Beanstalk
+    runs-on: ubuntu-latest
+    if: ${{ github.ref == 'refs/heads/master' }}
+    needs: build
+
+    steps:
+      - name: Display AWS CLI version
+        run: aws --version
+      - name: Add config file
+        run: |
+          cd ~ && mkdir .aws && cd .aws
+          echo "[default]" >> config
+          echo "region=us-east-1" >> config
+      - name: Add credentials file
         env:
-          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
-          DOCKER_PASSWORD:  ${{ secrets.DOCKER_PASSWORD }}
-        run: ./gradlew bootBuildImage --info
+          AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY }}
+          AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_KEY }}
+        run: |
+          cd ~ && mkdir -p .aws && cd .aws
+          echo "[default]" >> credentials
+          echo "aws_access_key_id=$AWS_ACCESS_KEY" >> credentials
+          echo "aws_secret_access_key=$AWS_SECRET_KEY" >> credentials
+      - name: Display AWS CLI confgiuration
+        run: aws configure list
+
+      - name: Download app artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: app-jar-file
+
+      - name: Upload app artifact to S3 bucket
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          APP_VERSION: ${{ needs.build.outputs.app-version }}
+          COMMIT_HASH: ${{ needs.build.outputs.commit-short-sha }}
+        run: |
+          aws s3 cp toko-*.jar s3://$AWS_S3_BUCKET/toko-$APP_VERSION-$COMMIT_HASH.jar
+
+      - name: Create a new app version
+        env:
+          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
+          APP_VERSION: ${{ needs.build.outputs.app-version }}
+          COMMIT_HASH: ${{ needs.build.outputs.commit-short-sha }}
+        run: |
+          aws elasticbeanstalk create-application-version \
+              --application-name toko-app \
+              --version-label v$APP_VERSION-$COMMIT_HASH \
+              --source-bundle S3Bucket="$AWS_S3_BUCKET",S3Key="toko-$APP_VERSION-$COMMIT_HASH.jar"
+
+      - name: Update environment with the new app version
+        env:
+          APP_VERSION: ${{ needs.build.outputs.app-version }}
+          COMMIT_HASH: ${{ needs.build.outputs.commit-short-sha }}
+        run: |
+          aws elasticbeanstalk update-environment \
+             --application-name toko-app \
+             --environment-name toko-app-dev-env \
+             --version-label v$APP_VERSION-$COMMIT_HASH
+
+      - name: Wait until environment updated
+        run: |
+          aws elasticbeanstalk wait environment-updated \
+            --application-name toko-app \
+            --environment-names toko-app-dev-env
+
+      - name: Check environment health
+        run: |
+          aws elasticbeanstalk describe-environment-health \
+            --environment-name toko-app-dev-env \
+            --attribute-names Status HealthStatus RefreshedAt
