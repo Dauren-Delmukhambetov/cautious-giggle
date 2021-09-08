@@ -45,6 +45,7 @@ public class MinioFileStorageService implements FileStorageService {
     public String write(final MultipartFile fileToSave) throws IOException {
         final var filename = String.format("%s.%s", randomUUID(), getExtension(fileToSave.getOriginalFilename()));
         try (final var fileStream = fileToSave.getInputStream()) {
+            
             final var putObjectArgs = PutObjectArgs.builder()
                     .bucket(this.bucketName)
                     .object(filename)
