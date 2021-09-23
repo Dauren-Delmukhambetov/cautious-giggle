@@ -75,8 +75,7 @@ public class S3FileStorageService implements FileStorageService {
     }
 
     private void createBucket(final String bucketName) {
-        try {
-            S3Waiter s3Waiter = s3Client.waiter();
+        try (final var s3Waiter = s3Client.waiter()) {
             CreateBucketRequest bucketRequest = CreateBucketRequest.builder()
                     .bucket(bucketName)
                     .build();
