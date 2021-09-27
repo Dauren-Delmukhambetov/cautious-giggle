@@ -41,12 +41,6 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
-        final var authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication.getPrincipal() instanceof Jwt) {
-            final var jwt = (Jwt) authentication.getPrincipal();
-            log.info("Current user is " + jwt.getClaim("email"));
-        }
-
         return repository.findByDeletedAtIsNull()
                 .stream()
                 .map(mapper::toDto)
