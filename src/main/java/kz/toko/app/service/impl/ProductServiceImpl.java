@@ -13,7 +13,12 @@ import kz.toko.app.service.FileStorageService;
 import kz.toko.app.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.ApplicationEventPublisher;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.core.oidc.user.OidcUser;
+import org.springframework.security.oauth2.jwt.Jwt;
+import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationToken;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -23,6 +28,7 @@ import java.util.List;
 
 import static java.util.stream.Collectors.toList;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
@@ -35,6 +41,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> findAll() {
+        final var authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication.getPrincipal() instanceof Jwt) {
+            final var jwt = (Jwt) authentication.getPrincipal();
+            log.info("Current user is " + jwt.getClaim("email"));
+        }
+
         return repository.findByDeletedAtIsNull()
                 .stream()
                 .map(mapper::toDto)

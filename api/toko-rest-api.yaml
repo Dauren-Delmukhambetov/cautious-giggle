@@ -18,6 +18,11 @@ tags:
     description: Product API to manage user's product catalog
   - name: Users
     description: Operations about user
+security:
+  - OpenIDConnectAuth:
+      - openid
+      - email
+      - profile
 paths:
   ## Products API
   /products:
@@ -140,7 +145,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
   /products/{id}/image:
     post:
       tags:
@@ -184,6 +188,9 @@ paths:
         - Users
       summary: Retrieve all Users
       operationId: getUsers
+      security:
+        - OpenIDConnectAuth: [email, openid, profile]
+
       responses:
         200:
           description: OK
@@ -246,6 +253,12 @@ paths:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
 
+  securitySchemes:
+    OpenIDConnectAuth:
+      type: openIdConnect
+      openIdConnectUrl: https://accounts.google.com/.well-known/openid-configuration
+      x-tokenName: id_token
+
   parameters:
     EntityId:
       name: id
@@ -285,10 +298,10 @@ components:
       type: object
       properties:
         name:
-            type: string
+          type: string
         price:
-            type: number
-            format: double
+          type: number
+          format: double
       required:
         - name
         - price
@@ -358,6 +371,7 @@ components:
         file:
           type: string
           format: binary
+
     ErrorResponse:
       type: object
       properties:

@@ -7,6 +7,17 @@ spring:
   servlet:
     multipart:
       max-file-size: 10MB
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: https://accounts.google.com
+          jwk-set-uri: https://www.googleapis.com/oauth2/v3/certs
+    #  client:
+    #    registration:
+    #      google:
+    #        client-id: 88190652125-rpj3uunqtjf3cp6h3j17ogmi6t48lpef.apps.googleusercontent.com
+    #        client-secret: olmukUj99zDUNEYXptWCat6G
 storage:
   endpoint: http://localhost:9000
   access-key: minioAccessKey
