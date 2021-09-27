@@ -7,9 +7,12 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.0.1
+  version: 0.1.2
 servers:
+  - url: /
+    description: Local environment
   - url: https://api.toko.kz/v1
+    description: Production
 tags:
   - name: Products
     description: Product API to manage user's product catalog
@@ -25,7 +28,7 @@ paths:
       operationId: getProducts
       responses:
         200:
-          description: OK
+          description: The list of products has been successfully fetched
           content:
             application/json:
               schema:
@@ -51,23 +54,104 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Product'
+  /products/{id}:
+    get:
+      tags:
+        - Products
+      summary: Get product by ID
+      description: >
+        This method returns product with given ID
+      operationId: getProduct
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+        404:
+          description: Product with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The product has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - Products
+      summary: Partially updates a given product
+      description: >
+        This method allows you to partially update a product with a given `id`.
+        In case some properties are not set in the request, they will not be updated.
+      operationId: updateProduct
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      requestBody:
+        description: Product update request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateProductRequest'
+        required: true
+      responses:
+        204:
+          description: The product has been successfully updated
+        404:
+          description: Product with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The product has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    delete:
+      tags:
+        - Products
+      summary: Softly deletes a given product
+      description: >
+        This method allows you to mark a product with a given `id` as deleted and stores the date of deletion.
+        Deleted products won't be available for users anymore.
+      operationId: deleteProduct
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        204:
+          description: Product has been successfully deleted
+        404:
+          description: Product with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The product has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /products/{id}/image:
     post:
       tags:
         - Products
       summary: Uploads the product image
       description: >
-        This method allows you to upload an image and set it as a cover image for the product with a given `id`.
+        This method allows you to upload an image with a size up to 10 Mb and set it as a cover image for the product with a given `id`.
         In case there is already an image for the product it will be replaced by the new one
       operationId: uploadImage
       parameters:
-        - name: id
-          in: path
-          description: Product ID
-          required: true
-          schema:
-            type: integer
-            format: int64
+        - $ref: '#/components/parameters/EntityId'
       requestBody:
         description: Product's image file
         content:
@@ -81,6 +165,18 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Link'
+        404:
+          description: Product with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The product has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
   ## Users API
   /users:
     get:
@@ -137,7 +233,50 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+
+  /users/{userId}:
+    delete:
+      tags:
+        - Users
+      summary: Delete user by ID
+      description: For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
+      operationId: deleteUser
+      parameters:
+        - name: userId
+          in: path
+          description: ID of the user that needs to be deleted
+          required: true
+          schema:
+            type: integer
+            format: int64
+      responses:
+        204:
+          description: User has been successfully deleted
+        404:
+          description: User not found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: User has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 components:
+
+  parameters:
+    EntityId:
+      name: id
+      in: path
+      description: Entity ID
+      required: true
+      schema:
+        type: integer
+        format: int64
+        minimum: 1
+
   schemas:
     ## Products model
     Product:
@@ -154,6 +293,14 @@ components:
         price:
           type: number
           format: double
+      required:
+        - id
+        - name
+        - price
+      example:
+        name: ASU Газированная РЕТ 1л
+        price: 200
+        imageLink: https://api.rgbrands.com/uploads/0/2369-2268_a_su_gaz_1.png
     CreateProductRequest:
       type: object
       properties:
@@ -162,16 +309,23 @@ components:
         price:
             type: number
             format: double
-        imageLink:
-          type: string
-          format: uri
       required:
         - name
         - price
       example:
         name: ASU Газированная РЕТ 1л
         price: 200
-        imageLink: https://api.rgbrands.com/uploads/0/2369-2268_a_su_gaz_1.png
+    UpdateProductRequest:
+      type: object
+      properties:
+        name:
+          type: string
+        price:
+          type: number
+          format: double
+      example:
+        name: ASU Газированная вода 1л
+        price: 180
 
     ## Users model
     User:
@@ -224,3 +378,12 @@ components:
         file:
           type: string
           format: binary
+    ErrorResponse:
+      type: object
+      properties:
+        message:
+          type: string
+        exceptionClass:
+          type: string
+        params:
+          type: object
