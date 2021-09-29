@@ -8,12 +8,16 @@ import kz.toko.app.mapper.UserMapper;
 import kz.toko.app.repository.UserRepository;
 import kz.toko.app.service.UserService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
@@ -30,6 +34,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
+        final var authentication = SecurityContextHolder.getContext().getAuthentication();
+        log.info("Current user's ID is " + authentication.getName());
+        if (authentication.getPrincipal() instanceof Jwt) {
+            final var jwt = (Jwt) authentication.getPrincipal();
+            log.info("Current user's email is " + jwt.getClaim("email"));
+        }
+
         var entities = new LinkedList<UserEntity>();
         repository.findAll().forEach(entities::add);
         return mapper.toDto(entities);
