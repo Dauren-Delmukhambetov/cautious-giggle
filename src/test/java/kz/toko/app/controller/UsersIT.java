@@ -6,16 +6,13 @@ import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.RequestPostProcessor;
 
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
-import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -37,7 +34,10 @@ class UsersIT extends IntegrationTest {
     @Test
     @DisplayName("Should return users list for authenticated user")
     void shouldReturnUsersList() throws Exception {
-        this.mockMvc.perform(get("/users").with(jwt()).contentType(APPLICATION_JSON))
+        this.mockMvc.perform(
+                        get("/users")
+                                .with(validJwtToken())
+                                .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.[0].id", is(1)))
@@ -50,6 +50,7 @@ class UsersIT extends IntegrationTest {
         this.mockMvc.perform(
                         delete("/users/{userId}", "1")
                                 .contentType(APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isUnauthorized());
     }
 
@@ -57,9 +58,10 @@ class UsersIT extends IntegrationTest {
     @DisplayName("Should delete manually inserted user")
     void deleteUser() throws Exception {
         this.mockMvc.perform(
-                delete("/users/{userId}", "1")
-                        .with(jwt())
-                        .contentType(APPLICATION_JSON))
+                        delete("/users/{userId}", "1")
+                                .with(validJwtToken())
+                                .contentType(APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isNoContent());
     }
 
@@ -69,7 +71,7 @@ class UsersIT extends IntegrationTest {
     void deleteAbsentUser() throws Exception {
         this.mockMvc.perform(
                         delete("/users/{userId}", "2")
-                                .with(jwt())
+                                .with(validJwtToken())
                                 .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound())
