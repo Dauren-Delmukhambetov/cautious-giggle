@@ -40,7 +40,7 @@ public class UserAutoSignUpFilter extends OncePerRequestFilter {
 
             if (!containsMandatoryClaims(jwt)) {
                 response.sendError(BAD_REQUEST.value(),
-                        format("The JWT token must contain %s claims. Available claims: %s", _mandatoryClaims, jwt.getClaims().keySet()));
+                        format("The JWT token must contain %s claims. Available claims: %s", mandatoryClaims, jwt.getClaims().keySet()));
                 return;
             }
 
@@ -63,7 +63,7 @@ public class UserAutoSignUpFilter extends OncePerRequestFilter {
     }
 
     private boolean containsMandatoryClaims(Jwt jwt) {
-        return jwt.getClaims().keySet().containsAll(_mandatoryClaims);
+        return jwt.getClaims().keySet().containsAll(mandatoryClaims);
     }
 
     private CreateUserRequest buildCreateUserRequest(Jwt jwt) {
@@ -74,5 +74,5 @@ public class UserAutoSignUpFilter extends OncePerRequestFilter {
                 .email(jwt.getClaimAsString("email"));
     }
 
-    private final Set<String> _mandatoryClaims = Set.of("given_name", "family_name", "email");
+    private final Set<String> mandatoryClaims = Set.of("given_name", "family_name", "email");
 }
