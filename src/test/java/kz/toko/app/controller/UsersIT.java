@@ -70,7 +70,7 @@ class UsersIT extends IntegrationTest {
     @DisplayName("Should return not found response code when passing non-existing user ID")
     void deleteAbsentUser() throws Exception {
         this.mockMvc.perform(
-                        delete("/users/{userId}", "2")
+                        delete("/users/{userId}", Integer.MAX_VALUE)
                                 .with(validJwtToken())
                                 .contentType(APPLICATION_JSON))
                 .andDo(print())
