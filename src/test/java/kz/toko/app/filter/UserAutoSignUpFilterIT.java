@@ -7,9 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static kz.toko.app.util.TestConstants.MOCK_USER_DEFAULT_USERNAME;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
-import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
@@ -38,7 +38,7 @@ class UserAutoSignUpFilterIT extends IntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*.id", hasSize(1)))
-                .andExpect(jsonPath("$.[0].username", is("user")))
+                .andExpect(jsonPath("$.[0].username", is(MOCK_USER_DEFAULT_USERNAME)))
                 .andExpect(jsonPath("$.[0].email", is("user@example.com")))
                 .andExpect(jsonPath("$.[0].firstName", is("John")))
                 .andExpect(jsonPath("$.[0].lastName", is("Locke")));
