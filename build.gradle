@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'kz.toko'
-version = '0.1.9'
+version = '0.2.0'
 sourceCompatibility = '11'
 
 configurations {
@@ -113,7 +113,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.25
+                minimum = 0.35
             }
         }
     }

@@ -59,5 +59,4 @@ class UserRepositoryIT {
         assertThat(entity.getUpdatedAt()).isBefore(LocalDateTime.now());
         assertThat(entity.getUpdatedBy()).isEqualTo(MOCK_USER_DEFAULT_USERNAME);
     }
-
 }
