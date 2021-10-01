@@ -10,6 +10,8 @@ import kz.toko.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +53,11 @@ public class UserServiceImpl implements UserService {
         UserEntity user = repository.findById(userId).orElseThrow(() -> new EntityNotFoundException("User", userId));
         user.setDeletedAt(LocalDateTime.now());
         repository.save(user);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+        return repository.findByUsername(username)
+                .orElseThrow(() -> new UsernameNotFoundException("User with username " + username + " is not found"));
     }
 }
