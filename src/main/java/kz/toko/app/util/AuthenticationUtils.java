@@ -8,6 +8,10 @@ import static java.util.Objects.nonNull;
 
 public final class AuthenticationUtils {
 
+    private AuthenticationUtils() {
+        throw new UnsupportedOperationException("Impossible instantiate utility class");
+    }
+
     /**
      * Returns username if there is authenticated user, otherwise - returns empty {@code Optional} <br/>
      * For JWT-based authentication returns {@code sub} claim value
