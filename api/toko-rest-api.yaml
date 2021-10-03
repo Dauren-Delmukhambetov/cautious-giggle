@@ -213,26 +213,65 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      description: >
+        This method returns user with given ID
+      operationId: getUser
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The user has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
     patch:
       tags:
         - Users
       summary: Updated user
       description: This can only be done by the logged in user.
       operationId: updateUser
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
       requestBody:
         description: Updated user object
         content:
           application/json:
             schema:
-              $ref: '#/components/schemas/User'
+              $ref: '#/components/schemas/UpdateUserRequest'
         required: true
       responses:
-        200:
-          description: User has been successfully updated
+        204:
+          description: The user has been successfully updated
+        404:
+          description: User with a given ID has not beed found
           content:
-            application/json:
+            application/problem+json:
               schema:
-                $ref: '#/components/schemas/User'
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The user has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
 
   /users/{userId}:
     delete:
@@ -364,6 +403,27 @@ components:
           format: password
         phone:
           type: string
+    UpdateUserRequest:
+      type: object
+      properties:
+        username:
+          type: string
+          pattern: '^[A-Za-z\-_]$'
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+      example:
+        username: adam_smith
+        firstName: Adam
+        lastName: Smith
+        email: adam_smith@gmail.com
+        phone: +997-(777)-123-45-67
 
     ## Common model
     Link:

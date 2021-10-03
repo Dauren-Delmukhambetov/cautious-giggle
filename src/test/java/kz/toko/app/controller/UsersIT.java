@@ -1,5 +1,7 @@
 package kz.toko.app.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kz.toko.api.model.UpdateUserRequest;
 import kz.toko.app.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -10,13 +12,17 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static org.hamcrest.Matchers.is;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
@@ -28,6 +34,9 @@ class UsersIT extends IntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper mapper;
 
     @Test
     @DisplayName("Should delete manually inserted user")
@@ -48,5 +57,28 @@ class UsersIT extends IntegrationTest {
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_PROBLEM_JSON));
+    }
+
+    @Test
+    @DisplayName("Should update only user name")
+    void updateUser() throws Exception {
+        final var updateUserRequest = new UpdateUserRequest()
+                .username("updated_username");
+
+        this.mockMvc.perform(
+                patch("/users/{id}", 1)
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updateUserRequest)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        this.mockMvc.perform(
+                get("/users/{id}", 1)
+                        .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.username", is("updated_username")))
+                .andExpect(jsonPath("$.firstName", is("Adam")));
     }
 }

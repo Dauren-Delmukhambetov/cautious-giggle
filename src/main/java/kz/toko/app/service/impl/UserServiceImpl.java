@@ -1,8 +1,10 @@
 package kz.toko.app.service.impl;
 
 import kz.toko.api.model.CreateUserRequest;
+import kz.toko.api.model.UpdateUserRequest;
 import kz.toko.api.model.User;
 import kz.toko.app.entity.UserEntity;
+import kz.toko.app.exception.EntityDeletedException;
 import kz.toko.app.exception.EntityNotFoundException;
 import kz.toko.app.mapper.UserMapper;
 import kz.toko.app.repository.UserRepository;
@@ -43,13 +45,25 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User update(User body) {
-        if (body == null || body.getId() == null) {
-            throw new RuntimeException("error.not-found");
+    public void update(Long id, UpdateUserRequest request) {
+        var user = getAccessibleUser(id);
+        repository.save(mapper.toEntity(request, user));
+    }
+
+    @Override
+    public User findById(Long id) {
+        final var entity = getAccessibleUser(id);
+        return mapper.toDto(entity);
+    }
+
+    private UserEntity getAccessibleUser(Long id) {
+        var user = repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException(User.class, id));
+
+        if (user.getDeletedAt() != null) {
+            throw new EntityDeletedException(User.class, id, user.getDeletedAt());
         }
-        UserEntity user = mapper.toEntity(body);
-        user.setUpdatedAt(LocalDateTime.now());
-        repository.save(user);
-        return mapper.toDto(user);
+
+        return user;
     }
 }

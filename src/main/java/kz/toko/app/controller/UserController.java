@@ -2,6 +2,7 @@ package kz.toko.app.controller;
 
 import kz.toko.api.UsersApi;
 import kz.toko.api.model.CreateUserRequest;
+import kz.toko.api.model.UpdateUserRequest;
 import kz.toko.api.model.User;
 import kz.toko.app.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -31,13 +32,19 @@ public class UserController implements UsersApi {
     }
 
     @Override
+    public ResponseEntity<Void> updateUser(Long id, UpdateUserRequest body) {
+        userService.update(id, body);
+        return noContent().build();
+    }
+
+    @Override
     public ResponseEntity<Void> deleteUser(Long userId) {
         userService.delete(userId);
         return noContent().build();
     }
 
     @Override
-    public ResponseEntity<User> updateUser(User body) {
-        return ok(userService.update(body));
+    public ResponseEntity<User> getUser(Long id) {
+        return ok(userService.findById(id));
     }
 }

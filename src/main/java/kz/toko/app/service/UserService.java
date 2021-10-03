@@ -1,6 +1,7 @@
 package kz.toko.app.service;
 
 import kz.toko.api.model.CreateUserRequest;
+import kz.toko.api.model.UpdateUserRequest;
 import kz.toko.api.model.User;
 
 import java.util.List;
@@ -13,5 +14,7 @@ public interface UserService {
 
     void delete(Long userId);
 
-    User update(User body);
+    void update(Long id, UpdateUserRequest body);
+
+    User findById(Long id);
 }
