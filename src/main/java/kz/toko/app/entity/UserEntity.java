@@ -1,5 +1,6 @@
 package kz.toko.app.entity;
 
+import kz.toko.app.entity.audit.AuditableEntity;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
