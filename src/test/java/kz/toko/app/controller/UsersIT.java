@@ -21,9 +21,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SqlGroup({
@@ -93,6 +93,7 @@ class UsersIT extends IntegrationTest {
 
         this.mockMvc.perform(
                 patch("/users/{id}", 1)
+                        .with(validJwtToken())
                         .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(updateUserRequest)))
                 .andDo(print())
@@ -100,6 +101,7 @@ class UsersIT extends IntegrationTest {
 
         this.mockMvc.perform(
                 get("/users/{id}", 1)
+                        .with(validJwtToken())
                         .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())

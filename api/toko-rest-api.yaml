@@ -274,6 +274,8 @@ paths:
       responses:
         204:
           description: The user has been successfully updated
+        401:
+          description: The request requires user authentication
         404:
           description: User with a given ID has not beed found
           content:
