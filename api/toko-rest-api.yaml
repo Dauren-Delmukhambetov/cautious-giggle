@@ -7,17 +7,22 @@ info:
   license:
     name: Apache 2.0
     url: http://www.apache.org/licenses/LICENSE-2.0.html
-  version: 0.1.2
+  version: 0.1.8
 servers:
   - url: /
-    description: Local environment
-  - url: https://api.toko.kz/v1
-    description: Production
+    description: Current environment
+  - url: http://toko-app-dev.us-east-1.elasticbeanstalk.com
+    description: Development environment
 tags:
   - name: Products
     description: Product API to manage user's product catalog
   - name: Users
     description: Operations about user
+security:
+  - OpenIDConnectAuth:
+      - openid
+      - email
+      - profile
 paths:
   ## Products API
   /products:
@@ -26,6 +31,7 @@ paths:
         - Products
       summary: Retrieve all products
       operationId: getProducts
+      security: []
       responses:
         200:
           description: The list of products has been successfully fetched
@@ -40,6 +46,7 @@ paths:
         - Products
       summary: Creates a new product
       operationId: createProduct
+      security: []
       requestBody:
         description: New product creation request
         content:
@@ -62,6 +69,7 @@ paths:
       description: >
         This method returns product with given ID
       operationId: getProduct
+      security: []
       parameters:
         - $ref: '#/components/parameters/EntityId'
       responses:
@@ -91,6 +99,7 @@ paths:
         This method allows you to partially update a product with a given `id`.
         In case some properties are not set in the request, they will not be updated.
       operationId: updateProduct
+      security: []
       parameters:
         - $ref: '#/components/parameters/EntityId'
       requestBody:
@@ -123,6 +132,7 @@ paths:
         This method allows you to mark a product with a given `id` as deleted and stores the date of deletion.
         Deleted products won't be available for users anymore.
       operationId: deleteProduct
+      security: []
       parameters:
         - $ref: '#/components/parameters/EntityId'
       responses:
@@ -140,7 +150,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
   /products/{id}/image:
     post:
       tags:
@@ -150,6 +159,7 @@ paths:
         This method allows you to upload an image with a size up to 10 Mb and set it as a cover image for the product with a given `id`.
         In case there is already an image for the product it will be replaced by the new one
       operationId: uploadImage
+      security: []
       parameters:
         - $ref: '#/components/parameters/EntityId'
       requestBody:
@@ -186,13 +196,15 @@ paths:
       operationId: getUsers
       responses:
         200:
-          description: OK
+          description: The list of users has been successfully fetched
           content:
             application/json:
               schema:
                 type: array
                 items:
                   $ref: '#/components/schemas/User'
+        401:
+          description: The request requires user authentication
     post:
       tags:
         - Users
@@ -213,6 +225,8 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/User'
+        401:
+          description: The request requires user authentication
   /users/{id}:
     get:
       tags:
@@ -291,6 +305,8 @@ paths:
       responses:
         204:
           description: User has been successfully deleted
+        401:
+          description: The request requires user authentication
         404:
           description: User not found
           content:
@@ -304,6 +320,15 @@ paths:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
 components:
+
+  securitySchemes:
+    OpenIDConnectAuth:
+      type: openIdConnect
+      description: >
+        The only authentication way available for now is Google OpenID Connect.
+        Enter your client Id and secret and authenticate behalf of your Google account
+      openIdConnectUrl: https://accounts.google.com/.well-known/openid-configuration
+      x-tokenName: id_token
 
   parameters:
     EntityId:
@@ -344,10 +369,10 @@ components:
       type: object
       properties:
         name:
-            type: string
+          type: string
         price:
-            type: number
-            format: double
+          type: number
+          format: double
       required:
         - name
         - price
@@ -403,6 +428,18 @@ components:
           format: password
         phone:
           type: string
+      required:
+        - username
+        - firstName
+        - lastName
+        - password
+      example:
+        username: adam.smith
+        firstName: Adam
+        lastName: Smith
+        password: pa$$w0rd
+        email: adam.smith@gmail.com
+        phone: +997 (432) 234-45-45
     UpdateUserRequest:
       type: object
       properties:
@@ -438,6 +475,7 @@ components:
         file:
           type: string
           format: binary
+
     ErrorResponse:
       type: object
       properties:

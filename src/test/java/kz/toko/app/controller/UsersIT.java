@@ -21,9 +21,9 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 @AutoConfigureMockMvc
 @SqlGroup({
@@ -39,11 +39,36 @@ class UsersIT extends IntegrationTest {
     private ObjectMapper mapper;
 
     @Test
+    @DisplayName("Should return users list for authenticated user")
+    void shouldReturnUsersList() throws Exception {
+        this.mockMvc.perform(
+                        get("/users")
+                                .with(validJwtToken())
+                                .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.[0].id", is(1)))
+                .andExpect(jsonPath("$.[0].username", is("adam.smith")));
+    }
+
+    @Test
+    @DisplayName("Should return 401 (unauthorized) code for missing Authorization header")
+    void shouldReturn401CodeOnMissingAuthHeader() throws Exception {
+        this.mockMvc.perform(
+                        delete("/users/{userId}", "1")
+                                .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isUnauthorized());
+    }
+
+    @Test
     @DisplayName("Should delete manually inserted user")
     void deleteUser() throws Exception {
         this.mockMvc.perform(
-                delete("/users/{userId}", "1")
-                        .contentType(APPLICATION_JSON))
+                        delete("/users/{userId}", "1")
+                                .with(validJwtToken())
+                                .contentType(APPLICATION_JSON))
+                .andDo(print())
                 .andExpect(status().isNoContent());
     }
 
@@ -52,7 +77,8 @@ class UsersIT extends IntegrationTest {
     @DisplayName("Should return not found response code when passing non-existing user ID")
     void deleteAbsentUser() throws Exception {
         this.mockMvc.perform(
-                        delete("/users/{userId}", "2")
+                        delete("/users/{userId}", Integer.MAX_VALUE)
+                                .with(validJwtToken())
                                 .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound())
