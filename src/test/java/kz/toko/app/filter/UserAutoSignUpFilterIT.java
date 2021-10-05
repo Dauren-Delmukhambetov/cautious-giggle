@@ -8,6 +8,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static kz.toko.app.util.TestConstants.MOCK_USER_DEFAULT_USERNAME;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -40,7 +41,7 @@ class UserAutoSignUpFilterIT extends IntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.*.id", hasSize(1)))
-                .andExpect(jsonPath("$.[0].username", is("user")))
+                .andExpect(jsonPath("$.[0].username", is(MOCK_USER_DEFAULT_USERNAME)))
                 .andExpect(jsonPath("$.[0].email", is("user@example.com")))
                 .andExpect(jsonPath("$.[0].firstName", is("John")))
                 .andExpect(jsonPath("$.[0].lastName", is("Locke")));

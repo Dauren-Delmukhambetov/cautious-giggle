@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'kz.toko'
-version = '0.1.9'
+version = '0.2.0'
 sourceCompatibility = '11'
 
 configurations {
@@ -23,7 +23,7 @@ repositories {
 }
 
 dependencies {
-    implementation platform('software.amazon.awssdk:bom:2.17.47')
+    implementation platform('software.amazon.awssdk:bom:2.17.51')
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -32,7 +32,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'io.swagger.core.v3:swagger-annotations:2.1.11'
     implementation 'org.flywaydb:flyway-core'
-    implementation 'io.swagger:swagger-annotations:1.6.2'
+    implementation 'io.swagger:swagger-annotations:1.6.3'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'org.modelmapper:modelmapper:2.4.4'
     implementation 'io.minio:minio:8.2.2'
@@ -47,8 +47,8 @@ dependencies {
     testImplementation 'org.springframework.security:spring-security-test'
 
     annotationProcessor 'org.projectlombok:lombok'
-    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.27'
-    swaggerUI 'org.webjars:swagger-ui:3.52.1'
+    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.28'
+    swaggerUI 'org.webjars:swagger-ui:3.52.3'
 }
 
 swaggerSources {
@@ -113,7 +113,7 @@ jacocoTestCoverageVerification {
     violationRules {
         rule {
             limit {
-                minimum = 0.25
+                minimum = 0.35
             }
         }
     }
