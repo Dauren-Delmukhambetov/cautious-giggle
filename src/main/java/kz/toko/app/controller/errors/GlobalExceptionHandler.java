@@ -28,6 +28,7 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<ErrorResponse> handleAllUncaughtException(RuntimeException exception) {
+        log.error("Caught an exception: {}", exception.getMessage());
         return buildErrorResponse(exception, HttpStatus.INTERNAL_SERVER_ERROR);
     }
 

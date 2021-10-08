@@ -18,6 +18,8 @@ tags:
     description: Product API to manage user's product catalog
   - name: Users
     description: Operations about user
+  - name: Stores
+    description: Stores API to manage stores
 security:
   - OpenIDConnectAuth:
       - openid
@@ -259,6 +261,49 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
+
+  ## Stores API
+  /stores:
+    get:
+      tags:
+        - Stores
+      summary: Retrieve user's stores
+      operationId: getStores
+      responses:
+        200:
+          description: The list of user's stores has been successfuly fetched
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Store'
+        401:
+          description: The request requires user authentication
+    post:
+      tags:
+        - Stores
+      summary: Create a new store
+      operationId: createStore
+      requestBody:
+        description: New store creation request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStoreRequest'
+        required: true
+      responses:
+        201:
+          description: New store has been successfully created
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Store'
+        401:
+          description: The request requires user authentication
+        400:
+          description: The request is not valid and cannot be acccepted
+
 components:
 
   securitySchemes:
@@ -380,6 +425,75 @@ components:
         password: pa$$w0rd
         email: adam.smith@gmail.com
         phone: +997 (432) 234-45-45
+
+    ## Stores model
+    CreateStoreRequest:
+      type: object
+      properties:
+        mode:
+          type: string
+          enum: [ seller, buyer ]
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+      required:
+        - name
+        - mode
+        - address
+      example:
+        mode: seller
+        name: Grocery store on the st. Abay 12
+
+    Store:
+      type: object
+      properties:
+        id:
+          type: integer
+          format: int64
+        mode:
+          type: string
+          enum: [ seller, buyer ]
+        name:
+          type: string
+        address:
+          $ref: '#/components/schemas/Address'
+        owner:
+          type: string
+      required:
+        - id
+        - name
+      example:
+        id: 1
+        mode: seller
+        name: Grocery store on the st. Abay 12
+        owner: Adam Smith
+
+    Address:
+      type: object
+      properties:
+        address_line:
+          type: string
+        city:
+          type: string
+        admin_area:
+          type: string
+        postal_code:
+          type: string
+          pattern: '^\d{6}$'
+        country:
+          type: string
+          enum: [ KZ, BY ]
+      required:
+        - address_line
+        - city
+        - postal_code
+        - country
+      example:
+        address_line: улица Мухамеджана Тынышбаева, дом 24А
+        city: Нур-Султан
+        postal_code: 010011
+        country: KZ
 
     ## Common model
     Link:
