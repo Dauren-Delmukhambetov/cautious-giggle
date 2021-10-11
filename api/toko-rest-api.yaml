@@ -460,9 +460,6 @@ components:
           $ref: '#/components/schemas/Address'
         owner:
           type: string
-      required:
-        - id
-        - name
       example:
         id: 1
         mode: seller
