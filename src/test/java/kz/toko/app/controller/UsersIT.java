@@ -1,5 +1,7 @@
 package kz.toko.app.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import kz.toko.api.model.UpdateUserRequest;
 import kz.toko.app.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -18,9 +20,11 @@ import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TES
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
 @SqlGroup({
@@ -31,6 +35,9 @@ class UsersIT extends IntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
+
+    @Autowired
+    private ObjectMapper mapper;
 
     @Test
     @DisplayName("Should return users list for authenticated user")
@@ -77,5 +84,33 @@ class UsersIT extends IntegrationTest {
                 .andDo(print())
                 .andExpect(status().isNotFound())
                 .andExpect(content().contentType(APPLICATION_PROBLEM_JSON));
+    }
+
+    @Test
+    @DisplayName("Should update only user name")
+    void updateUser() throws Exception {
+        final var updateUserRequest = new UpdateUserRequest()
+                .email("updated_email@example.com");
+
+        this.mockMvc.perform(
+                patch("/users/{id}", 1)
+                        .with(validJwtToken())
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(updateUserRequest)))
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        this.mockMvc.perform(
+                get("/users/{id}", 1)
+                        .with(validJwtToken())
+                        .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.id", is(1)))
+                .andExpect(jsonPath("$.username", is("adam.smith")))
+                .andExpect(jsonPath("$.firstName", is("Adam")))
+                .andExpect(jsonPath("$.lastName", is("Smith")))
+                .andExpect(jsonPath("$.email", is("updated_email@example.com")))
+                .andExpect(jsonPath("$.phone", is("+7-777-999-88-77")));
     }
 }
