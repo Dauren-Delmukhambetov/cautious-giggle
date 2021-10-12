@@ -259,7 +259,7 @@ paths:
     patch:
       tags:
         - Users
-      summary: Updated user
+      summary: Update user
       description: This can only be done by the logged in user.
       operationId: updateUser
       parameters:
@@ -445,9 +445,6 @@ components:
     UpdateUserRequest:
       type: object
       properties:
-        username:
-          type: string
-          pattern: '^[A-Za-z\-_]$'
         firstName:
           type: string
         lastName:

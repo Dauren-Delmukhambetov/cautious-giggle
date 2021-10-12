@@ -89,7 +89,7 @@ class UsersIT extends IntegrationTest {
     @DisplayName("Should update only user name")
     void updateUser() throws Exception {
         final var updateUserRequest = new UpdateUserRequest()
-                .username("updated_username");
+                .email("updated_email@example.com");
 
         this.mockMvc.perform(
                 patch("/users/{id}", 1)
@@ -106,7 +106,10 @@ class UsersIT extends IntegrationTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.id", is(1)))
-                .andExpect(jsonPath("$.username", is("updated_username")))
-                .andExpect(jsonPath("$.firstName", is("Adam")));
+                .andExpect(jsonPath("$.username", is("adam.smith")))
+                .andExpect(jsonPath("$.firstName", is("Adam")))
+                .andExpect(jsonPath("$.lastName", is("Smith")))
+                .andExpect(jsonPath("$.email", is("updated_email@example.com")))
+                .andExpect(jsonPath("$.phone", is("+7-777-999-88-77")));
     }
 }
