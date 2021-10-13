@@ -11,8 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-import static java.util.Collections.emptyList;
 import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequiredArgsConstructor
@@ -24,12 +24,12 @@ public class StoreController implements StoresApi {
     @Override
     public ResponseEntity<Store> createStore(CreateStoreRequest request) {
         final var store = storeService.createNewStore(request);
-        return new ResponseEntity(mapper.toDto(store), CREATED);
+        return new ResponseEntity<>(mapper.toDto(store), CREATED);
     }
 
     @Override
     public ResponseEntity<List<Store>> getStores() {
-        return ResponseEntity.ok(emptyList());
+        return ok(mapper.toDto(storeService.getCurrentUserStores()));
     }
 }
 

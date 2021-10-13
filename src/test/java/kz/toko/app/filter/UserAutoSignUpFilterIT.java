@@ -8,6 +8,10 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc;
 
 import static kz.toko.app.util.TestConstants.MOCK_USER_DEFAULT_USERNAME;
+import static org.hamcrest.Matchers.contains;
+import static org.hamcrest.Matchers.containsInAnyOrder;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -37,11 +41,11 @@ class UserAutoSignUpFilterIT extends IntegrationTest {
                                 .contentType(APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.*.id", hasSize(1)))
-                .andExpect(jsonPath("$.[0].username", is(MOCK_USER_DEFAULT_USERNAME)))
-                .andExpect(jsonPath("$.[0].email", is("user@example.com")))
-                .andExpect(jsonPath("$.[0].firstName", is("John")))
-                .andExpect(jsonPath("$.[0].lastName", is("Locke")));
+                .andExpect(jsonPath("$.*.id", hasSize(greaterThanOrEqualTo(1))))
+                .andExpect(jsonPath("$.*.username", hasItem(MOCK_USER_DEFAULT_USERNAME)))
+                .andExpect(jsonPath("$.*.email", hasItem("user@example.com")))
+                .andExpect(jsonPath("$.*.firstName", hasItem("John")))
+                .andExpect(jsonPath("$.*.lastName", hasItem("Locke")));
     }
 
     @Test

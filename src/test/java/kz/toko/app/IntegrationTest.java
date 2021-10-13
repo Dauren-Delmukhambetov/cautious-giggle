@@ -8,15 +8,24 @@ import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequ
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
+import org.springframework.test.context.jdbc.SqlMergeMode;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.BEFORE_TEST_METHOD;
+import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
 
 @SpringBootTest
 @ActiveProfiles("it")
 @TestMethodOrder(MethodOrderer.MethodName.class)
-@Sql(value = "classpath:/db.scripts/delete_all_users.sql", executionPhase = AFTER_TEST_METHOD)
+@SqlMergeMode(MERGE)
+@SqlGroup({
+        @Sql(value = "classpath:/db.scripts/add_one_user.sql", executionPhase = BEFORE_TEST_METHOD),
+
+        @Sql(value = "classpath:/db.scripts/delete_all_products.sql", executionPhase = AFTER_TEST_METHOD),
+        @Sql(value = "classpath:/db.scripts/delete_all_stores.sql", executionPhase = AFTER_TEST_METHOD),
+        @Sql(value = "classpath:/db.scripts/delete_all_users.sql", executionPhase = AFTER_TEST_METHOD)
+})
 public abstract class IntegrationTest {
 
     /**
