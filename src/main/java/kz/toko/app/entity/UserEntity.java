@@ -13,8 +13,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Objects;
 
 import static java.util.Collections.emptySet;
 import static java.util.Objects.nonNull;
@@ -46,6 +44,7 @@ public class UserEntity extends AuditableEntity implements UserDetails {
     @Column
     private String password;
 
+    @Column
     private String phone;
 
     @Override

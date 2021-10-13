@@ -229,6 +229,68 @@ paths:
                 $ref: '#/components/schemas/User'
         401:
           description: The request requires user authentication
+  /users/{id}:
+    get:
+      tags:
+        - Users
+      summary: Get user by ID
+      description: >
+        This method returns user with given ID
+      operationId: getUser
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      responses:
+        200:
+          description:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/User'
+        404:
+          description: User with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The user has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+    patch:
+      tags:
+        - Users
+      summary: Update user
+      description: This can only be done by the logged in user.
+      operationId: updateUser
+      parameters:
+        - $ref: '#/components/parameters/EntityId'
+      requestBody:
+        description: Updated user object
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UpdateUserRequest'
+        required: true
+      responses:
+        204:
+          description: The user has been successfully updated
+        401:
+          description: The request requires user authentication
+        404:
+          description: User with a given ID has not beed found
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+        410:
+          description: The user has already been deleted
+          content:
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+
   /users/{userId}:
     delete:
       tags:
@@ -425,6 +487,24 @@ components:
         password: pa$$w0rd
         email: adam.smith@gmail.com
         phone: +997 (432) 234-45-45
+    UpdateUserRequest:
+      type: object
+      properties:
+        firstName:
+          type: string
+        lastName:
+          type: string
+        email:
+          type: string
+          format: email
+        phone:
+          type: string
+      example:
+        username: adam_smith
+        firstName: Adam
+        lastName: Smith
+        email: adam_smith@gmail.com
+        phone: +997-(777)-123-45-67
 
     ## Stores model
     CreateStoreRequest:

@@ -1,6 +1,8 @@
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Dauren-Delmukhambetov_cautious-giggle&metric=alert_status)](https://sonarcloud.io/dashboard?id=Dauren-Delmukhambetov_cautious-giggle)
 ![CI Pipeline](https://github.com/Dauren-Delmukhambetov/cautious-giggle/actions/workflows/gradle.yml/badge.svg)
+[![Deployment to AWS Elastic Beanstalk](https://github.com/Dauren-Delmukhambetov/cautious-giggle/actions/workflows/deployment.yaml/badge.svg)](https://github.com/Dauren-Delmukhambetov/cautious-giggle/actions/workflows/deployment.yaml)
 
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=Dauren-Delmukhambetov_cautious-giggle&metric=alert_status)](https://sonarcloud.io/dashboard?id=Dauren-Delmukhambetov_cautious-giggle)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=Dauren-Delmukhambetov_cautious-giggle&metric=coverage)](https://sonarcloud.io/dashboard?id=Dauren-Delmukhambetov_cautious-giggle)
 
 ---
 # Toko application

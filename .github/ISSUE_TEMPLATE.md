@@ -1,7 +1,7 @@
 
 ## Description
 
-In this task, we need to <!-- describe what have to be done in this task -->
+In this task, we need to <!-- describe what has to be done in this task -->
 
 ## Links to read
 
