@@ -1,7 +1,9 @@
 package kz.toko.app.config;
 
 import kz.toko.api.model.Product;
+import kz.toko.api.model.Store;
 import kz.toko.app.entity.ProductEntity;
+import kz.toko.app.entity.StoreEntity;
 import kz.toko.app.mapper.converter.ProductImageLinkConverter;
 import lombok.Setter;
 import org.modelmapper.ModelMapper;
@@ -42,5 +44,7 @@ public class MappingConfig {
         modelMapper.typeMap(ProductEntity.class, Product.class)
                 .addMappings(mapper -> mapper.using(productImageLinkConverter())
                         .map(ProductEntity::getImagePath, Product::setImageLink));
+        modelMapper.typeMap(StoreEntity.class, Store.class)
+                .addMapping(src -> src.getOwner().getFullName(), Store::setOwnerFullName);
     }
 }

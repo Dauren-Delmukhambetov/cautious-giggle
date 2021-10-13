@@ -458,7 +458,7 @@ components:
           type: string
         address:
           $ref: '#/components/schemas/Address'
-        owner:
+        ownerFullName:
           type: string
       example:
         id: 1
@@ -469,27 +469,27 @@ components:
     Address:
       type: object
       properties:
-        address_line:
+        addressLine:
           type: string
         city:
           type: string
-        admin_area:
+        adminArea:
           type: string
-        postal_code:
+        postalCode:
           type: string
           pattern: '^\d{6}$'
         country:
           type: string
           enum: [ KZ, BY ]
       required:
-        - address_line
+        - addressLine
         - city
-        - postal_code
+        - postalCode
         - country
       example:
-        address_line: улица Мухамеджана Тынышбаева, дом 24А
+        addressLine: улица Мухамеджана Тынышбаева, дом 24А
         city: Нур-Султан
-        postal_code: 010011
+        postalCode: 010011
         country: KZ
 
     ## Common model

@@ -72,4 +72,8 @@ public class UserEntity extends AuditableEntity implements UserDetails {
     public boolean isEnabled() {
         return nonNull(this.deletedAt);
     }
+
+    public String getFullName() {
+        return String.format("%s %s", this.firstName, this.lastName);
+    }
 }

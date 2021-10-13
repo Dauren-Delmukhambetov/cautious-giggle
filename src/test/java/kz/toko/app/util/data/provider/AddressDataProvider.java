@@ -1,6 +1,9 @@
 package kz.toko.app.util.data.provider;
 
+import kz.toko.api.model.Address;
 import kz.toko.app.entity.AddressEntity;
+
+import static kz.toko.api.model.Address.CountryEnum.BY;
 
 public final class AddressDataProvider {
 
@@ -14,4 +17,11 @@ public final class AddressDataProvider {
         return entity;
     }
 
+    public static Address buildAddress() {
+        return new Address()
+                .addressLine("Lenin avenue, 5/B")
+                .city("Minsk")
+                .postalCode("220054")
+                .country(BY);
+    }
 }
