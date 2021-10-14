@@ -18,11 +18,6 @@ public class StoreMapper implements EntityDtoMapper<StoreEntity, Store> {
         return modelMapper.map(entity, Store.class);
     }
 
-    @Override
-    public StoreEntity toEntity(Store dto) {
-        return modelMapper.map(dto, StoreEntity.class);
-    }
-
     public StoreEntity toEntity(CreateStoreRequest request) {
         return modelMapper.map(request, StoreEntity.class);
     }

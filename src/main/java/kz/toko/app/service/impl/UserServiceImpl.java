@@ -36,14 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        final var authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("Current user's ID is " + authentication.getName());
-        if (authentication.getPrincipal() instanceof Jwt) {
-            final var jwt = (Jwt) authentication.getPrincipal();
-            log.info("Current user's email is " + jwt.getClaim("email"));
-        }
-
-        var entities = new LinkedList<UserEntity>();
+        final var entities = new LinkedList<UserEntity>();
         repository.findAll().forEach(entities::add);
         return mapper.toDto(entities);
     }
