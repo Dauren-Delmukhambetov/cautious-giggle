@@ -1,4 +1,3 @@
-
 insert ignore into addresses (address_line, city, postal_code, country, created_at, created_by)
 values('Pushkin street, 34', 'Minsk', '220069', 'BY', current_timestamp, 'adam.smith');
 

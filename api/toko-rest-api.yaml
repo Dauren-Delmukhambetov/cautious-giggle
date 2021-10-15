@@ -524,6 +524,11 @@ components:
       example:
         mode: seller
         name: Grocery store on the st. Abay 12
+        address:
+          addressLine: "Pushkin street, 12"
+          city: "Minsk"
+          postalCode: "220067"
+          country: BY
 
     Store:
       type: object
@@ -567,10 +572,7 @@ components:
         - postalCode
         - country
       example:
-        addressLine: улица Мухамеджана Тынышбаева, дом 24А
-        city: Нур-Султан
-        postalCode: 010011
-        country: KZ
+        $ref: '#/components/examples/addressExample'
 
     ## Common model
     Link:
@@ -595,3 +597,15 @@ components:
           type: string
         params:
           type: object
+
+  examples:
+    addressExample:
+      value:
+        addressLine: улица Мухамеджана Тынышбаева, дом 24А
+        city: Нур-Султан
+        postalCode: 010011
+        country: KZ
+      summary: Sample address with only required fields
+
+
+

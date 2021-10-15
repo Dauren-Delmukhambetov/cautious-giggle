@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.validation.Valid;
 import java.util.List;
 
 import static org.springframework.http.HttpStatus.CREATED;
@@ -22,7 +23,7 @@ public class StoreController implements StoresApi {
     private final StoreMapper mapper;
 
     @Override
-    public ResponseEntity<Store> createStore(CreateStoreRequest request) {
+    public ResponseEntity<Store> createStore(@Valid CreateStoreRequest request) {
         final var store = storeService.createNewStore(request);
         return new ResponseEntity<>(mapper.toDto(store), CREATED);
     }
