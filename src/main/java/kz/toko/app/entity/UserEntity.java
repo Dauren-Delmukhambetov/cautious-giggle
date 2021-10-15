@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
 import java.util.Collection;
 
 import static java.util.Collections.emptySet;
@@ -40,8 +41,8 @@ public class UserEntity extends AuditableEntity implements UserDetails {
 
     private String email;
 
-    @NotEmpty
     @Column
+    @Size(min = 1, max = 100)
     private String password;
 
     @Column
