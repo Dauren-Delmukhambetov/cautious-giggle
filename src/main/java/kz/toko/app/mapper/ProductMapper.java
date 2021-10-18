@@ -19,11 +19,6 @@ public class ProductMapper implements EntityDtoMapper<ProductEntity, Product> {
         return modelMapper.map(entity, Product.class);
     }
 
-    @Override
-    public ProductEntity toEntity(Product dto) {
-        return modelMapper.map(dto, ProductEntity.class);
-    }
-
     public ProductEntity toEntity(CreateProductRequest request) {
         return modelMapper.map(request, ProductEntity.class);
     }

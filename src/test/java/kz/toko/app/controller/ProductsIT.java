@@ -31,9 +31,6 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @AutoConfigureMockMvc
-@SqlGroup({
-        @Sql(value = "classpath:/db.scripts/delete_all_products.sql", executionPhase = AFTER_TEST_METHOD)
-})
 class ProductsIT extends IntegrationTest {
 
     @Autowired

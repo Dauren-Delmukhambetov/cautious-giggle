@@ -11,10 +11,8 @@ import kz.toko.app.repository.UserRepository;
 import kz.toko.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -38,14 +36,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> findAll() {
-        final var authentication = SecurityContextHolder.getContext().getAuthentication();
-        log.info("Current user's ID is " + authentication.getName());
-        if (authentication.getPrincipal() instanceof Jwt) {
-            final var jwt = (Jwt) authentication.getPrincipal();
-            log.info("Current user's email is " + jwt.getClaim("email"));
-        }
-
-        var entities = new LinkedList<UserEntity>();
+        final var entities = new LinkedList<UserEntity>();
         repository.findAll().forEach(entities::add);
         return mapper.toDto(entities);
     }
