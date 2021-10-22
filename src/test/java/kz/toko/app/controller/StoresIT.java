@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static kz.toko.api.model.CreateStoreRequest.ModeEnum.SELLER;
 import static kz.toko.app.util.TestConstants.TEST_USER_FULL_NAME;
 import static kz.toko.app.util.data.provider.AddressDataProvider.buildAddress;
+import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -74,7 +75,7 @@ class StoresIT extends IntegrationTest {
                 .andExpect(status().isBadRequest())
                 .andExpect(jsonPath("$.message", notNullValue()))
                 .andExpect(jsonPath("$.exceptionClass", notNullValue()))
-                .andExpect(jsonPath("$.params", hasSize(1)));
+                .andExpect(jsonPath("$.params", hasKey("address")));
     }
 
     @Test
