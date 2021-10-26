@@ -134,3 +134,7 @@ check {
 jar {
     enabled = false
 }
+
+task version {
+    println project.version
+}
