@@ -48,7 +48,7 @@ jobs:
           APP_VERSION: ${{ needs.tagging.outputs.app-version }}
           TAG_VERSION: ${{ needs.tagging.outputs.tag-version }}
           TAG_ANNOTATION: ${{ needs.tagging.outputs.tag-annotation }}
-        if: $APP_VERSION != $TAG_VERSION
+        if: ${{ env.APP_VERSION != env.TAG_VERSION }}
         run: |
           git tag -a $APP_VERSION -m "New commits in this version:\n$TAG_ANNOTATION"
 
