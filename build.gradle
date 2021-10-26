@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'kz.toko'
-version = '0.2.1'
+version = '0.2.2'
 sourceCompatibility = '11'
 
 configurations {
@@ -133,4 +133,8 @@ check {
 
 jar {
     enabled = false
+}
+
+task version {
+    println project.version
 }
