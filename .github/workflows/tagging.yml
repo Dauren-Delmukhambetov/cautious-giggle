@@ -26,12 +26,14 @@ jobs:
         id: get-app-version
         run: |
           version="v$(./gradlew version -q)"
+          echo $version
           echo "::set-output name=app-version::$version"
 
       - name: Get the latest tag version
         id: get-tag-version
         run: |
           version="$(git describe)"
+          echo $version
           echo "::set-output name=tag-version::$version"
 
       - name: Prepare tag annotation from Git Log
@@ -39,7 +41,9 @@ jobs:
         env:
           TAG_VERSION: ${{ needs.tagging.outputs.tag-version }}
         run: |
+          echo $TAG_VERSION
           annotation=$(git log $TAG_VERSION..head --pretty=format:'-%s')
+          echo $annotation
           echo "::set-output name=tag-annotation::$annotation"
 
       - name: Create a new tag
