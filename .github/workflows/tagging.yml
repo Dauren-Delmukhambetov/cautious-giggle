@@ -43,7 +43,7 @@ jobs:
         run: |
           echo $TAG_VERSION
           git log v0.2.1..head --pretty=format:'-%s'
-          annotation="$(git log v0.2.1..head --pretty=format:'-%s')"
+          annotation="$(git log v0.2.1..origin/head --pretty=format:'-%s')"
           echo $annotation
           echo "::set-output name=tag-annotation::$annotation"
 
