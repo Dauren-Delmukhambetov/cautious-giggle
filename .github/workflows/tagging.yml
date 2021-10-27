@@ -46,6 +46,15 @@ jobs:
       #    annotation="$(git log v0.2.1..origin --pretty=format:'-%s')"
       #    echo $annotation
       #    echo "::set-output name=tag-annotation::$annotation"
+      
+      - name: Echo env vars
+        id: echo-env-var
+        env:
+          APP_VERSION: ${{ needs.tagging.outputs.app-version }}
+          TAG_VERSION: ${{ needs.tagging.outputs.tag-version }}
+        run: |
+          echo $APP_VERSION
+          echo $TAG_VERSION
 
       - name: Create a new tag
         id: create-new-tag
