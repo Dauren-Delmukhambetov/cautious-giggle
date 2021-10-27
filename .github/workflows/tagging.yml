@@ -36,26 +36,25 @@ jobs:
           echo $version
           echo "::set-output name=tag-version::$version"
 
-      - name: Prepare tag annotation from Git Log
-        id: get-tag-annotation
-        env:
-          TAG_VERSION: ${{ needs.tagging.outputs.tag-version }}
-        run: |
-          echo $TAG_VERSION
-          git log v0.2.1..origin --pretty=format:'-%s'
-          annotation="$(git log v0.2.1..origin --pretty=format:'-%s')"
-          echo $annotation
-          echo "::set-output name=tag-annotation::$annotation"
+      #- name: Prepare tag annotation from Git Log
+      #  id: get-tag-annotation
+      #  env:
+      #    TAG_VERSION: ${{ needs.tagging.outputs.tag-version }}
+      #  run: |
+      #    echo $TAG_VERSION
+      #    git log v0.2.1..origin --pretty=format:'-%s'
+      #    annotation="$(git log v0.2.1..origin --pretty=format:'-%s')"
+      #    echo $annotation
+      #    echo "::set-output name=tag-annotation::$annotation"
 
       - name: Create a new tag
         id: create-new-tag
         env:
           APP_VERSION: ${{ needs.tagging.outputs.app-version }}
           TAG_VERSION: ${{ needs.tagging.outputs.tag-version }}
-          TAG_ANNOTATION: ${{ needs.tagging.outputs.tag-annotation }}
         if: ${{ env.APP_VERSION != env.TAG_VERSION }}
         run: |
-          git tag -a $APP_VERSION -m "New commits in this version:\n$TAG_ANNOTATION"
+          git tag -a $APP_VERSION -m "Tag for version $APP_VERSION"
 
       - name: Push the tag
         id: push-tag
