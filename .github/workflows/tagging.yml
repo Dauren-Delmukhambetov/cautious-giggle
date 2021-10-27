@@ -42,7 +42,7 @@ jobs:
           TAG_VERSION: ${{ needs.tagging.outputs.tag-version }}
         run: |
           echo $TAG_VERSION
-          annotation=$(git log $TAG_VERSION..head --pretty=format:'-%s')
+          annotation="$(git log $TAG_VERSION..head --pretty=format:'-%s')"
           echo $annotation
           echo "::set-output name=tag-annotation::$annotation"
 
