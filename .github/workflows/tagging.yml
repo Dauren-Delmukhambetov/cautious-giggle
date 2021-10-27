@@ -53,8 +53,10 @@ jobs:
           APP_VERSION: ${{ needs.tagging.outputs.app-version }}
           TAG_VERSION: ${{ needs.tagging.outputs.tag-version }}
         run: |
-          echo $APP_VERSION
-          echo $TAG_VERSION
+          echo "start"
+          echo ">$APP_VERSION<"
+          echo ">$TAG_VERSION<"
+          echo "end"
 
       - name: Create a new tag
         id: create-new-tag
