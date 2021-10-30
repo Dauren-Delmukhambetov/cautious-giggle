@@ -4,6 +4,7 @@ import kz.toko.api.model.CreateUserRequest;
 import kz.toko.api.model.UpdateUserRequest;
 import kz.toko.api.model.User;
 import kz.toko.app.entity.UserEntity;
+import kz.toko.app.enumeration.Role;
 import kz.toko.app.exception.EntityDeletedException;
 import kz.toko.app.exception.EntityNotFoundException;
 import kz.toko.app.mapper.UserMapper;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 @Slf4j
 @Service
@@ -30,6 +32,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public User save(CreateUserRequest body) {
         UserEntity user = mapper.toEntity(body);
+        user.setRoles(Set.of(Role.USER));
         repository.save(user);
         return mapper.toDto(user);
     }

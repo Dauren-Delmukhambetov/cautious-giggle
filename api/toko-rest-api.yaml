@@ -290,8 +290,6 @@ paths:
             application/problem+json:
               schema:
                 $ref: '#/components/schemas/ErrorResponse'
-
-  /users/{userId}:
     delete:
       tags:
         - Users
@@ -299,7 +297,7 @@ paths:
       description: For valid response try integer IDs with positive integer value. Negative or non-integer values will generate API errors
       operationId: deleteUser
       parameters:
-        - name: userId
+        - name: id
           in: path
           description: ID of the user that needs to be deleted
           required: true
@@ -457,6 +455,14 @@ components:
           format: email
         phone:
           type: string
+        roles:
+          type: array
+          items:
+            type: string
+            default: USER
+            enum:
+              - USER
+              - ADMIN
     CreateUserRequest:
       type: object
       properties:
