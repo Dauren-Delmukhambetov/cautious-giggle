@@ -86,13 +86,13 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
         410:
           description: The product has already been deleted
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
     patch:
       tags:
         - Products
@@ -119,13 +119,13 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
         410:
           description: The product has already been deleted
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
     delete:
       tags:
         - Products
@@ -145,13 +145,13 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
         410:
           description: The product has already been deleted
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
   /products/{id}/image:
     post:
       tags:
@@ -182,13 +182,13 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
         410:
           description: The product has already been deleted
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
   ## Users API
   /users:
     get:
@@ -251,13 +251,13 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
         410:
           description: The user has already been deleted
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
     patch:
       tags:
         - Users
@@ -283,13 +283,13 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
         410:
           description: The user has already been deleted
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
     delete:
       tags:
         - Users
@@ -314,13 +314,13 @@ paths:
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
         410:
           description: User has already been deleted
           content:
             application/problem+json:
               schema:
-                $ref: '#/components/schemas/ErrorResponse'
+                $ref: '#/components/schemas/ErrorDetails'
 
   ## Stores API
   /stores:
@@ -594,7 +594,7 @@ components:
           type: string
           format: binary
 
-    ErrorResponse:
+    ErrorDetails:
       type: object
       properties:
         message:
@@ -603,6 +603,8 @@ components:
           type: string
         params:
           type: object
+          additionalProperties:
+            type: string
 
   examples:
     addressExample:
