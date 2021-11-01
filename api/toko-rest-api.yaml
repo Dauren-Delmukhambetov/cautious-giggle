@@ -13,6 +13,8 @@ servers:
     description: Current environment
   - url: http://toko-app-dev.us-east-1.elasticbeanstalk.com
     description: Development environment
+  - url: http://localhost:8080
+    description: Local environment
 tags:
   - name: Products
     description: Product API to manage user's product catalog
