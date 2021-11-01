@@ -95,6 +95,7 @@ class UsersIT extends IntegrationTest {
 
         this.mockMvc.perform(
                 post("/users")
+                        .with(validJwtToken())
                         .contentType(APPLICATION_JSON)
                         .content(mapper.writeValueAsString(createUserRequest)))
                 .andDo(print())
