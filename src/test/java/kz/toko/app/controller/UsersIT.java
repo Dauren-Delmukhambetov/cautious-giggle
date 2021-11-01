@@ -12,8 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
-import static org.hamcrest.Matchers.contains;
-import static org.hamcrest.Matchers.equalTo;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
@@ -104,8 +103,7 @@ class UsersIT extends IntegrationTest {
                 .andExpect(jsonPath("$.username", is("j_weak")))
                 .andExpect(jsonPath("$.firstName", is("John")))
                 .andExpect(jsonPath("$.lastName", is("Weak")))
-                .andExpect(jsonPath("$.password", notNullValue()))
-                .andExpect(jsonPath("$.roles", contains(equalTo(User.RolesEnum.USER))));
+                .andExpect(jsonPath("$.roles", hasItem(User.RolesEnum.USER.toString())));
 
     }
 
