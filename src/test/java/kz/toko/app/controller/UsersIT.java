@@ -3,7 +3,6 @@ package kz.toko.app.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kz.toko.api.model.CreateUserRequest;
 import kz.toko.api.model.UpdateUserRequest;
-import kz.toko.api.model.User;
 import kz.toko.app.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
@@ -12,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static kz.toko.app.enumeration.Role.USER;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -103,7 +103,7 @@ class UsersIT extends IntegrationTest {
                 .andExpect(jsonPath("$.username", is("j_weak")))
                 .andExpect(jsonPath("$.firstName", is("John")))
                 .andExpect(jsonPath("$.lastName", is("Weak")))
-                .andExpect(jsonPath("$.roles", hasItem(User.RolesEnum.USER.toString())));
+                .andExpect(jsonPath("$.roles", hasItem(USER.getAuthority())));
 
     }
 
