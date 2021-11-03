@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-public class CorsFilterIT extends IntegrationTest {
+class CorsFilterIT extends IntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
