@@ -38,6 +38,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         config.addAllowedMethod(HttpMethod.OPTIONS.name());
         config.addAllowedMethod(HttpMethod.DELETE.name());
         config.addAllowedMethod(HttpMethod.PATCH.name());
+        config.addAllowedMethod(HttpMethod.PUT.name());
         return config;
     }
 }
