@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation platform('software.amazon.awssdk:bom:2.17.76')
+    implementation platform('software.amazon.awssdk:bom:2.17.80')
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -48,7 +48,7 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.29'
-    swaggerUI 'org.webjars:swagger-ui:4.0.1'
+    swaggerUI 'org.webjars:swagger-ui:4.1.0'
 }
 
 swaggerSources {
