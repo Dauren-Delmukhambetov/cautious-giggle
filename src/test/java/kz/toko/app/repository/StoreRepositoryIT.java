@@ -15,7 +15,6 @@ import static kz.toko.app.util.data.provider.StoreDataProvider.buildStoreEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
-
 @DataJpaTest
 @WithMockUser
 @ActiveProfiles("it")

@@ -1,6 +1,5 @@
 package kz.toko.app.entity.audit;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
