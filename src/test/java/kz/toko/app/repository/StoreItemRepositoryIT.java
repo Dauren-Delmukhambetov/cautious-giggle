@@ -16,7 +16,7 @@ import static org.assertj.core.api.Assertions.assertThat;
         @Sql(value = "classpath:/db.scripts/add_one_product.sql"),
         @Sql(value = "classpath:/db.scripts/add_adam_store.sql")
 })
-public class StoreItemRepositoryIT extends PersistenceTest {
+class StoreItemRepositoryIT extends PersistenceTest {
 
     @Autowired
     private StoreItemRepository repository;
