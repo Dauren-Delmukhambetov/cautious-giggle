@@ -17,6 +17,6 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 public abstract class PersistenceTest {
 
     @Autowired
-    private TestEntityManager entityManager;
+    protected TestEntityManager entityManager;
 
 }
