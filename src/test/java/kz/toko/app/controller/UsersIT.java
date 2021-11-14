@@ -103,6 +103,7 @@ class UsersIT extends IntegrationTest {
                 .andExpect(jsonPath("$.username", is("j_weak")))
                 .andExpect(jsonPath("$.firstName", is("John")))
                 .andExpect(jsonPath("$.lastName", is("Weak")))
+                .andExpect(jsonPath("$.roles", hasSize(1)))
                 .andExpect(jsonPath("$.roles", hasItem(USER.getAuthority())));
 
     }
