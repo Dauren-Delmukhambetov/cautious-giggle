@@ -17,7 +17,7 @@ public class StoreItemDataProvider {
         entity.setPrice(BigDecimal.valueOf(123.45));
         entity.setAmount(BigDecimal.valueOf(987.65));
         entity.setMeasureUnit(MeasureUnit.PIECES);
-        entity.setActiveSince(LocalDateTime.now());
+        entity.setActiveSince(LocalDateTime.now().minusDays(3));
         entity.setActiveTill(entity.getActiveSince().plusMonths(1));
         return entity;
     }
