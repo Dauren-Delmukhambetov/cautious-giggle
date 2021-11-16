@@ -1,6 +1,7 @@
 package kz.toko.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import kz.toko.api.model.CreateUserRequest;
 import kz.toko.api.model.UpdateUserRequest;
 import kz.toko.app.IntegrationTest;
 import org.junit.jupiter.api.DisplayName;
@@ -10,13 +11,17 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
 
+import static kz.toko.app.enumeration.Role.USER;
+import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 import static org.springframework.http.MediaType.APPLICATION_PROBLEM_JSON;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -79,7 +84,32 @@ class UsersIT extends IntegrationTest {
     }
 
     @Test
-    @DisplayName("Should update only user name")
+    @DisplayName("Should create new user with default role")
+    void createUser() throws Exception {
+        final var createUserRequest = new CreateUserRequest()
+                .username("j_weak")
+                .firstName("John")
+                .lastName("Weak")
+                .password("password");
+
+        this.mockMvc.perform(
+                post("/users")
+                        .with(validJwtToken())
+                        .contentType(APPLICATION_JSON)
+                        .content(mapper.writeValueAsString(createUserRequest)))
+                .andDo(print())
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.id", notNullValue()))
+                .andExpect(jsonPath("$.username", is("j_weak")))
+                .andExpect(jsonPath("$.firstName", is("John")))
+                .andExpect(jsonPath("$.lastName", is("Weak")))
+                .andExpect(jsonPath("$.roles", hasSize(1)))
+                .andExpect(jsonPath("$.roles", hasItem(USER.getAuthority())));
+
+    }
+
+    @Test
+    @DisplayName("Should update only user email")
     void updateUser() throws Exception {
         final var updateUserRequest = new UpdateUserRequest()
                 .email("updated_email@example.com");
