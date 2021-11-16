@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import javax.validation.Valid;
 import java.util.List;
 
+import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.http.ResponseEntity.noContent;
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -23,7 +24,7 @@ public class UserController implements UsersApi {
 
     @Override
     public ResponseEntity<User> createUser(@Valid CreateUserRequest body) {
-        return ok(userService.save(body));
+        return new ResponseEntity<>(userService.save(body), CREATED);
     }
 
     @Override
