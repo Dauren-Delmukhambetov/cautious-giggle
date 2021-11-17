@@ -4,27 +4,14 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.ActiveProfiles;
 
 import java.time.LocalDateTime;
 
 import static kz.toko.app.util.TestConstants.MOCK_USER_DEFAULT_USERNAME;
 import static kz.toko.app.util.data.provider.UserDataProvider.buildUserEntity;
 import static org.assertj.core.api.Assertions.assertThat;
-import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
-@DataJpaTest
-@WithMockUser
-@ActiveProfiles("it")
-@AutoConfigureTestDatabase(replace = NONE)
-class UserRepositoryIT {
-
-    @Autowired
-    private TestEntityManager entityManager;
+class UserRepositoryIT extends PersistenceTest {
 
     @Autowired
     private UserRepository repository;

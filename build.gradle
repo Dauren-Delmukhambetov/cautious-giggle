@@ -8,7 +8,7 @@ plugins {
 }
 
 group = 'kz.toko'
-version = '0.2.2'
+version = '0.2.3'
 sourceCompatibility = '11'
 
 configurations {
@@ -31,7 +31,7 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'io.swagger.core.v3:swagger-annotations:2.1.11'
-    implementation 'org.flywaydb:flyway-core'
+    implementation 'org.flywaydb:flyway-core:8.0.2'
     implementation 'io.swagger:swagger-annotations:1.6.3'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'org.modelmapper:modelmapper:2.4.4'
@@ -39,14 +39,14 @@ dependencies {
     implementation 'commons-io:commons-io:2.11.0'
     implementation 'software.amazon.awssdk:s3'
 
-    compileOnly 'org.projectlombok:lombok'
-    runtimeOnly 'mysql:mysql-connector-java'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compileOnly 'org.projectlombok:lombok:1.18.22'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.25'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.5.6'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.5.6'
+    testImplementation 'org.springframework.security:spring-security-test:5.5.1'
 
-    annotationProcessor 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok:1.18.22'
     swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.29'
     swaggerUI 'org.webjars:swagger-ui:4.1.0'
 }

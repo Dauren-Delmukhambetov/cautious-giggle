@@ -4,6 +4,11 @@ spring:
     username: test
     password: test
     driver-class-name: com.mysql.jdbc.Driver
+  jpa:
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
 storage:
   endpoint: https://play.min.io
   access-key: Q3AM3UQ867SPQQA43P2F
