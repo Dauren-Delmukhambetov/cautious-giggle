@@ -5,6 +5,7 @@ import kz.toko.api.model.CreateProductRequest;
 import kz.toko.api.model.Link;
 import kz.toko.api.model.Product;
 import kz.toko.api.model.UpdateProductRequest;
+import kz.toko.app.mapper.ProductMapper;
 import kz.toko.app.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -22,6 +23,7 @@ import static org.springframework.http.ResponseEntity.ok;
 public class ProductController implements ProductsApi {
 
     private final ProductService productService;
+    private final ProductMapper mapper;
 
     @Override
     public ResponseEntity<Product> createProduct(@Valid final CreateProductRequest body) {
@@ -36,7 +38,7 @@ public class ProductController implements ProductsApi {
 
     @Override
     public ResponseEntity<Product> getProduct(Long id) {
-        return ResponseEntity.ok(productService.findById(id));
+        return ResponseEntity.ok(mapper.toDto(productService.findById(id)));
     }
 
     @Override
@@ -53,7 +55,7 @@ public class ProductController implements ProductsApi {
     @Override
     public ResponseEntity<Link> uploadImage(final Long id, final MultipartFile file) {
         productService.setProductImage(id, file);
-        final var product = productService.findById(id);
+        final var product = mapper.toDto(productService.findById(id));
         return new ResponseEntity<>(new Link().link(product.getImageLink()), CREATED);
     }
 }

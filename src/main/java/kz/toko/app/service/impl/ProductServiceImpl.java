@@ -52,9 +52,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public Product findById(final Long id) {
-        final var entity = getAccessibleProduct(id);
-        return mapper.toDto(entity);
+    public ProductEntity findById(final Long id) {
+        return getAccessibleProduct(id);
     }
 
     @Override

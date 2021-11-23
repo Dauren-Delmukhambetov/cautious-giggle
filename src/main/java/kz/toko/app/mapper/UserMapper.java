@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class UserMapper implements EntityDtoMapper<UserEntity, User> {
+public class UserMapper implements EntityDtoMapper<UserEntity, User, CreateUserRequest> {
 
     private final ModelMapper modelMapper;
 
@@ -19,6 +19,7 @@ public class UserMapper implements EntityDtoMapper<UserEntity, User> {
         return modelMapper.map(entity, User.class);
     }
 
+    @Override
     public UserEntity toEntity(CreateUserRequest dto) {
         return modelMapper.map(dto, UserEntity.class);
     }

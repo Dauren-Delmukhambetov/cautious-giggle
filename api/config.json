@@ -1,5 +1,6 @@
 {
   "library": "spring-boot",
   "modelPackage": "kz.toko.api.model",
-  "apiPackage": "kz.toko.api"
+  "apiPackage": "kz.toko.api",
+  "dateLibrary": "java8"
 }

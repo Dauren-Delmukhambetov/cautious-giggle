@@ -11,4 +11,6 @@ public interface StoreService {
 
     List<StoreEntity> getCurrentUserStores();
 
+    StoreEntity findById(Long id);
+
 }

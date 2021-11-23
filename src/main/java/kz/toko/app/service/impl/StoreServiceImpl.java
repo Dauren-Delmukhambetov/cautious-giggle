@@ -2,6 +2,7 @@ package kz.toko.app.service.impl;
 
 import kz.toko.api.model.CreateStoreRequest;
 import kz.toko.app.entity.StoreEntity;
+import kz.toko.app.exception.EntityNotFoundException;
 import kz.toko.app.mapper.StoreMapper;
 import kz.toko.app.repository.StoreRepository;
 import kz.toko.app.service.StoreService;
@@ -29,5 +30,11 @@ public class StoreServiceImpl implements StoreService {
     @Override
     public List<StoreEntity> getCurrentUserStores() {
         return repository.findByOwnerId(currentUserService.getCurrentUser().getId());
+    }
+
+    @Override
+    public StoreEntity findById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Store", id));
     }
 }
