@@ -2,7 +2,6 @@ package kz.toko.app.mapper.converter;
 
 import kz.toko.app.entity.StoreEntity;
 import kz.toko.app.repository.StoreRepository;
-import kz.toko.app.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.Converter;
 import org.modelmapper.spi.MappingContext;
