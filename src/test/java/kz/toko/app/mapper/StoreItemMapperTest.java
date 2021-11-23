@@ -58,8 +58,8 @@ class StoreItemMapperTest {
         assertThat(entity.getActiveSince().toLocalDate()).isEqualTo(request.getActiveSince());
         assertThat(entity.getActiveTill().toLocalDate()).isEqualTo(request.getActiveTill());
         assertThat(entity.getMeasureUnit().name()).isEqualTo(request.getMeasureUnit().name());
-        assertThat(entity.getAmount().compareTo(BigDecimal.valueOf(request.getAmount()))).isZero();
-        assertThat(entity.getPrice().compareTo(BigDecimal.valueOf(request.getPrice()))).isZero();
+        assertThat(entity.getAmount()).isEqualByComparingTo(BigDecimal.valueOf(request.getAmount()));
+        assertThat(entity.getPrice()).isEqualByComparingTo(BigDecimal.valueOf(request.getPrice()));
     }
 
     @Test
