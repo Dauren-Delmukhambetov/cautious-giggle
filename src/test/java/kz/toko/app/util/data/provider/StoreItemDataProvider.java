@@ -1,7 +1,6 @@
 package kz.toko.app.util.data.provider;
 
 import kz.toko.api.model.CreateStoreItemRequest;
-import kz.toko.api.model.CreateStoreRequest;
 import kz.toko.app.entity.MeasureUnit;
 import kz.toko.app.entity.ProductEntity;
 import kz.toko.app.entity.StoreEntity;
@@ -33,14 +32,17 @@ public class StoreItemDataProvider {
     }
 
     public static CreateStoreItemRequest buildCreateStoreItemRequest() {
+        return buildCreateStoreItemRequest(123L, 456L);
+    }
+
+    public static CreateStoreItemRequest buildCreateStoreItemRequest(final Long productId, final Long storeId) {
         return new CreateStoreItemRequest()
-                .productId(123L)
-                .storeId(456L)
+                .productId(productId)
+                .storeId(storeId)
                 .price(123.45)
                 .amount(987.65)
                 .measureUnit(PIECES)
                 .activeSince(LocalDate.now().minusDays(3))
                 .activeTill(LocalDate.now().plusMonths(1));
     }
-
 }
