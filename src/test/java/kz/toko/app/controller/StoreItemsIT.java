@@ -12,6 +12,8 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import static kz.toko.app.util.data.provider.StoreItemDataProvider.buildCreateStoreItemRequest;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
+import static org.hamcrest.Matchers.hasKey;
+import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
@@ -21,7 +23,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @AutoConfigureMockMvc
-public class StoreItemsIT extends IntegrationTest {
+class StoreItemsIT extends IntegrationTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -56,6 +58,25 @@ public class StoreItemsIT extends IntegrationTest {
                         jsonPath("$.measureUnit", equalToIgnoringCase(request.getMeasureUnit().name())),
                         jsonPath("$.activeSince", is(request.getActiveSince().toString())),
                         jsonPath("$.activeTill", is(request.getActiveTill().toString()))
+                );
+    }
+
+    @Test
+    @DisplayName("Should return 404 Bad Request code on missing product and store IDs")
+    void shouldReturnBadRequestCode() throws Exception {
+        final var request = buildCreateStoreItemRequest(null, null);
+
+        this.mockMvc.perform(
+                        post("/store-items")
+                                .with(validJwtToken())
+                                .contentType(APPLICATION_JSON)
+                                .content(mapper.writeValueAsString(request)))
+                .andDo(print())
+                .andExpect(status().isBadRequest())
+                .andExpectAll(
+                        jsonPath("$.params.*", hasSize(2)),
+                        jsonPath("$.params", hasKey("productId")),
+                        jsonPath("$.params", hasKey("storeId"))
                 );
     }
 }
