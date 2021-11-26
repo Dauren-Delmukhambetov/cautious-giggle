@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 @RequiredArgsConstructor
-public class StoreMapper implements EntityDtoMapper<StoreEntity, Store> {
+public class StoreMapper implements EntityDtoMapper<StoreEntity, Store, CreateStoreRequest> {
 
     private final ModelMapper modelMapper;
 
@@ -18,6 +18,7 @@ public class StoreMapper implements EntityDtoMapper<StoreEntity, Store> {
         return modelMapper.map(entity, Store.class);
     }
 
+    @Override
     public StoreEntity toEntity(CreateStoreRequest request) {
         return modelMapper.map(request, StoreEntity.class);
     }

@@ -9,6 +9,8 @@ spring:
     properties:
       hibernate:
         format_sql: true
+  flyway:
+    out-of-order: true
 storage:
   endpoint: https://play.min.io
   access-key: Q3AM3UQ867SPQQA43P2F

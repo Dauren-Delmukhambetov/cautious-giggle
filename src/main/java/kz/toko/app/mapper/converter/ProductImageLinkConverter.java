@@ -17,7 +17,7 @@ public class ProductImageLinkConverter implements Converter<String, String> {
         return resolveLink(context.getSource());
     }
 
-    private String resolveLink(final String imagePath) {
+    protected String resolveLink(final String imagePath) {
         return String.format("%s/%s", this.endpoint, imagePath);
     }
 }

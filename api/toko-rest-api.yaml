@@ -508,6 +508,96 @@ components:
         email: adam_smith@gmail.com
         phone: +997-(777)-123-45-67
 
+    CreateStoreItemRequest:
+      type: object
+      properties:
+        productId:
+          type: integer
+          format: int64
+        storeId:
+          type: integer
+          format: int64
+        price:
+          type: number
+          format: double
+        amount:
+          type: number
+          format: double
+        measureUnit:
+          $ref: '#/components/schemas/MeasureUnit'
+        activeSince:
+          type: string
+          format: date
+        activeTill:
+          type: string
+          format: date
+      required:
+        - productId
+        - storeId
+        - price
+        - amount
+        - measureUnit
+        - activeSince
+        - activeTill
+      example:
+        productId: 123
+        storeId: 456
+        price: 98.76
+        amount: 12
+        measureUnit: pieces
+        activeSince: 2021-11-15
+        activeTill: 2021-12-31
+
+    StoreItem:
+      type: object
+      properties:
+        itemId:
+          type: integer
+          format: int64
+        productId:
+          type: integer
+          format: int64
+        productName:
+          type: string
+        productImageLink:
+          type: string
+          format: uri
+        storeId:
+          type: integer
+          format: int64
+        storeName:
+          type: string
+        price:
+          type: number
+          format: double
+        amount:
+          type: number
+          format: double
+        measureUnit:
+          $ref: '#/components/schemas/MeasureUnit'
+        activeSince:
+          type: string
+          format: date
+        activeTill:
+          type: string
+          format: date
+      example:
+        itemId: 789
+        productId: 123
+        productName: "ASU Газированная РЕТ 1л"
+        productImageLink: https://api.rgbrands.com/uploads/0/2369-2268_a_su_gaz_1.png
+        storeId: 456
+        storeName: "Grocery store on the st. Abay 12"
+        price: 98.76
+        amount: 12
+        measureUnit: pieces
+        activeSince: 2021-11-15
+        activeTill: 2021-12-31
+
+    MeasureUnit:
+      type: string
+      enum: [ gram, kilogram, litre, metre, pieces ]
+
     ## Stores model
     CreateStoreRequest:
       type: object

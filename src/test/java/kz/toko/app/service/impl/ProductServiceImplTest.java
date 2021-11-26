@@ -7,13 +7,11 @@ import kz.toko.app.exception.EntityNotFoundException;
 import kz.toko.app.mapper.ProductMapper;
 import kz.toko.app.repository.ProductRepository;
 import kz.toko.app.service.FileStorageService;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
@@ -43,8 +41,6 @@ class ProductServiceImplTest {
     void findById() {
         when(repository.findById(123L))
                 .thenReturn(Optional.of(new ProductEntity()));
-        when(mapper.toDto(new ProductEntity()))
-                .thenReturn(new Product());
 
         final var product = productService.findById(123L);
 
