@@ -25,6 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers("/users/**").authenticated()
                 .antMatchers("/stores/**").authenticated()
+                .antMatchers("/store-items/**").authenticated()
                 .antMatchers("/**").permitAll()
                 .and()
                 .oauth2ResourceServer()

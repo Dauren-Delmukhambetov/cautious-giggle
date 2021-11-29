@@ -22,6 +22,8 @@ tags:
     description: Operations about user
   - name: Stores
     description: Stores API to manage stores
+  - name: Store Items
+    description: Store Items API to manage products balance in stores
 security:
   - OpenIDConnectAuth:
       - openid
@@ -355,6 +357,32 @@ paths:
             application/json:
               schema:
                 $ref: '#/components/schemas/Store'
+        401:
+          description: The request requires user authentication
+        400:
+          description: The request is not valid and cannot be acccepted
+
+  ## Store Items API
+  /store-items:
+    post:
+      tags:
+        - Store Items
+      summary: Adds store item to store
+      operationId: addStoreItem
+      requestBody:
+        description: New store item creation request
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/CreateStoreItemRequest'
+        required: true
+      responses:
+        201:
+          description: New store item has been successfully added
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreItem'
         401:
           description: The request requires user authentication
         400:
