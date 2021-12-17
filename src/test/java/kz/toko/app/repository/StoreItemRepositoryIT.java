@@ -61,9 +61,10 @@ class StoreItemRepositoryIT extends PersistenceTest {
 
         final var storeItems = repository.findAll(specification);
 
-        assertThat(storeItems).isNotNull().hasSize(2);
-        assertThat(storeItems).allMatch(sie ->  storeIds.contains(sie.getStore().getId()));
-        assertThat(storeItems).allMatch(sie ->  sie.getStore().getDeletedAt() == null);
+        assertThat(storeItems)
+                .hasSize(2)
+                .allMatch(sie ->  storeIds.contains(sie.getStore().getId()))
+                .allMatch(sie ->  sie.getStore().getDeletedAt() == null);
     }
 
     @Test
@@ -76,8 +77,9 @@ class StoreItemRepositoryIT extends PersistenceTest {
 
         final var storeItems = repository.findAll(specification);
 
-        assertThat(storeItems).isNotNull().hasSize(2);
-        assertThat(storeItems).allMatch(sie ->  sie.getStore().getDeletedAt() == null);
+        assertThat(storeItems)
+                .hasSize(2)
+                .allMatch(sie ->  sie.getStore().getDeletedAt() == null);
     }
 
     @Test
