@@ -55,13 +55,16 @@ public class StoreItemSpecification implements Specification<StoreItemEntity> {
         switch (expirationStatus) {
             case EXPIRED:
                 predicates.add(criteriaBuilder.lessThan(root.get("activeTill"), currentDateTime));
+                break;
             case CURRENTLY_ACTIVE:
                 predicates.add(criteriaBuilder.and(
                         criteriaBuilder.lessThanOrEqualTo(root.get("activeSince"), currentDateTime),
                         criteriaBuilder.greaterThan(root.get("activeTill"), currentDateTime)
                 ));
+                break;
             case UPCOMING:
                 predicates.add(criteriaBuilder.greaterThan(root.get("activeSince"), currentDateTime));
+                break;
         }
     }
 
