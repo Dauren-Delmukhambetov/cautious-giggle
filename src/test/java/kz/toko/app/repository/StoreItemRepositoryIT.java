@@ -9,11 +9,13 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.jdbc.SqlMergeMode;
 
-import java.time.LocalDate;
-import java.time.ZoneOffset;
+import java.time.LocalDateTime;
 import java.util.Set;
 
 import static java.util.Collections.emptySet;
+import static kz.toko.app.repository.specification.StoreItemSpecification.ExpirationStatus.CURRENTLY_ACTIVE;
+import static kz.toko.app.repository.specification.StoreItemSpecification.ExpirationStatus.EXPIRED;
+import static kz.toko.app.repository.specification.StoreItemSpecification.ExpirationStatus.UPCOMING;
 import static kz.toko.app.util.data.provider.StoreItemDataProvider.buildStoreItemEntity;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE;
@@ -62,7 +64,7 @@ class StoreItemRepositoryIT extends PersistenceTest {
         final var storeItems = repository.findAll(specification);
 
         assertThat(storeItems)
-                .hasSize(2)
+                .hasSize(3)
                 .allMatch(sie ->  storeIds.contains(sie.getStore().getId()))
                 .allMatch(sie ->  sie.getStore().getDeletedAt() == null);
     }
@@ -78,14 +80,14 @@ class StoreItemRepositoryIT extends PersistenceTest {
         final var storeItems = repository.findAll(specification);
 
         assertThat(storeItems)
-                .hasSize(2)
+                .hasSize(3)
                 .allMatch(sie ->  sie.getStore().getDeletedAt() == null);
     }
 
     @Test
-    @DisplayName("should return only active on a specific date store items")
-    void shouldReturnOnlyActiveStoreItems() {
-        final var dateTime = LocalDate.of(2015, 7, 3).atStartOfDay(ZoneOffset.UTC).toLocalDateTime();
+    @DisplayName("should return active on a specific date store items")
+    void shouldReturnActiveOnDateStoreItems() {
+        final var dateTime = LocalDateTime.now().minusMonths(11);
         final var specification = new StoreItemSpecification(emptySet(), emptySet(), dateTime.toLocalDate(), null);
 
         final var storeItems = repository.findAll(specification);
@@ -95,5 +97,50 @@ class StoreItemRepositoryIT extends PersistenceTest {
                 .allMatch(sie ->  sie.getStore().getDeletedAt() == null)
                 .allMatch(sie -> sie.getActiveSince().isBefore(dateTime))
                 .allMatch(sie -> sie.getActiveTill().isAfter(dateTime));
+    }
+
+    @Test
+    @DisplayName("should return expired store items")
+    void shouldReturnExpiredStoreItems() {
+        final var today = LocalDateTime.now();
+        final var specification = new StoreItemSpecification(null, null, null, EXPIRED);
+
+        final var storeItems = repository.findAll(specification);
+
+        assertThat(storeItems)
+                .hasSize(1)
+                .allMatch(sie ->  sie.getStore().getDeletedAt() == null)
+                .allMatch(sie -> sie.getActiveSince().isBefore(today))
+                .allMatch(sie -> sie.getActiveTill().isBefore(today));
+    }
+
+    @Test
+    @DisplayName("should return upcoming store items")
+    void shouldReturnUpcomingStoreItems() {
+        final var today = LocalDateTime.now();
+        final var specification = new StoreItemSpecification(null, null, null, UPCOMING);
+
+        final var storeItems = repository.findAll(specification);
+
+        assertThat(storeItems)
+                .hasSize(1)
+                .allMatch(sie ->  sie.getStore().getDeletedAt() == null)
+                .allMatch(sie -> sie.getActiveSince().isAfter(today))
+                .allMatch(sie -> sie.getActiveTill().isAfter(today));
+    }
+
+    @Test
+    @DisplayName("should return currently active store items")
+    void shouldReturnCurrentlyActiveStoreItems() {
+        final var today = LocalDateTime.now();
+        final var specification = new StoreItemSpecification(null, null, null, CURRENTLY_ACTIVE);
+
+        final var storeItems = repository.findAll(specification);
+
+        assertThat(storeItems)
+                .hasSize(1)
+                .allMatch(sie ->  sie.getStore().getDeletedAt() == null)
+                .allMatch(sie -> sie.getActiveSince().isBefore(today))
+                .allMatch(sie -> sie.getActiveTill().isAfter(today));
     }
 }
