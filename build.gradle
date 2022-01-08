@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.6.1'
+    id 'org.springframework.boot' version '2.6.2'
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id 'java'
     id 'org.hidetake.swagger.generator' version '2.19.1'
@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation platform('software.amazon.awssdk:bom:2.17.100')
+    implementation platform('software.amazon.awssdk:bom:2.17.104')
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -30,10 +30,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'io.swagger.core.v3:swagger-annotations:2.1.11'
-    implementation 'org.flywaydb:flyway-core:8.2.3'
+    implementation 'io.swagger.core.v3:swagger-annotations:2.1.12'
+    implementation 'org.flywaydb:flyway-core:8.3.0'
     implementation 'org.flywaydb:flyway-mysql:8.3.0'
-    implementation 'io.swagger:swagger-annotations:1.6.3'
+    implementation 'io.swagger:swagger-annotations:1.6.4'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'org.modelmapper:modelmapper:2.4.5'
     implementation 'io.minio:minio:8.2.2'
@@ -42,13 +42,13 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.22'
     runtimeOnly 'mysql:mysql-connector-java:8.0.27'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.1'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.6.2'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.1'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.2'
     testImplementation 'org.springframework.security:spring-security-test:5.6.1'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
-    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.30'
+    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.31'
     swaggerUI 'org.webjars:swagger-ui:4.1.3'
 }
 
