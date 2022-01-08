@@ -22,9 +22,7 @@ import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE
 @SqlGroup({
         @Sql(value = "classpath:/db.scripts/add_one_user.sql", executionPhase = BEFORE_TEST_METHOD),
 
-        @Sql(value = "classpath:/db.scripts/delete_all_products.sql", executionPhase = AFTER_TEST_METHOD),
-        @Sql(value = "classpath:/db.scripts/delete_all_stores.sql", executionPhase = AFTER_TEST_METHOD),
-        @Sql(value = "classpath:/db.scripts/delete_all_users.sql", executionPhase = AFTER_TEST_METHOD)
+        @Sql(value = "classpath:/db.scripts/delete_all_records.sql", executionPhase = AFTER_TEST_METHOD),
 })
 public abstract class IntegrationTest {
 

@@ -7,6 +7,8 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
+import org.springframework.test.context.jdbc.SqlGroup;
 
 import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase.Replace.NONE;
 
@@ -14,6 +16,9 @@ import static org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTest
 @WithMockUser
 @ActiveProfiles("it")
 @AutoConfigureTestDatabase(replace = NONE)
+@SqlGroup({
+        @Sql(value = "classpath:/db.scripts/delete_all_records.sql", executionPhase = Sql.ExecutionPhase.AFTER_TEST_METHOD)
+})
 public abstract class PersistenceTest {
 
     @Autowired

@@ -1,6 +1,5 @@
 package kz.toko.app.service.impl;
 
-import kz.toko.api.model.Product;
 import kz.toko.app.entity.ProductEntity;
 import kz.toko.app.exception.EntityDeletedException;
 import kz.toko.app.exception.EntityNotFoundException;
