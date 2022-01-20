@@ -31,7 +31,7 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'io.swagger.core.v3:swagger-annotations:2.1.12'
-    implementation 'org.flywaydb:flyway-core:8.4.1'
+    implementation 'org.flywaydb:flyway-core:8.4.2'
     implementation 'org.flywaydb:flyway-mysql:8.4.1'
     implementation 'io.swagger:swagger-annotations:1.6.4'
     implementation 'javax.validation:validation-api:2.0.1.Final'
