@@ -7,15 +7,14 @@
 ---
 # Toko application
 
-The back-end application for Toko project
+The back-end application for the Toko project
 
 ## Installation
  
 Set environment up to run application by starting containers: 
 
 ```bash
-docker-compose up --no-start # to download and install images 
-docker-compose start # to start containers
+docker-compose up -d # to download and install images in detached mode
 docker-compose ps # to check containers status
 ```
 
@@ -24,8 +23,7 @@ docker-compose ps # to check containers status
 For integration tests database is required. Run database in container:
 
 ```bash
-docker-compose -f docker-compose.it.yaml up --no-start
-docker-compose -f docker-compose.it.yaml start
+docker-compose -f docker-compose.it.yaml up -d
 docker-compose -f docker-compose.it.yaml ps
 ```
 

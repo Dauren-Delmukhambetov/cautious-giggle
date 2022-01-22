@@ -9,5 +9,5 @@ This pull request closes # <!-- mention task here --> and embraces changes on :
 ## Check-list
 
 - [ ] Project version in `build.gradle` has been updated;
-- [ ] Unit and integration tests has been added;
+- [ ] Unit and integration tests have been added or updated;
 - [ ] Changes have been manually tested;
