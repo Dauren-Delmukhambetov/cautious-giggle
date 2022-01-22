@@ -12,6 +12,7 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.test.web.servlet.MockMvc;
 
 import static kz.toko.app.enumeration.Role.USER;
+import static kz.toko.app.util.data.provider.FakeDataProvider.faker;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -87,10 +88,10 @@ class UsersIT extends IntegrationTest {
     @DisplayName("Should create new user with default role")
     void createUser() throws Exception {
         final var createUserRequest = new CreateUserRequest()
-                .username("j_weak")
-                .firstName("John")
-                .lastName("Weak")
-                .password("password");
+                .username(faker.name().username())
+                .firstName(faker.name().firstName())
+                .lastName(faker.name().lastName())
+                .password(faker.internet().password());
 
         this.mockMvc.perform(
                 post("/users")
@@ -100,9 +101,9 @@ class UsersIT extends IntegrationTest {
                 .andDo(print())
                 .andExpect(status().isCreated())
                 .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.username", is("j_weak")))
-                .andExpect(jsonPath("$.firstName", is("John")))
-                .andExpect(jsonPath("$.lastName", is("Weak")))
+                .andExpect(jsonPath("$.username", is(createUserRequest.getUsername())))
+                .andExpect(jsonPath("$.firstName", is(createUserRequest.getFirstName())))
+                .andExpect(jsonPath("$.lastName", is(createUserRequest.getLastName())))
                 .andExpect(jsonPath("$.roles", hasSize(1)))
                 .andExpect(jsonPath("$.roles", hasItem(USER.getAuthority())));
 
@@ -112,7 +113,7 @@ class UsersIT extends IntegrationTest {
     @DisplayName("Should update only user email")
     void updateUser() throws Exception {
         final var updateUserRequest = new UpdateUserRequest()
-                .email("updated_email@example.com");
+                .email(faker.internet().emailAddress());
 
         this.mockMvc.perform(
                 patch("/users/{id}", 1)
@@ -132,7 +133,7 @@ class UsersIT extends IntegrationTest {
                 .andExpect(jsonPath("$.username", is("adam.smith")))
                 .andExpect(jsonPath("$.firstName", is("Adam")))
                 .andExpect(jsonPath("$.lastName", is("Smith")))
-                .andExpect(jsonPath("$.email", is("updated_email@example.com")))
+                .andExpect(jsonPath("$.email", is(updateUserRequest.getEmail())))
                 .andExpect(jsonPath("$.phone", is("+7-777-999-88-77")));
     }
 }

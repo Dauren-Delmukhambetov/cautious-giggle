@@ -492,7 +492,7 @@ components:
       properties:
         username:
           type: string
-          pattern: '^[A-Za-z\-_]+$'
+          pattern: '^[A-Za-z\-_.]+$'
         firstName:
           type: string
         lastName:

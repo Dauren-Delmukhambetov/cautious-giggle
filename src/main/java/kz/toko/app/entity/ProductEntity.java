@@ -11,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.validation.constraints.NotEmpty;
+import java.math.BigDecimal;
 
 @Data
 @Entity
@@ -30,6 +31,6 @@ public class ProductEntity extends AuditableEntity {
     private String name;
 
     @Column(nullable = false)
-    private Double price;
+    private BigDecimal price;
 
 }

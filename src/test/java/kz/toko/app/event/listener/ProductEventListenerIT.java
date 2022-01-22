@@ -14,7 +14,9 @@ import org.springframework.context.ApplicationEventPublisher;
 import java.util.List;
 
 import static java.util.Collections.emptyList;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoInteractions;
+import static org.mockito.Mockito.when;
 
 @SpringBootTest(classes = ProductEventListener.class)
 class ProductEventListenerIT {
