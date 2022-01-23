@@ -2,16 +2,18 @@ package kz.toko.app.util.data.provider;
 
 import kz.toko.app.entity.UserEntity;
 
+import static kz.toko.app.util.data.provider.FakeDataProvider.faker;
+
 public final class UserDataProvider {
 
     public static UserEntity buildUserEntity() {
         final var entity = new UserEntity();
-        entity.setUsername("john.doe");
-        entity.setFirstName("John");
-        entity.setLastName("Doe");
-        entity.setPassword("password");
-        entity.setEmail("john.doe@example.com");
-        entity.setPhone("+997 (29) 123-45-67");
+        entity.setUsername(faker.name().username());
+        entity.setFirstName(faker.name().firstName());
+        entity.setLastName(faker.name().lastName());
+        entity.setPassword(faker.internet().password());
+        entity.setEmail(faker.internet().emailAddress());
+        entity.setPhone(faker.phoneNumber().phoneNumber());
         return entity;
     }
 

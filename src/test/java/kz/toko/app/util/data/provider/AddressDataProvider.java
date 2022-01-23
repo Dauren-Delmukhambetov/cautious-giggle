@@ -4,24 +4,25 @@ import kz.toko.api.model.Address;
 import kz.toko.app.entity.AddressEntity;
 
 import static kz.toko.api.model.Address.CountryEnum.BY;
+import static kz.toko.app.util.data.provider.FakeDataProvider.faker;
 
 public final class AddressDataProvider {
 
     public static AddressEntity buildAddressEntity() {
         final var entity = new AddressEntity();
-        entity.setAddressLine("st. Abay, 20");
-        entity.setCity("Almaty");
+        entity.setAddressLine(faker.address().streetAddress());
+        entity.setCity(faker.address().cityName());
         entity.setAdminArea(null);
-        entity.setPostalCode("050000");
-        entity.setCountry("KZ");
+        entity.setPostalCode(faker.numerify("######"));
+        entity.setCountry(faker.address().countryCode());
         return entity;
     }
 
     public static Address buildAddress() {
         return new Address()
-                .addressLine("Lenin avenue, 5/B")
-                .city("Minsk")
-                .postalCode("220054")
+                .addressLine(faker.address().streetAddress())
+                .city(faker.address().cityName())
+                .postalCode(faker.numerify("######"))
                 .country(BY);
     }
 }

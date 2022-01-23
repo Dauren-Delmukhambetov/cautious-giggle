@@ -44,7 +44,7 @@ class StoreRepositoryIT extends PersistenceTest {
         entityManager.flush();
 
         assertThat(store.getAddress()).isNotNull();
-        assertThat(savedStore.getAddress().getId()).isEqualTo(addressId);
-        assertThat(savedStore.getAddress().getPostalCode()).isEqualTo("050300");
+        assertThat(store.getAddress().getId()).isEqualTo(addressId);
+        assertThat(store.getAddress().getPostalCode()).isEqualTo("050300");
     }
 }
