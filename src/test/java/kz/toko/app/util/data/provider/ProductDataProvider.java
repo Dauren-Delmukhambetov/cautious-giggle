@@ -2,14 +2,17 @@ package kz.toko.app.util.data.provider;
 
 import kz.toko.app.entity.ProductEntity;
 
+import static kz.toko.app.util.data.provider.FakeDataProvider.faker;
+import static kz.toko.app.util.data.provider.FakeDataProvider.randomPrice;
+
 public class ProductDataProvider {
 
     public static ProductEntity buildProductEntity(final Long id) {
         final var entity = new ProductEntity();
         entity.setId(id);
-        entity.setName("Product #1");
-        entity.setPrice(123.45);
-        entity.setImagePath("/images/product.png");
+        entity.setName(faker.commerce().productName());
+        entity.setPrice(randomPrice());
+        entity.setImagePath(faker.file().fileName());
         return entity;
     }
 }

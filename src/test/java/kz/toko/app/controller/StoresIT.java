@@ -14,6 +14,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import static kz.toko.api.model.CreateStoreRequest.ModeEnum.SELLER;
 import static kz.toko.app.util.TestConstants.TEST_USER_FULL_NAME;
 import static kz.toko.app.util.data.provider.AddressDataProvider.buildAddress;
+import static kz.toko.app.util.data.provider.FakeDataProvider.faker;
 import static org.hamcrest.Matchers.hasKey;
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
@@ -41,7 +42,7 @@ class StoresIT extends IntegrationTest {
         final var createStoreRequest = new CreateStoreRequest()
                 .address(buildAddress())
                 .mode(SELLER)
-                .name("Store #1");
+                .name(faker.company().name());
 
         this.mockMvc.perform(
                         post("/stores")
@@ -50,13 +51,15 @@ class StoresIT extends IntegrationTest {
                                 .content(mapper.writeValueAsString(createStoreRequest)))
                 .andDo(print())
                 .andExpect(status().isCreated())
-                .andExpect(jsonPath("$.id", notNullValue()))
-                .andExpect(jsonPath("$.name", is(createStoreRequest.getName())))
-                .andExpect(jsonPath("$.mode", is(createStoreRequest.getMode().toString())))
-                .andExpect(jsonPath("$.address.addressLine", is(createStoreRequest.getAddress().getAddressLine())))
-                .andExpect(jsonPath("$.address.city", is(createStoreRequest.getAddress().getCity())))
-                .andExpect(jsonPath("$.address.postalCode", is(createStoreRequest.getAddress().getPostalCode())))
-                .andExpect(jsonPath("$.ownerFullName", is(TEST_USER_FULL_NAME)));
+                .andExpectAll(
+                        jsonPath("$.id", notNullValue()),
+                        jsonPath("$.name", is(createStoreRequest.getName())),
+                        jsonPath("$.mode", is(createStoreRequest.getMode().toString())),
+                        jsonPath("$.address.addressLine", is(createStoreRequest.getAddress().getAddressLine())),
+                        jsonPath("$.address.city", is(createStoreRequest.getAddress().getCity())),
+                        jsonPath("$.address.postalCode", is(createStoreRequest.getAddress().getPostalCode())),
+                        jsonPath("$.ownerFullName", is(TEST_USER_FULL_NAME))
+                );
     }
 
     @Test
@@ -64,7 +67,7 @@ class StoresIT extends IntegrationTest {
     void shouldReturnBadRequestCode() throws Exception {
         final var createStoreRequest = new CreateStoreRequest()
                 .mode(SELLER)
-                .name("Store #1");
+                .name(faker.company().name());
 
         this.mockMvc.perform(
                         post("/stores")
@@ -73,9 +76,11 @@ class StoresIT extends IntegrationTest {
                                 .content(mapper.writeValueAsString(createStoreRequest)))
                 .andDo(print())
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.message", notNullValue()))
-                .andExpect(jsonPath("$.exceptionClass", notNullValue()))
-                .andExpect(jsonPath("$.params", hasKey("address")));
+                .andExpectAll(
+                        jsonPath("$.message", notNullValue()),
+                        jsonPath("$.exceptionClass", notNullValue()),
+                        jsonPath("$.params", hasKey("address"))
+                );
     }
 
     @Test
