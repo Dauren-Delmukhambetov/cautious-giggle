@@ -1,7 +1,9 @@
 package kz.toko.app.repository.specification;
 
 import kz.toko.app.entity.StoreItemEntity;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 
@@ -17,13 +19,17 @@ import java.util.List;
 import java.util.Objects;
 import java.util.Set;
 
-@RequiredArgsConstructor
+import static kz.toko.app.repository.specification.StoreItemSpecification.ExpirationStatus.CURRENTLY_ACTIVE;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class StoreItemSpecification implements Specification<StoreItemEntity> {
 
-    private final Set<Long> storeIds;
-    private final Set<Long> productIds;
-    private final LocalDate activeOnDate;
-    private final ExpirationStatus expirationStatus;
+    private Set<Long> storeIds;
+    private Set<Long> productIds;
+    private LocalDate activeOnDate;
+    private ExpirationStatus expirationStatus;
 
     @Override
     public Predicate toPredicate(Root<StoreItemEntity> root, CriteriaQuery<?> query, CriteriaBuilder criteriaBuilder) {
@@ -88,5 +94,9 @@ public class StoreItemSpecification implements Specification<StoreItemEntity> {
         EXPIRED,
         CURRENTLY_ACTIVE,
         UPCOMING
+    }
+
+    public static StoreItemSpecification withDefaults() {
+        return new StoreItemSpecification(null, null, null, CURRENTLY_ACTIVE);
     }
 }

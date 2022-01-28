@@ -364,6 +364,25 @@ paths:
 
   ## Store Items API
   /store-items:
+    get:
+      tags:
+        - Store Items
+      summary: Retrieves store items with paging and filtering
+      operationId: getStoreItems
+      parameters:
+        - $ref: '#/components/parameters/PageNumberParameter'
+        - $ref: '#/components/parameters/PageSizeParameter'
+        - $ref: '#/components/parameters/StoreItemFilteringCriteria'
+      responses:
+        200:
+          description: The list of store items has been successfuly fetched
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/StoreItemsPageableResponse'
+        401:
+          description: The request requires user authentication
+
     post:
       tags:
         - Store Items
@@ -409,6 +428,52 @@ components:
         type: integer
         format: int64
         minimum: 1
+    PageNumberParameter:
+      in: query
+      name: pageNumber
+      required: false
+      schema:
+        type: integer
+        minimum: 1
+        default: 1
+      description: The number of page to request
+    PageSizeParameter:
+      in: query
+      name: pageSize
+      required: false
+      schema:
+        type: integer
+        minimum: 10
+        maximum: 100
+        default: 20
+      description: The numbers of items on a page
+
+    StoreItemFilteringCriteria:
+      in: query
+      name: storeItemFilteringCriteria
+      required: false
+      schema:
+        type: object
+        properties:
+          storeIds:
+            type: array
+            items:
+              type: integer
+              format: int64
+          productIds:
+            type: array
+            items:
+              type: integer
+              format: int64
+          activeOnDate:
+            type: string
+            format: date
+          expirationStatus:
+            $ref: '#/components/schemas/ExpirationStatus'
+        example:
+          storeIds: [123, 456, 789]
+          productIds: [987, 654, 321]
+          expirationStatus: upcoming
 
   schemas:
     ## Products model
@@ -536,6 +601,7 @@ components:
         email: adam_smith@gmail.com
         phone: +997-(777)-123-45-67
 
+    # Store Item model
     CreateStoreItemRequest:
       type: object
       properties:
@@ -625,6 +691,22 @@ components:
     MeasureUnit:
       type: string
       enum: [ gram, kilogram, litre, metre, pieces ]
+
+    ExpirationStatus:
+      type: string
+      enum: [ expired, currently_active, upcoming ]
+
+    StoreItemsPageableResponse:
+      type: object
+      properties:
+        totalCount:
+          type: integer
+        currentPage:
+          type: integer
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/StoreItem'
 
     ## Stores model
     CreateStoreRequest:

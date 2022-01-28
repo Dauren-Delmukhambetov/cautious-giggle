@@ -1,5 +1,7 @@
 package kz.toko.app.mapper;
 
+import kz.toko.api.model.ExpirationStatus;
+import kz.toko.api.model.StoreItemFilteringCriteria;
 import kz.toko.app.config.MappingConfig;
 import kz.toko.app.mapper.converter.StoreItemProductConverter;
 import kz.toko.app.mapper.converter.StoreItemStoreConverter;
@@ -14,6 +16,7 @@ import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.util.Optional;
 
 import static kz.toko.app.util.data.provider.ProductDataProvider.buildProductEntity;
@@ -81,5 +84,22 @@ class StoreItemMapperTest {
 
         assertThat(dto.getActiveSince()).isEqualTo(entity.getActiveSince().toLocalDate());
         assertThat(dto.getActiveTill()).isEqualTo(entity.getActiveTill().toLocalDate());
+    }
+
+    @Test
+    @DisplayName("should map StoreItemFilteringCriteria to StoreItemSpecification")
+    void shouldMapStoreItemFilteringCriteriaToStoreItemSpecification() {
+        final var criteria = new StoreItemFilteringCriteria()
+                .addStoreIdsItem(123L)
+                .addProductIdsItem(456L)
+                .activeOnDate(LocalDate.now())
+                .expirationStatus(ExpirationStatus.UPCOMING);
+
+        final var specification = mapper.toSpecification(criteria);
+
+        assertThat(specification.getStoreIds()).hasSameElementsAs(criteria.getStoreIds());
+        assertThat(specification.getProductIds()).hasSameElementsAs(criteria.getProductIds());
+        assertThat(specification.getActiveOnDate()).isEqualTo(criteria.getActiveOnDate());
+        assertThat(specification.getExpirationStatus().name()).isEqualToIgnoringCase(criteria.getExpirationStatus().name());
     }
 }
