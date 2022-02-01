@@ -1,6 +1,10 @@
 package kz.toko.app.service.impl;
 
-import io.minio.*;
+import io.minio.BucketExistsArgs;
+import io.minio.MakeBucketArgs;
+import io.minio.MinioClient;
+import io.minio.PutObjectArgs;
+import io.minio.RemoveObjectArgs;
 import kz.toko.app.service.FileStorageService;
 import lombok.RequiredArgsConstructor;
 import lombok.SneakyThrows;

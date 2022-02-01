@@ -6,6 +6,9 @@ import kz.toko.app.mapper.StoreItemMapper;
 import kz.toko.app.repository.StoreItemRepository;
 import kz.toko.app.service.StoreItemService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -19,5 +22,10 @@ public class StoreItemServiceImpl implements StoreItemService {
     public StoreItemEntity createStoreItem(CreateStoreItemRequest request) {
         final var storeItem = mapper.toEntity(request);
         return repository.save(storeItem);
+    }
+
+    @Override
+    public Page<StoreItemEntity> find(Specification<StoreItemEntity> criteria, PageRequest pageRequest) {
+        return repository.findAll(criteria, pageRequest);
     }
 }

@@ -2,6 +2,7 @@ package kz.toko.app.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kz.toko.app.IntegrationTest;
+import kz.toko.app.util.data.builder.TestDataSetBuilder;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,8 @@ import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.web.servlet.MockMvc;
 
+import javax.transaction.Transactional;
+
 import static kz.toko.app.util.data.provider.StoreItemDataProvider.buildCreateStoreItemRequest;
 import static org.hamcrest.Matchers.equalToIgnoringCase;
 import static org.hamcrest.Matchers.hasKey;
@@ -17,6 +20,7 @@ import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.hamcrest.Matchers.notNullValue;
 import static org.springframework.http.MediaType.APPLICATION_JSON;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -37,7 +41,7 @@ class StoreItemsIT extends IntegrationTest {
             @Sql(value = "classpath:/db.scripts/add_adam_store.sql"),
     })
     @DisplayName("Should create a new store item")
-    void createNewStoreItem() throws Exception {
+    void shouldCreateNewStoreItem() throws Exception {
         final var request = buildCreateStoreItemRequest(1L, 1L);
 
         this.mockMvc.perform(
@@ -77,6 +81,32 @@ class StoreItemsIT extends IntegrationTest {
                         jsonPath("$.params.*", hasSize(2)),
                         jsonPath("$.params", hasKey("productId")),
                         jsonPath("$.params", hasKey("storeId"))
+                );
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("Should return active store items by default")
+    void shouldReturnActiveStoreItemsByDefault() throws Exception {
+
+        new TestDataSetBuilder(entityManager)
+                .user()
+                .product()
+                .store()
+                .expiredStoreItem()
+                .activeStoreItem()
+                .upcomingStoreItem();
+
+        this.mockMvc.perform(
+                        get("/store-items")
+                                .with(validJwtToken())
+                                .contentType(APPLICATION_JSON))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpectAll(
+                        jsonPath("$.totalCount", is(1)),
+                        jsonPath("$.currentPage", is(1)),
+                        jsonPath("$.items.*", hasSize(1))
                 );
     }
 }

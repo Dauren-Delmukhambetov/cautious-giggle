@@ -3,12 +3,15 @@ package kz.toko.app;
 
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.TestMethodOrder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.context.jdbc.SqlGroup;
 import org.springframework.test.context.jdbc.SqlMergeMode;
+
+import javax.persistence.EntityManager;
 
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.context.jdbc.Sql.ExecutionPhase.AFTER_TEST_METHOD;
@@ -25,6 +28,9 @@ import static org.springframework.test.context.jdbc.SqlMergeMode.MergeMode.MERGE
         @Sql(value = "classpath:/db.scripts/delete_all_records.sql", executionPhase = AFTER_TEST_METHOD),
 })
 public abstract class IntegrationTest {
+
+    @Autowired
+    protected EntityManager entityManager;
 
     /**
      * Supplies JWT token for valid user of Adam Smith. <br/>
