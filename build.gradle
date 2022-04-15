@@ -50,7 +50,7 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
     swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.33'
-    swaggerUI 'org.webjars:swagger-ui:4.9.1'
+    swaggerUI 'org.webjars:swagger-ui:4.10.3'
 }
 
 swaggerSources {
