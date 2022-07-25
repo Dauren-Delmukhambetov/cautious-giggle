@@ -41,7 +41,7 @@ dependencies {
     implementation 'software.amazon.awssdk:s3'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
-    runtimeOnly 'mysql:mysql-connector-java:8.0.29'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.30'
     developmentOnly 'org.springframework.boot:spring-boot-devtools:2.7.2'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.2'
