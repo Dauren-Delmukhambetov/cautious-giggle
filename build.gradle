@@ -1,5 +1,5 @@
 plugins {
-    id 'org.springframework.boot' version '2.7.2'
+    id 'org.springframework.boot' version '2.7.5'
     id 'io.spring.dependency-management' version '1.1.0'
     id 'java'
     id 'org.hidetake.swagger.generator' version '2.19.2'
@@ -42,9 +42,9 @@ dependencies {
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
     runtimeOnly 'mysql:mysql-connector-java:8.0.30'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.7.2'
+    developmentOnly 'org.springframework.boot:spring-boot-devtools:2.7.5'
 
-    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.2'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.5'
     testImplementation 'org.springframework.security:spring-security-test:5.7.2'
     testImplementation ('com.github.javafaker:javafaker:1.0.2') {
         exclude group: 'org.yaml', module: 'snakeyaml'
