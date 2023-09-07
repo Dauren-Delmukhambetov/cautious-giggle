@@ -41,7 +41,7 @@ dependencies {
     implementation 'software.amazon.awssdk:s3'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
-    runtimeOnly 'mysql:mysql-connector-java:8.0.30'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
     developmentOnly 'org.springframework.boot:spring-boot-devtools:2.7.5'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.5'
@@ -49,10 +49,10 @@ dependencies {
     testImplementation ('com.github.javafaker:javafaker:1.0.2') {
         exclude group: 'org.yaml', module: 'snakeyaml'
     }
-    testImplementation 'org.yaml:snakeyaml:1.31'
+    testImplementation 'org.yaml:snakeyaml:1.33'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
-    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.34'
+    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.46'
     swaggerUI 'org.webjars:swagger-ui:4.15.5'
 }
 
