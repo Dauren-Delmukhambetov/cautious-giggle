@@ -75,7 +75,6 @@ public class ProductServiceImpl implements ProductService {
         final var product = getAccessibleProduct(productId);
         final var imagePath = fileStorageService.write(image);
 
-
         final var event = new ProductImageChangeEvent(this, productId, product.getImagePath(), imagePath);
         product.setImagePath(imagePath);
         repository.save(product);

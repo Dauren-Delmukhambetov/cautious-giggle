@@ -23,7 +23,11 @@ public class TestDataSetBuilder {
     private final List<StoreEntity> stores = new LinkedList<>();
     private final List<StoreItemEntity> storeItems = new LinkedList<>();
 
-    public TestDataSetBuilder(EntityManager entityManager) {
+    public static TestDataSetBuilder builder(EntityManager entityManager) {
+        return new TestDataSetBuilder(entityManager);
+    }
+
+    private TestDataSetBuilder(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
 
