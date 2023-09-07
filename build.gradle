@@ -22,7 +22,7 @@ repositories {
 }
 
 dependencies {
-    implementation platform('software.amazon.awssdk:bom:2.18.6')
+    implementation platform('software.amazon.awssdk:bom:2.20.142')
 
     implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
     implementation 'org.springframework.boot:spring-boot-starter-web'
@@ -41,7 +41,7 @@ dependencies {
     implementation 'software.amazon.awssdk:s3'
 
     compileOnly 'org.projectlombok:lombok:1.18.24'
-    runtimeOnly 'mysql:mysql-connector-java:8.0.30'
+    runtimeOnly 'mysql:mysql-connector-java:8.0.33'
     developmentOnly 'org.springframework.boot:spring-boot-devtools:2.7.5'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.7.5'
@@ -49,7 +49,7 @@ dependencies {
     testImplementation ('com.github.javafaker:javafaker:1.0.2') {
         exclude group: 'org.yaml', module: 'snakeyaml'
     }
-    testImplementation 'org.yaml:snakeyaml:1.31'
+    testImplementation 'org.yaml:snakeyaml:1.33'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.46'
