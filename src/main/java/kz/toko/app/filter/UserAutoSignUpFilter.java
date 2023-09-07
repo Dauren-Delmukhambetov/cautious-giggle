@@ -34,9 +34,8 @@ public class UserAutoSignUpFilter extends OncePerRequestFilter {
 
         final var authentication = SecurityContextHolder.getContext().getAuthentication();
 
-        if (nonNull(authentication) && authentication.getPrincipal() instanceof Jwt) {
+        if (nonNull(authentication) && authentication.getPrincipal() instanceof Jwt jwt) {
             log.debug("Current user's ID is {}", authentication.getName());
-            final var jwt = (Jwt) authentication.getPrincipal();
 
             if (!containsMandatoryClaims(jwt)) {
                 response.sendError(BAD_REQUEST.value(),
