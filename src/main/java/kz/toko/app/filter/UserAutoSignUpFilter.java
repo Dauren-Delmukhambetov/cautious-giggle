@@ -57,9 +57,9 @@ public class UserAutoSignUpFilter extends OncePerRequestFilter {
             }
         }
 
-        filterChain.doFilter(request, response);
-
         log.debug("Completing UserAutoSignUpFilter processing");
+
+        filterChain.doFilter(request, response);
     }
 
     private boolean containsMandatoryClaims(Jwt jwt) {

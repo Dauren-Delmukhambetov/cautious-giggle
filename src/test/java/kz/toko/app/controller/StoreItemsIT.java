@@ -89,7 +89,7 @@ class StoreItemsIT extends IntegrationTest {
     @DisplayName("Should return active store items by default")
     void shouldReturnActiveStoreItemsByDefault() throws Exception {
 
-        new TestDataSetBuilder(entityManager)
+        TestDataSetBuilder.builder(entityManager)
                 .user()
                 .product()
                 .store()

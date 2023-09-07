@@ -90,10 +90,10 @@ public class MappingConfig {
                         .map(StoreItemEntity::getActiveTill, StoreItem::setActiveTill));
     }
 
-    private Converter<LocalDate, LocalDateTime> localDateToLocalDateTimeConverter =
+    private final Converter<LocalDate, LocalDateTime> localDateToLocalDateTimeConverter =
             context -> Objects.nonNull(context.getSource()) ? context.getSource().atStartOfDay() : null;
 
-    private Converter<LocalDateTime, LocalDate> localDateTimeToLocalDateConverter =
+    private final Converter<LocalDateTime, LocalDate> localDateTimeToLocalDateConverter =
             context -> Objects.nonNull(context.getSource()) ? context.getSource().toLocalDate() : null;
 
 }

@@ -11,9 +11,5 @@ public enum MeasureUnit {
     PIECES("pcs")
     ;
 
-    private final String symbol;
-
-    MeasureUnit(String symbol) {
-        this.symbol = symbol;
-    }
+    MeasureUnit(String symbol) {}
 }
