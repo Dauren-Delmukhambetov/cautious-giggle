@@ -73,6 +73,9 @@ swaggerSources {
     }
 }
 
+processResources.dependsOn swaggerSources.tokoRestApi.code
+processResources.dependsOn swaggerSources.tokoRestApi.ui
+
 compileJava.dependsOn swaggerSources.tokoRestApi.code
 compileJava.dependsOn swaggerSources.tokoRestApi.ui
 sourceSets.main.java.srcDir "${swaggerSources.tokoRestApi.code.outputDir}/src/main/java"
@@ -109,7 +112,7 @@ test {
 jacocoTestReport {
     dependsOn test
     reports {
-        xml.enabled true
+        xml.required = true
     }
     afterEvaluate {
         classDirectories.setFrom(files(classDirectories.files.collect {
