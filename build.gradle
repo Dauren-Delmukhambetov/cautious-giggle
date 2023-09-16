@@ -31,8 +31,8 @@ dependencies {
     implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
     implementation 'io.swagger.core.v3:swagger-annotations:2.2.15'
-    implementation 'org.flywaydb:flyway-core:8.5.13'
-    implementation 'org.flywaydb:flyway-mysql:9.0.1'
+    implementation 'org.flywaydb:flyway-core:9.22.0'
+    implementation 'org.flywaydb:flyway-mysql:9.22.0'
     implementation 'io.swagger:swagger-annotations:1.6.11'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'org.modelmapper:modelmapper:3.1.1'
@@ -53,7 +53,7 @@ dependencies {
 
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
     swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.46'
-    swaggerUI 'org.webjars:swagger-ui:4.19.1'
+    swaggerUI 'org.webjars:swagger-ui:5.6.1'
 }
 
 swaggerSources {
