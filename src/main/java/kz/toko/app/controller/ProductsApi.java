@@ -21,7 +21,7 @@ import java.util.List;
 @Validated
 public interface ProductsApi {
 
-    @Operation(summary = "Creates a new product", description = "", tags={ "Products" })
+    @Operation(summary = "Creates a new product", tags={ "Products" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "New product has been successfully created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))) })
     @RequestMapping(value = "/products",
@@ -52,7 +52,7 @@ public interface ProductsApi {
 
     @Operation(summary = "Get product by ID", description = "This method returns product with given ID ", tags={ "Products" })
     @ApiResponses(value = {
-            @ApiResponse(responseCode = "200", description = "", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))),
+            @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))),
 
             @ApiResponse(responseCode = "404", description = "Product with a given ID has not beed found", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))),
 
@@ -66,7 +66,7 @@ public interface ProductsApi {
             @PathVariable("id") Long id);
 
 
-    @Operation(summary = "Retrieve all products", description = "", tags={ "Products" })
+    @Operation(summary = "Retrieve all products", tags={ "Products" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The list of products has been successfully fetched", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Product.class)))) })
     @RequestMapping(value = "/products",

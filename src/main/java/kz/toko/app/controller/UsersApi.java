@@ -70,7 +70,7 @@ public interface UsersApi {
             @Parameter(in = ParameterIn.PATH, description = "Entity ID", required=true, schema=@Schema(allowableValues={ "1" }, minimum="1"))
             @PathVariable("id") Long id);
 
-    @Operation(summary = "Retrieve all Users", description = "", security = {
+    @Operation(summary = "Retrieve all Users", security = {
             @SecurityRequirement(name = "OpenIDConnectAuth")    }, tags={ "Users" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The list of users has been successfully fetched", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = User.class)))),

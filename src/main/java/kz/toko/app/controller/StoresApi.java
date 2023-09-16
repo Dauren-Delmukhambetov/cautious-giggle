@@ -23,7 +23,7 @@ import java.util.List;
 @Validated
 public interface StoresApi {
 
-    @Operation(summary = "Create a new store", description = "", security = {
+    @Operation(summary = "Create a new store", security = {
             @SecurityRequirement(name = "OpenIDConnectAuth")    }, tags={ "Stores" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "New store has been successfully created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Store.class))),
@@ -40,7 +40,7 @@ public interface StoresApi {
     );
 
 
-    @Operation(summary = "Retrieve user's stores", description = "", security = {
+    @Operation(summary = "Retrieve user's stores", security = {
             @SecurityRequirement(name = "OpenIDConnectAuth")    }, tags={ "Stores" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The list of user's stores has been successfuly fetched", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Store.class)))),
