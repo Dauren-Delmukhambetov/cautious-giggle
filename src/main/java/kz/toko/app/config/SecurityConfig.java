@@ -1,7 +1,6 @@
 package kz.toko.app.config;
 
 import kz.toko.app.filter.UserAutoSignUpFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -18,22 +17,19 @@ import org.springframework.web.cors.CorsConfiguration;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    @Autowired
-    private UserAutoSignUpFilter userAutoSignUpFilter;
-
     @Bean
-    protected SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    protected SecurityFilterChain filterChain(HttpSecurity http, UserAutoSignUpFilter userAutoSignUpFilter) throws Exception {
         http
                 .cors(configurer -> configurer.configurationSource(request -> corsConfiguration()))
                 .csrf(AbstractHttpConfigurer::disable)
                 .authorizeHttpRequests(
-                        (authz) -> authz.requestMatchers("/users/**").authenticated()
+                        authz -> authz.requestMatchers("/users/**").authenticated()
                                 .requestMatchers("/stores/**").authenticated()
                                 .requestMatchers("/store-items/**").authenticated()
                                 .requestMatchers("/**").permitAll()
                 )
                 .oauth2ResourceServer(
-                        (oauth2ResourceServer) -> oauth2ResourceServer.jwt(
+                        oauth2ResourceServer -> oauth2ResourceServer.jwt(
                                 (jwtConfigurer -> jwtConfigurer.decoder(jwtDecoder()))
                         )
                 );

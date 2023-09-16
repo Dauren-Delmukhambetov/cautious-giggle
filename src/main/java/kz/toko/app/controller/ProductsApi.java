@@ -24,10 +24,9 @@ public interface ProductsApi {
     @Operation(summary = "Creates a new product", tags={ "Products" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "New product has been successfully created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))) })
-    @RequestMapping(value = "/products",
+    @PostMapping(value = "/products",
             produces = { "application/json" },
-            consumes = { "application/json" },
-            method = RequestMethod.POST)
+            consumes = { "application/json" })
     ResponseEntity<Product> createProduct(
             @Parameter(in = ParameterIn.DEFAULT, description = "New product creation request", required=true, schema=@Schema())
             @Valid @RequestBody CreateProductRequest body
@@ -40,9 +39,8 @@ public interface ProductsApi {
             @ApiResponse(responseCode = "404", description = "Product with a given ID has not beed found", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))),
 
             @ApiResponse(responseCode = "410", description = "The product has already been deleted", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))) })
-    @RequestMapping(value = "/products/{id}",
-            produces = { "application/problem+json" },
-            method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/products/{id}",
+            produces = { "application/problem+json" })
     ResponseEntity<Void> deleteProduct(
             @Min(1L)
             @Parameter(in = ParameterIn.PATH, description = "Entity ID", required=true, schema=@Schema(allowableValues={ "1" }, minimum="1"))
@@ -56,9 +54,8 @@ public interface ProductsApi {
             @ApiResponse(responseCode = "404", description = "Product with a given ID has not beed found", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))),
 
             @ApiResponse(responseCode = "410", description = "The product has already been deleted", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))) })
-    @RequestMapping(value = "/products/{id}",
-            produces = { "application/json", "application/problem+json" },
-            method = RequestMethod.GET)
+    @GetMapping(value = "/products/{id}",
+            produces = { "application/json", "application/problem+json" })
     ResponseEntity<Product> getProduct(
             @Min(1L)
             @Parameter(in = ParameterIn.PATH, description = "Entity ID", required=true, schema=@Schema(allowableValues={ "1" }, minimum="1"))
@@ -67,9 +64,8 @@ public interface ProductsApi {
     @Operation(summary = "Retrieve all products", tags={ "Products" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "The list of products has been successfully fetched", content = @Content(mediaType = "application/json", array = @ArraySchema(schema = @Schema(implementation = Product.class)))) })
-    @RequestMapping(value = "/products",
-            produces = { "application/json" },
-            method = RequestMethod.GET)
+    @GetMapping(value = "/products",
+            produces = { "application/json" })
     ResponseEntity<List<Product>> getProducts();
 
 
@@ -80,10 +76,9 @@ public interface ProductsApi {
             @ApiResponse(responseCode = "404", description = "Product with a given ID has not beed found", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))),
 
             @ApiResponse(responseCode = "410", description = "The product has already been deleted", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))) })
-    @RequestMapping(value = "/products/{id}",
+    @PatchMapping(value = "/products/{id}",
             produces = { "application/problem+json" },
-            consumes = { "application/json" },
-            method = RequestMethod.PATCH)
+            consumes = { "application/json" })
     ResponseEntity<Void> updateProduct(
             @Min(1L)
             @Parameter(in = ParameterIn.PATH, description = "Entity ID", required=true, schema=@Schema(allowableValues={ "1" }, minimum="1"))
@@ -99,10 +94,9 @@ public interface ProductsApi {
             @ApiResponse(responseCode = "404", description = "Product with a given ID has not beed found", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))),
 
             @ApiResponse(responseCode = "410", description = "The product has already been deleted", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))) })
-    @RequestMapping(value = "/products/{id}/image",
+    @PostMapping(value = "/products/{id}/image",
             produces = { "application/json", "application/problem+json" },
-            consumes = { "multipart/form-data" },
-            method = RequestMethod.POST)
+            consumes = { "multipart/form-data" })
     ResponseEntity<Link> uploadImage(
             @Min(1L)
             @Parameter(in = ParameterIn.PATH, description = "Entity ID", required=true, schema=@Schema(allowableValues={ "1" }, minimum="1"))

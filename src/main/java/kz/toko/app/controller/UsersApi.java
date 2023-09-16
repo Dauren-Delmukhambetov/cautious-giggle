@@ -15,10 +15,7 @@ import kz.toko.api.model.UpdateUserRequest;
 import kz.toko.api.model.User;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
@@ -32,10 +29,9 @@ public interface UsersApi {
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "New user has been successfully created", content = @Content(mediaType = "application/json", schema = @Schema(implementation = User.class))),
             @ApiResponse(responseCode = "401", description = "The request requires user authentication") })
-    @RequestMapping(value = "/users",
+    @PostMapping(value = "/users",
             produces = { "application/json" },
-            consumes = { "application/json" },
-            method = RequestMethod.POST)
+            consumes = { "application/json" })
     ResponseEntity<User> createUser(
             @Parameter(in = ParameterIn.DEFAULT, description = "Create user request", required=true, schema=@Schema())
             @Valid @RequestBody CreateUserRequest body
@@ -48,9 +44,8 @@ public interface UsersApi {
             @ApiResponse(responseCode = "401", description = "The request requires user authentication"),
             @ApiResponse(responseCode = "404", description = "User not found", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))),
             @ApiResponse(responseCode = "410", description = "User has already been deleted", content = @Content(mediaType = "application/problem+json", schema = @Schema(implementation = ErrorDetails.class))) })
-    @RequestMapping(value = "/users/{id}",
-            produces = { "application/problem+json" },
-            method = RequestMethod.DELETE)
+    @DeleteMapping(value = "/users/{id}",
+            produces = { "application/problem+json" })
     ResponseEntity<Void> deleteUser(
             @Min(1L)
             @Parameter(in = ParameterIn.PATH, description = "Entity ID", required=true, schema=@Schema(allowableValues={ "1" }, minimum="1"))
