@@ -67,7 +67,6 @@ swaggerSources {
             configFile = file('api/config.json')
             components = ['models']
             additionalProperties = ['useTags': 'true']
-            rawOptions = ["HttpServletRequest=jakarta.servlet.http.HttpServletRequest"]
         }
         ui {
             outputDir = file("${buildDir}/generated/src/main/resources/static")

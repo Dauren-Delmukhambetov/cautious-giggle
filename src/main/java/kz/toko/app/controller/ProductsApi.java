@@ -49,7 +49,6 @@ public interface ProductsApi {
             @PathVariable("id") Long id
     );
 
-
     @Operation(summary = "Get product by ID", description = "This method returns product with given ID ", tags={ "Products" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class))),
@@ -64,7 +63,6 @@ public interface ProductsApi {
             @Min(1L)
             @Parameter(in = ParameterIn.PATH, description = "Entity ID", required=true, schema=@Schema(allowableValues={ "1" }, minimum="1"))
             @PathVariable("id") Long id);
-
 
     @Operation(summary = "Retrieve all products", tags={ "Products" })
     @ApiResponses(value = {
@@ -94,7 +92,6 @@ public interface ProductsApi {
             @Valid @RequestBody UpdateProductRequest body
     );
 
-
     @Operation(summary = "Uploads the product image", description = "This method allows you to upload an image with a size up to 10 Mb and set it as a cover image for the product with a given `id`. In case there is already an image for the product it will be replaced by the new one ", tags={ "Products" })
     @ApiResponses(value = {
             @ApiResponse(responseCode = "201", description = "Image has been successfully uploaded and bound to the product", content = @Content(mediaType = "application/json", schema = @Schema(implementation = Link.class))),
@@ -112,5 +109,4 @@ public interface ProductsApi {
             @PathVariable("id") Long id,
             @Parameter(description = "file detail") @Valid @RequestPart("file") MultipartFile file
     );
-
 }

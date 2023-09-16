@@ -39,7 +39,6 @@ public interface StoresApi {
                                       @Valid @RequestBody CreateStoreRequest body
     );
 
-
     @Operation(summary = "Retrieve user's stores", security = {
             @SecurityRequirement(name = "OpenIDConnectAuth")    }, tags={ "Stores" })
     @ApiResponses(value = {

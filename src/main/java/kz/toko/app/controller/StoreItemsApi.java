@@ -23,7 +23,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 
-@javax.annotation.Generated(value = "io.swagger.codegen.v3.generators.java.SpringCodegen", date = "2023-09-11T19:30:03.542857+03:00[Europe/Minsk]")
 @Validated
 public interface StoreItemsApi {
 
@@ -43,7 +42,6 @@ public interface StoreItemsApi {
             @Parameter(in = ParameterIn.DEFAULT, description = "New store item creation request", required=true, schema=@Schema())
             @Valid @RequestBody CreateStoreItemRequest body
     );
-
 
     @Operation(summary = "Retrieves store items with paging and filtering", description = "", security = {
             @SecurityRequirement(name = "OpenIDConnectAuth")    }, tags={ "Store Items" })
