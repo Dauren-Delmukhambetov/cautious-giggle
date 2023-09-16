@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.util.CollectionUtils;
 
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
+import jakarta.persistence.criteria.CriteriaBuilder;
+import jakarta.persistence.criteria.CriteriaQuery;
+import jakarta.persistence.criteria.Predicate;
+import jakarta.persistence.criteria.Root;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -59,18 +59,12 @@ public class StoreItemSpecification implements Specification<StoreItemEntity> {
 
         final var currentDateTime = LocalDateTime.now(ZoneOffset.UTC);
         switch (expirationStatus) {
-            case EXPIRED:
-                predicates.add(criteriaBuilder.lessThan(root.get("activeTill"), currentDateTime));
-                break;
-            case CURRENTLY_ACTIVE:
-                predicates.add(criteriaBuilder.and(
-                        criteriaBuilder.lessThanOrEqualTo(root.get("activeSince"), currentDateTime),
-                        criteriaBuilder.greaterThan(root.get("activeTill"), currentDateTime)
-                ));
-                break;
-            case UPCOMING:
-                predicates.add(criteriaBuilder.greaterThan(root.get("activeSince"), currentDateTime));
-                break;
+            case EXPIRED -> predicates.add(criteriaBuilder.lessThan(root.get("activeTill"), currentDateTime));
+            case CURRENTLY_ACTIVE -> predicates.add(criteriaBuilder.and(
+                    criteriaBuilder.lessThanOrEqualTo(root.get("activeSince"), currentDateTime),
+                    criteriaBuilder.greaterThan(root.get("activeTill"), currentDateTime)
+            ));
+            case UPCOMING -> predicates.add(criteriaBuilder.greaterThan(root.get("activeSince"), currentDateTime));
         }
     }
 

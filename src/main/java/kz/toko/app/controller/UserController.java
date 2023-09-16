@@ -1,6 +1,5 @@
 package kz.toko.app.controller;
 
-import kz.toko.api.UsersApi;
 import kz.toko.api.model.CreateUserRequest;
 import kz.toko.api.model.UpdateUserRequest;
 import kz.toko.api.model.User;

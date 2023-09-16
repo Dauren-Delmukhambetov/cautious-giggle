@@ -1,6 +1,5 @@
 package kz.toko.app.controller;
 
-import kz.toko.api.ProductsApi;
 import kz.toko.api.model.CreateProductRequest;
 import kz.toko.api.model.Link;
 import kz.toko.api.model.Product;

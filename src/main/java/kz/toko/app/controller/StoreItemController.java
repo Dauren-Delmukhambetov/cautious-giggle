@@ -1,6 +1,5 @@
 package kz.toko.app.controller;
 
-import kz.toko.api.StoreItemsApi;
 import kz.toko.api.model.CreateStoreItemRequest;
 import kz.toko.api.model.StoreItem;
 import kz.toko.api.model.StoreItemFilteringCriteria;

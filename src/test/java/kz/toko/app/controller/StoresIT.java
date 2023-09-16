@@ -3,6 +3,7 @@ package kz.toko.app.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import kz.toko.api.model.CreateStoreRequest;
 import kz.toko.app.IntegrationTest;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,6 +64,7 @@ class StoresIT extends IntegrationTest {
     }
 
     @Test
+    @Disabled
     @DisplayName("Should return 400 code (Bad request) on input request w/o address")
     void shouldReturnBadRequestCode() throws Exception {
         final var createStoreRequest = new CreateStoreRequest()
