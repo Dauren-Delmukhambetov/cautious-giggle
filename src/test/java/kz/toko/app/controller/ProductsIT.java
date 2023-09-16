@@ -52,6 +52,7 @@ class ProductsIT extends IntegrationTest {
 
         this.mockMvc.perform(
                         post("/products")
+                                .with(validJwtToken())
                                 .contentType(APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(createProductRequest)))
                 .andDo(print())
@@ -75,7 +76,8 @@ class ProductsIT extends IntegrationTest {
 
             this.mockMvc.perform(
                             multipart("/products/{id}/image", 1)
-                                    .file(multipartFile))
+                                    .file(multipartFile)
+                                    .with(validJwtToken()))
                     .andDo(print())
                     .andExpect(status().isCreated())
                     .andExpect(jsonPath("$.link", notNullValue()));
@@ -91,6 +93,7 @@ class ProductsIT extends IntegrationTest {
 
         this.mockMvc.perform(
                         patch("/products/{id}", 1)
+                                .with(validJwtToken())
                                 .contentType(APPLICATION_JSON)
                                 .content(mapper.writeValueAsString(updateProductRequest)))
                 .andDo(print())
@@ -113,7 +116,8 @@ class ProductsIT extends IntegrationTest {
     @Sql(value = "classpath:/db.scripts/add_product_to_delete.sql")
     void deleteProduct() throws Exception {
         this.mockMvc.perform(
-                        delete("/products/{id}", 2))
+                        delete("/products/{id}", 2)
+                                .with(validJwtToken()))
                 .andDo(print())
                 .andExpect(status().isNoContent());
     }
@@ -124,12 +128,14 @@ class ProductsIT extends IntegrationTest {
     @Sql(value = "classpath:/db.scripts/add_another_product_to_delete.sql")
     void getDeletedProduct() throws Exception {
         this.mockMvc.perform(
-                        delete("/products/{id}", 3))
+                        delete("/products/{id}", 3)
+                                .with(validJwtToken()))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
         this.mockMvc.perform(
-                        get("/products/{id}", 3))
+                        get("/products/{id}", 3)
+                                .with(validJwtToken()))
                 .andDo(print())
                 .andExpect(status().isGone())
                 .andExpect(content().contentType(APPLICATION_PROBLEM_JSON));

@@ -5,7 +5,7 @@ import kz.toko.app.entity.StoreEntity;
 import kz.toko.app.entity.StoreItemEntity;
 import kz.toko.app.entity.UserEntity;
 
-import javax.persistence.EntityManager;
+import jakarta.persistence.EntityManager;
 import java.time.LocalDateTime;
 import java.util.LinkedList;
 import java.util.List;

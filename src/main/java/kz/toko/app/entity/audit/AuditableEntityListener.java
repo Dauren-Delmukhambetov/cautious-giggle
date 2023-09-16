@@ -2,8 +2,8 @@ package kz.toko.app.entity.audit;
 
 import lombok.extern.slf4j.Slf4j;
 
-import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
+import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import java.time.LocalDateTime;
 
 import static kz.toko.app.util.AuthenticationUtils.getCurrentUsername;
