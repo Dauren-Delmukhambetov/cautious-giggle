@@ -30,7 +30,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.security:spring-security-oauth2-jose'
     implementation 'org.springframework.boot:spring-boot-starter-oauth2-resource-server'
-    implementation 'io.swagger.core.v3:swagger-annotations-jakarta:2.2.15'
+    implementation 'io.swagger.core.v3:swagger-annotations-jakarta:2.2.22'
     implementation 'org.flywaydb:flyway-core:9.22.0'
     implementation 'org.flywaydb:flyway-mysql:9.22.0'
     implementation 'io.swagger:swagger-annotations:1.6.11'
