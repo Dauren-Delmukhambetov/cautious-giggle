@@ -33,7 +33,7 @@ dependencies {
     implementation 'io.swagger.core.v3:swagger-annotations-jakarta:2.2.15'
     implementation 'org.flywaydb:flyway-core:9.22.0'
     implementation 'org.flywaydb:flyway-mysql:9.22.0'
-    implementation 'io.swagger:swagger-annotations:1.6.11'
+    implementation 'io.swagger:swagger-annotations:1.6.14'
     implementation 'javax.validation:validation-api:2.0.1.Final'
     implementation 'org.modelmapper:modelmapper:3.1.1'
     implementation 'io.minio:minio:8.2.2'
