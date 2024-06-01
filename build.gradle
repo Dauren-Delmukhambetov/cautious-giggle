@@ -54,7 +54,7 @@ dependencies {
     testImplementation 'org.yaml:snakeyaml:2.2'
 
     annotationProcessor 'org.projectlombok:lombok:1.18.24'
-    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.46'
+    swaggerCodegen 'io.swagger.codegen.v3:swagger-codegen-cli:3.0.57'
     swaggerUI 'org.webjars:swagger-ui:5.6.1'
 }
 
